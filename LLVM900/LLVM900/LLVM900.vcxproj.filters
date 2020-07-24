@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Исходные файлы">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Файлы заголовков">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Файлы ресурсов">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Исходные файлы\Tools">
+      <UniqueIdentifier>{c1320a48-4ff2-4f91-92f9-8dc734fa5202}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Transforms">
+      <UniqueIdentifier>{f9b309a5-ae4c-4b85-ba19-66eaa9cdf7ca}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Analysis.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BitReader.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BitWriter.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Comdat.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DebugInfo.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Disassembler.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dllmain.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Error.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Initialization.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IRReader.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Linker.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lto.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ExecutionEngine.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LTODisassembler.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Object.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OrcBindings.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Remarks.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Support.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Target.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TargetMachine.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tools\llc.cpp">
+      <Filter>Исходные файлы\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tools\llvm-ar.cpp">
+      <Filter>Исходные файлы\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tools\llvm-as.cpp">
+      <Filter>Исходные файлы\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tools\llvm-cat.cpp">
+      <Filter>Исходные файлы\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tools\llvm-config.cpp">
+      <Filter>Исходные файлы\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tools\llvm-dis.cpp">
+      <Filter>Исходные файлы\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tools\llvm-lto.cpp">
+      <Filter>Исходные файлы\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tools\llvm-lto2.cpp">
+      <Filter>Исходные файлы\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Transforms\AggressiveInstCombine.cpp">
+      <Filter>Исходные файлы\Transforms</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Transforms\Coroutines.cpp">
+      <Filter>Исходные файлы\Transforms</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Transforms\InstCombine.cpp">
+      <Filter>Исходные файлы\Transforms</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Transforms\IPO.cpp">
+      <Filter>Исходные файлы\Transforms</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Transforms\PassManagerBuilder.cpp">
+      <Filter>Исходные файлы\Transforms</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Transforms\Scalar.cpp">
+      <Filter>Исходные файлы\Transforms</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Transforms\Utils.cpp">
+      <Filter>Исходные файлы\Transforms</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Transforms\Vectorize.cpp">
+      <Filter>Исходные файлы\Transforms</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Header.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Tools\BuildVariables.inc">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="src\Tools\LibraryDependencies.inc">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+  </ItemGroup>
+</Project>
