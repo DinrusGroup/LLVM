@@ -1,182 +1,253 @@
-﻿module ll.api.ExecutionEngine;
+module ll.api.ExecutionEngine;
 
-    public class ExecutionEngine : IDisposable, IEquatable!(ExecutionEngine), IDisposableWrapper!(ЛЛДвижокВыполнения)
+import ll.c.Types, ll.c.Core;
+import ll.c.ExecutionEngine;
+import ll.api.vals.consts.GlobalValues.GlobalObjects.Function;
+import  ll.api.GenericValue;
+import ll.api.Module;
+
+import ll.common;
+
+    public class ДвигВып
     {
-        private static Dictionary!(ЛЛДвижокВыполнения, List!(Module)) _engineModuleMap = new Dictionary!(ЛЛДвижокВыполнения, List!(Module))();
+        /*
+        private ЛЛДвижокВыполнения[Модуль] _engineModuleMap;
 
-		this()
-		{
-			this._instance = IWrapper!(ЛЛДвижокВыполнения).ToHandleType();
-		}
-
-        void IDisposableWrapper!(ЛЛДвижокВыполнения).MakeHandleOwner()
-		{
-		this._owner = true;
-		}
-
-        private  ЛЛДвижокВыполнения _instance;
-        private bool _disposed;
-        private bool _owner;
-
-        private ExecutionEngine AssociateWithModule(Module m)
+        private ДвигВып ассоциируйСМодулем(Модуль m)
         {
-            var instance = this.Unwrap();
-            if (!_engineModuleMap.ContainsKey(instance))
+            auto экзэмпл = this.раскрой();
+            if (!_engineModuleMap.ContainsKey(экзэмпл))
             {
-                _engineModuleMap[instance] = new List<Module>();
+                _engineModuleMap[экзэмпл] = new List!(Модуль)();
             }
-            _engineModuleMap[instance].Add(m);
+            _engineModuleMap[экзэмпл].Add(m);
             return this;
         }
 
-        private ExecutionEngine DisassosicateWithModule(Module m)
+        private ДвигВып DisassosicateWithModule(Модуль m)
         {
-            var instance = this.Unwrap();
-            if(_engineModuleMap.ContainsKey(instance))
+            auto экзэмпл = this.раскрой();
+            if(_engineModuleMap.ContainsKey(экзэмпл))
             {
-                _engineModuleMap[instance].Remove(m);
+                _engineModuleMap[экзэмпл].Remove(m);
             }
             return this;
         }
 
-        private IEnumerable<Module> GetAssociatedModules()
+        private IEnumerable!(Модуль) GetAssociatedModules()
         {
-            var instance = this.Unwrap();
-            if(_engineModuleMap.ContainsKey(instance))
+            auto экзэмпл = this.раскрой();
+            if(_engineModuleMap.ContainsKey(экзэмпл))
             {
-                return _engineModuleMap[instance].ToArray();
+                return _engineModuleMap[экзэмпл].ToArray();
             }
             else
             {
-                return new Module[0];
+                return new Модуль[0];
             }
         }
+*/
 
-        public static ExecutionEngine Create(Module module)
+        private ЛЛДвижокВыполнения экземпл;
+
+        this(){}
+        
+        this(Модуль модуль)
         {
-            if (LLVM.CreateExecutionEngineForModule(out ЛЛДвижокВыполнения instance, module.Unwrap(), out IntPtr error).Failed())
+            ЛЛДвижокВыполнения экз;
+            ткст0 ош;
+
+            if (!ЛЛСоздайДвижВыпДляМодуля(&экз, модуль.раскрой(), ош))
             {
-                TextUtilities.Throw(error);
+                throw new Искл(вТкст(ош));
             }
 
-            return instance.Wrap().MakeHandleOwner<ExecutionEngine, ЛЛДвижокВыполнения>().AssociateWithModule(module);
+			this.экземпл = экз ;
         }
         
-        public static ExecutionEngine CreateInterpreter(Module module)
+        this(ЛЛДвижокВыполнения дв)
         {
-            if (LLVM.CreateInterpreterForModule(out ЛЛДвижокВыполнения instance, module.Unwrap(), out IntPtr error).Failed())
-            {
-                TextUtilities.Throw(error);
-            }
-
-            return instance.Wrap().MakeHandleOwner<ExecutionEngine, ЛЛДвижокВыполнения>().AssociateWithModule(module);
+            this.экземпл = дв;
         }
 
-        public static ExecutionEngine CreateJITCompiler(Module m, uint optLevel)
+        ~this()
         {
-            if (LLVM.CreateJITCompilerForModule(out ЛЛДвижокВыполнения instance, m.Unwrap(), optLevel, out IntPtr error).Failed())
-            {
-                TextUtilities.Throw(error);
-            }
-
-            return instance.Wrap().MakeHandleOwner<ExecutionEngine, ЛЛДвижокВыполнения>().AssociateWithModule(m);
+            ЛЛВыместиДвижВып(this.раскрой());
         }
 
-        public static ExecutionEngine CreateMCJITCompilerForModule(Module module) { CreateMCJITCompiler(module, new size_t(new IntPtr(Marshal.SizeOf(typeof(LLVMMCJITCompilerOptions)))));
+        public ЛЛДвижокВыполнения раскрой(){return this.экземпл;}
 
-        public unsafe static ExecutionEngine CreateMCJITCompiler(Module module, int optionsSize)
+        public проц выполниСтатКонструкторы() 
+		{
+			ЛЛВыполниСтатичКонструкторы(this.раскрой());
+
+		}
+        public проц выполниСтатДеструкторы() 
+		{ 
+			ЛЛВыполниСтатичДеструкторы(this.раскрой());
+		}
+
+        public ГенерноеЗначение выполни(Функция ф, ГенерноеЗначение[] арги)
+		{
+            //ЛЛГенерноеЗначение
+			return new ГенерноеЗначение(ЛЛВыполниФункц(this.раскрой(), ф.раскрой(), арги.раскрой()));
+		}
+
+        public цел выполниКакГлавную(Функция ф, бцел argC, ткст[] argV, ткст[] envP)
+		{
+			return ЛЛВыполниФункцКакГлавную(this.раскрой(), ф.раскрой(), argC, argV, envP);
+		}
+
+        public цел выполниКакГлавную(Функция ф, ткст[] argV)
+		{
+			return выполниКакГлавную(ф, cast(бцел)argV.length, argV, new ткст[0]); 
+		}
+
+        public проц освободиМашКод(Функция ф) 
+		{
+			ЛЛОсвободиМашКодДляФункции(this.раскрой(), ф.раскрой());
+		}
+
+        public проц добавьМодуль(Модуль м)
         {
-            LLVMMCJITCompilerOptions options;
-            var size = new size_t(new IntPtr(optionsSize));
-            LLVM.InitializeMCJITCompilerOptions(&options, size);
-            if (LLVM.CreateMCJITCompilerForModule(out ЛЛДвижокВыполнения instance, module.Unwrap(), &options, size, out IntPtr error).Failed())
-            {
-                TextUtilities.Throw(error);
-            }
-
-            return instance.Wrap().MakeHandleOwner<ExecutionEngine, ЛЛДвижокВыполнения>().AssociateWithModule(module);
+            ЛЛДобавьМодуль(this.раскрой(), м.раскрой());
+           // this.AssociateWithModule(м);
         }
 
-        internal ExecutionEngine(ЛЛДвижокВыполнения ee)
+        public Модуль удалиМодуль(Модуль м)
         {
-            this._instance = ee;
+            ЛЛМодуль outModRef;
+            ткст0 ош;
+
+            ЛЛУдалиМодуль(this.раскрой(), м.раскрой(), &outModRef, &ош);
+            //this.DisassosicateWithModule(m);
+            return new Модуль(outModRef);
         }
 
-        ~ExecutionEngine()
+        public Функция FindFunction(string имя) 
+		{
+			LLVM.FindFunction(this.раскрой(), имя, out ЛЛЗначение outFnValueRef) ? null : outFnValueRef.WrapAs!(Функция)();
+		}
+
+        public ук RecompileAndRelinkFunction(Значение fn)
+		{ 
+			LLVM.RecompileAndRelinkFunction(this.раскрой(), fn.раскрой());
+		}
+
+        public TargetData TargetData
+		{
+			LLVM.GetExecutionEngineTargetData(this.раскрой()).Wrap();
+		}
+
+        public TargetMachine TargetMachine
+		{
+			LLVM.GetExecutionEngineTargetMachine(this.раскрой()).Wrap();
+		}
+
+        public void AddGlobalMapping(Значение global, ук addr)
+		{ 
+			LLVM.AddGlobalMapping(this.раскрой(), global.раскрой(), addr);
+		}
+
+        public ук GetPointerToGlobal(ГлобЗначение global)
+		{
+			LLVM.GetPointerToGlobal(this.раскрой(), global.раскрой());
+		}
+
+        public ulong GetGlobalValueAddress(string имя)
+		{
+			LLVM.GetGlobalValueAddress(this.раскрой(), имя);
+		}
+
+        public ulong GetFunctionAddress(string имя)
+		{ 
+			LLVM.GetFunctionAddress(this.раскрой(), имя);
+		}
+
+        public TDelegate GetDelegate<TDelegate)(Функция function)
         {
-            this.Dispose(false);
-        }
-
-        public void RunStaticConstructors() { LLVM.RunStaticConstructors(this.Unwrap());
-        public void RunStaticDestructors() { LLVM.RunStaticDestructors(this.Unwrap());
-
-        public GenericValue Run(Function f, params GenericValue[] args) { LLVM.RunFunction(this.Unwrap(), f.Unwrap(), args.Unwrap()).Wrap();
-        public int RunAsMain(Function f, uint argC, string[] argV, string[] envP) { LLVM.RunFunctionAsMain(this.Unwrap(), f.Unwrap(), argC, argV, envP);
-        public int RunAsMain(Function f, params string[] argV) { this.RunAsMain(f, (uint)argV.Length, argV, new string[0]); 
-        public void FreeMachineCode(Function f) { LLVM.FreeMachineCodeForFunction(this.Unwrap(), f.Unwrap());
-
-        public void AddModule(Module m)
-        {
-            LLVM.AddModule(this.Unwrap(), m.Unwrap());
-            this.AssociateWithModule(m);
-        }
-
-        public Module RemoveModule(Module m)
-        {
-            LLVM.RemoveModule(this.Unwrap(), m.Unwrap(), out LLVMModuleRef outModRef, out IntPtr outError);
-            this.DisassosicateWithModule(m);
-            return outModRef.Wrap();
-        }
-
-        public Function FindFunction(string name) { LLVM.FindFunction(this.Unwrap(), name, out LLVMValueRef outFnValueRef) ? null : outFnValueRef.WrapAs<Function>();
-
-        public IntPtr RecompileAndRelinkFunction(Value fn) { LLVM.RecompileAndRelinkFunction(this.Unwrap(), fn.Unwrap());
-
-        public TargetData TargetData { LLVM.GetExecutionEngineTargetData(this.Unwrap()).Wrap();
-        public TargetMachine TargetMachine { LLVM.GetExecutionEngineTargetMachine(this.Unwrap()).Wrap();
-
-        public void AddGlobalMapping(Value global, IntPtr addr) { LLVM.AddGlobalMapping(this.Unwrap(), global.Unwrap(), addr);
-
-        public IntPtr GetPointerToGlobal(GlobalValue global) { LLVM.GetPointerToGlobal(this.Unwrap(), global.Unwrap());
-        public ulong GetGlobalValueAddress(string name) { LLVM.GetGlobalValueAddress(this.Unwrap(), name);
-        public ulong GetFunctionAddress(string name) { LLVM.GetFunctionAddress(this.Unwrap(), name);
-
-        public TDelegate GetDelegate<TDelegate>(Function function)
-        {
-            var functionPtr = this.GetPointerToGlobal(function);
+            auto functionPtr = this.GetPointerToGlobal(function);
             return (TDelegate)(object)Marshal.GetDelegateForFunctionPointer(functionPtr, typeof(TDelegate));
         }
 
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+        public override int GetHashCode() 
+		{ 
+			this.экземпл.GetHashCode();
+		}
+        public override bool Equals(object obj) 
+		{
+			this.Equals(obj as ExecutionEngine);
+		}
 
-        private void Dispose(bool disposing)
-        {
-            if (this._disposed)
-            {
-                return;
-            }
+        public bool Equals(ExecutionEngine other)
+		{
+			ReferenceEquals(other, null) ? false : this.экземпл == other.экземпл;
+		}
 
-            if (this._owner)
-            {
-                foreach(var m in GetAssociatedModules())
-                {
-                    this.RemoveModule(m);
-                }
-                LLVM.DisposeExecutionEngine(this.Unwrap());
-            }
+        public static bool operator ==(ExecutionEngine op1, ExecutionEngine op2)
+		{
+			ReferenceEquals(op1, null) ? ReferenceEquals(op2, null) : op1.Equals(op2);
+		}
 
-            this._disposed = true;
-        }
+        public static bool operator !=(ExecutionEngine op1, ExecutionEngine op2) 
+		{ 
+			!(op1 == op2);
+		}
 
-        public override int GetHashCode() { this._instance.GetHashCode();
-        public override bool Equals(object obj) { this.Equals(obj as ExecutionEngine);
-        public bool Equals(ExecutionEngine other) { ReferenceEquals(other, null) ? false : this._instance == other._instance;
-        public static bool operator ==(ExecutionEngine op1, ExecutionEngine op2) { ReferenceEquals(op1, null) ? ReferenceEquals(op2, null) : op1.Equals(op2);
-        public static bool operator !=(ExecutionEngine op1, ExecutionEngine op2) { !(op1 == op2);
+    }
+}
+/////////////////////
+class Интерпретатор: ДвигВып
+{
+   this(Модуль модуль)
+{
+	ЛЛДвижокВыполнения экзэмпл;
+	ткст0 ош;
+	if (!ЛЛСоздайИнтерпретаторДляМодуля(&экзэмпл, модуль.раскрой(), &ош))
+	{
+		throw new Искл(вТкст(ош));
+	}
 
+	super(экзэмпл);
+}
+
+}
+
+class ДжИТКомпилятор: ДвигВып
+{
+	this(Модуль модуль, бцел уровеньОпц)
+	{
+		ЛЛДвижокВыполнения экзэмпл;
+		ткст0 ош;
+
+		if (!ЛЛСоздайДжИТКомпиляторДляМодуля(&экзэмпл, модуль.раскрой(), уровеньОпц, &ош))
+		{
+			throw new Искл(вТкст(ош));
+		}
+
+		super(экзэмпл);
+	}
+
+}
+
+class МЦДжИТКомпилятор: ДвигВып
+{
+    this(Модуль модуль)
+    { 
+        //ЛЛОпцииКомпиляцииМЦДжИТ опции;
+	    this(модуль, бцел.init);
+    }
+
+    this(Модуль модуль,ЛЛОпцииКомпиляцииМЦДжИТ опции)
+    {
+	    ЛЛДвижокВыполнения экзэмпл;
+	    ткст0 ош;	
+	    ЛЛИнициализуйОпцииМЦДжИТКомпилятора(&опции, cast(т_мера) опции.size);
+	    if (!ЛЛСоздайМЦДжИТКомпиляторДляМодуля(&экзэмпл, модуль.раскрой(), &опции,  cast(т_мера) опции.size, &ош))
+	    {
+		    throw new Искл(вТкст(ош));
+	    }
+
+	    super(экзэмпл);
     }
 }

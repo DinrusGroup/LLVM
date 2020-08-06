@@ -1,50 +1,43 @@
-﻿module ll.api.SymbolIterator;
+module ll.api.SymbolIterator;
 
+import ll.c.Types, ll.c.Object, ll.common;
 
-    public class SymbolIterator : IDisposableWrapper<LLVMSymbolIteratorRef>, IDisposable
+    public class СимвИтератор
     {
-        LLVMSymbolIteratorRef IWrapper!(LLVMSymbolIteratorRef>.ToHandleType { this._instance;
-        void IDisposableWrapper<LLVMSymbolIteratorRef>.MakeHandleOwner() { this._owner = true;
+        private ЛЛСимвИтератор экземпл;
 
-        private readonly LLVMSymbolIteratorRef _instance;
-        private bool _disposed;
-        private bool _owner;
-
-        internal SymbolIterator(LLVMSymbolIteratorRef instance)
+        this(ЛЛСимвИтератор экзэмпл)
         {
-            this._instance = instance;
+            this.экземпл = экзэмпл;
         }
 
-        ~SymbolIterator()
+        ~this()
         {
-            this.Dispose(false);
+            ЛЛВыместиСимвИтератор(this.раскрой());
         }
 
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
 
-        private void Dispose(bool disposing)
-        {
-            if (this._disposed)
-            {
-                return;
-            }
+        public ЛЛСимвИтератор раскрой(){return this.экземпл;}
 
-            if (this._owner)
-            {
-                LLVM.DisposeSymbolIterator(this.Unwrap());
-            }
 
-            this._disposed = true;
-        }
+        public проц перейдиКСледщСимв()
+		{
+			ЛЛПереместисьКСледщСимволу(this.раскрой());
+		}
 
-        public void MoveToNextSymbol() { LLVM.MoveToNextSymbol(this.Unwrap());
+        public ткст имяСимвола()
+		{
+			return вТкст(ЛЛДайИмяСимвола(this.раскрой()));
+		}
 
-        public string SymbolName { LLVM.GetSymbolName(this.Unwrap());
-        public int SymbolAddress { (int)LLVM.GetSymbolAddress(this.Unwrap());
-        public int SymbolSize { (int)LLVM.GetSymbolSize(this.Unwrap());
+        public цел адресСимвола()
+		{
+			return cast(цел)ЛЛДайАдресСимвола(this.раскрой());
+		}
+
+        public цел размерСимвола ()
+		{ 
+			return cast(цел)ЛЛДайРазмСимвола(this.раскрой());
+		}
     }
 

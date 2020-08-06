@@ -15,7 +15,7 @@
 |*   [u]цел(32|64)_t : typedefs for signed и бцел 32/64 bit система типы*|
 |*   [U]INT(8|16|32|64)_(MIN|MAX) : Constants for the min и max values.     *|
 |*                                                                            *|
-|* No library is required when using these functions.                         *|
+|* No library is required when import these functions.                         *|
 |*                                                                            *|
 |*===----------------------------------------------------------------------===*/
 
@@ -25,7 +25,7 @@ import cidrus: ДВОБЕСК;
 //version(_WIN64)
 //alias signed __int64 sт_мера;
 //else
-alias бцел sт_мера;
+alias бцел ssize_t;
 alias int64_t off_t;
 
 /* Set defaults for constants which we cannot найди. */

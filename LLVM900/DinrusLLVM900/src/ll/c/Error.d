@@ -29,7 +29,7 @@ alias LLVMOpaqueError *ЛЛОшибка;
 alias ук ЛЛИдТипаОшибки;
 
 /**
- * Возвращает the тип ид for the given ошибка instance, which must be a failure
+ * Возвращает the тип ид for the given ошибка экзэмпл, which must be a failure
  * знач (i.e. non-пусто).
  */
 ЛЛИдТипаОшибки ЛЛДайИдТипаОшибки(ЛЛОшибка ош);

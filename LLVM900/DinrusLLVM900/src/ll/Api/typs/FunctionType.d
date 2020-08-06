@@ -1,26 +1,81 @@
-﻿namespace LLVMSharp.API.Types
-{
-    using Type = API.Type;
+module ll.api.typs.FunctionType;
 
-    public sealed class FunctionType : Type
+import ll.api.Type;
+import ll.c.Types;
+import ll.c.Core;
+import ll.common;
+
+    public class ТипФункция : Тип
     {
-        public static FunctionType Create(Type returnType) => Create(returnType, false);
-        public static FunctionType Create(Type returnType, bool isVarArg) => Create(returnType, new Type[0], isVarArg);
-        public static FunctionType Create(Type returnType, params Type[] parameterTypes) => Create(returnType, parameterTypes, false);
-        public static FunctionType Create(Type returnType, Type[] parameterTypes, bool isVarArg) => LLVM.FunctionType(returnType.Unwrap(), parameterTypes.Unwrap(), isVarArg ? new LLVMBool(1) : new LLVMBool(0)).WrapAs<FunctionType>();
+        public this(Тип типВозврат)
+		{
+			this(типВозврат, false);
+		}
 
-        internal FunctionType(LLVMTypeRef typeRef)
-            : base(typeRef)
-        {
+        public this(Тип типВозврат, бул варАрг_ли)
+		{
+			this(типВозврат, new Тип[0], варАрг_ли);
+		}
+
+        public this(Тип типВозврат, Тип[] типыПарамов)
+		{
+			this(типВозврат, типыПарамов, false);
+		}
+
+        public this(Тип типВозврат, Тип[] типыПарамов, бул варАрг_ли)
+		{ 
+			this(ЛЛТипФункция(типВозврат.раскрой(), типыПарамов.раскрой(), варАрг_ли ? 1 : 0));
+		}
+
+		private ЛЛТип экзэмпл;
+
+        this(ЛЛТип экзэмпл)
+		{
+            super(экзэмпл);
+			this.экзэмпл = экзэмпл;
+			
         }
 
-        public override string Name => $"{ReturnType} ({string.Join<Type>(", ", ParamTypes)})";
-        public override bool IsFirstClassType => false;
+        public override ЛЛТип раскрой()
+		{
+            return this.экзэмпл;
+		}
 
-        public Type ReturnType => Create(LLVM.GetReturnType(this.Unwrap()));
-        public uint NumParams => LLVM.CountParamTypes(this.Unwrap());
-        public Type GetParamType(uint index) => Create(LLVM.GetParamTypes(this.Unwrap())[index]);
-        public Type[] ParamTypes => LLVM.GetParamTypes(this.Unwrap()).Wrap<LLVMTypeRef, Type>();
-        public bool IsVarArg => LLVM.IsFunctionVarArg(this.Unwrap());
+        public override ткст имя()
+		{
+			//needs formating!
+			return фм("{} ({string.Join!(Тип)(", ", типыПарам)})", типВозврата );
+		}
+
+        public override бул типПервКласса_ли()
+		{
+			return false;
+		}
+
+        public Тип типВозврата()
+		{
+			return new Тип(ЛЛДайТипВозврата(this.раскрой()));
+		}
+
+        public бцел члоПарамов()
+		{
+			return ЛЛСчётТиповПарам(this.раскрой());
+		}
+
+        public Тип дайТипПарама(бцел индекс)
+		{
+			return new Тип(ЛЛДайТипыПарам(this.раскрой())[индекс]);
+		}
+
+        public Тип[] типыПарам()
+		{
+			Тип[] рез;
+			ЛЛДайТипыПарам(this.раскрой(), cast(ЛЛТип*) &рез);
+			return рез;
+		}
+
+        public бул варАрг_ли ()
+		{
+			return ЛЛВараргФункц_ли(this.раскрой());
+		}
     }
-}

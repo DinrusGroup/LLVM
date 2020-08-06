@@ -1,10 +1,22 @@
-﻿namespace LLVMSharp.API.Types
-{
-    public sealed class TokenType : Type
+module ll.api.typs.TokenType;
+
+import ll.api.Type;
+import ll.c.Types;
+
+    public  class ТипСема : Тип
     {
-        internal TokenType(LLVMTypeRef typeRef)
-            : base(typeRef)
-        {
+		private ЛЛТип экзэмпл;
+
+        this(ЛЛТип экзэмпл)
+		{
+            super(экзэмпл);
+			this.экзэмпл = экзэмпл;
+			
         }
+
+        public override ЛЛТип раскрой()
+		{
+            return this.экзэмпл;
+		}
     }
-}
+

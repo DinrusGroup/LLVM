@@ -4,7 +4,7 @@ import ll.c.DataTypes;
 
 
 /**
- * An opaque reference to a disassembler context.
+ * An opaque reference to a disassembler контекст.
  */
 alias ук ЛЛКонтекстДизасма;
 
@@ -12,7 +12,7 @@ alias ук ЛЛКонтекстДизасма;
  * The тип for the operand information вызов back function.  Сам is called to
  * get the symbolic information for an operand of an instruction.  Typically
  * this is from the relocation information, symbol таблица, etc.  That блок of
- * information is saved when the disassembler context is created и passed to
+ * information is saved when the disassembler контекст is created и passed to
  * the вызов back in the DisInfo параметр.  The instruction containing operand
  * is эт the PC параметр.  For some instruction sets, there can be more than
  * один operand with symbolic information.  To determine the symbolic operand
@@ -40,7 +40,7 @@ alias цел function(ук инфОДиз, бдол ПК,
  * The ЛЛОбрвызОпИнфо() for the TagType знач of 1 uses the struct
  * LLVMOpInfo1.  The знач of the relocatable Выражение for the operand,
  * including any PC adjustment, is passed in to the вызов back in the знач
- * поле.  The symbolic information about the operand is returned using все
+ * поле.  The symbolic information about the operand is returned import все
  * the поля of the structure with the Offset of the relocatable Выражение
  * returned in the знач поле.  It is possible that some symbols in the
  * relocatable Выражение were assembly temporary symbols, for example
@@ -52,7 +52,7 @@ alias цел function(ук инфОДиз, бдол ПК,
 struct LLVMOpInfoSymbol1
 {
   бдол Present;  /* 1 if this symbol is present */
-  ткст0 Name;  /* symbol имя if не NULL */
+  ткст0 имя;  /* symbol имя if не NULL */
   бдол знач;    /* symbol знач if имя is NULL */
 };
 
@@ -89,7 +89,7 @@ const LLVMDisassembler_VariantKind_ARM64_TLVOFF    = 6; /* @tvlppageoff */
  * The тип for the symbol сыщи function.  Сам may be called by the
  * disassembler for things like adding a коммент for a PC plus a constant
  * смещение load instruction to use a symbol имя instead of a load адрес знач.
- * It is passed the блок information is saved when the disassembler context is
+ * It is passed the блок information is saved when the disassembler контекст is
  * created и the ReferenceValue to look up as a symbol.  If Нет symbol is found
  * for the ReferenceValue NULL is returned.  The ReferenceType of the
  * instruction is passed indirectly as is the PC of the instruction in

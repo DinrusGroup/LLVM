@@ -42,14 +42,14 @@ extern (C) {
     /**
      * Получить Comdat, присвоенный данному глобальному объекту.
      *
-     * @see llvm::GlobalObject::getComdat()
+     * @see llvm::ГлобОбъект::getComdat()
      */
     ЛЛКомдат ЛЛДайКомдат(ЛЛЗначение зн);
 
     /**
      * Присвоить Comdat данному глобальному объекту.
      *
-     * @see llvm::GlobalObject::setComdat()
+     * @see llvm::ГлобОбъект::setComdat()
      */
     проц ЛЛУстКомдат(ЛЛЗначение зн, ЛЛКомдат конст);
 

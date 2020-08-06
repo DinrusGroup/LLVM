@@ -20,41 +20,78 @@ struct LLVMOpaqueTargetData;
 struct LLVMOpaqueTargetLibraryInfotData;
 alias LLVMOpaqueTargetData *ЛЛДанныеОЦели;
 alias LLVMOpaqueTargetLibraryInfotData *ЛЛИнфоЦелевойБиблиотеки;
-/+
 
-/* Declare все of the цель-инициализация functions that are доступно. */
-#определи LLVM_TARGET(TargetName) \
-  проц LLVMInitialize##TargetName##TargetInfo();
-#вклодь "llvm/Config/Targets.def"
-#undef LLVM_TARGET  /* Explicit undef to make SWIG happier */
 
-#определи LLVM_TARGET(TargetName) проц LLVMInitialize##TargetName##Target();
-#вклодь "llvm/Config/Targets.def"
-#undef LLVM_TARGET  /* Explicit undef to make SWIG happier */
+ void LLInitializeAArch64Target() ;
+ void LLInitializeAArch64TargetInfo() ;
+ void LLInitializeAArch64TargetMC() ;
+ void LLInitializeAArch64AsmPrinter() ;
+ void LLInitializeAArch64AsmParser();
+ void LLInitializeAArch64Disassembler();
 
-#определи LLVM_TARGET(TargetName) \
-  проц LLVMInitialize##TargetName##TargetMC();
-#вклодь "llvm/Config/Targets.def"
-#undef LLVM_TARGET  /* Explicit undef to make SWIG happier */
+ void LLInitializeARMTarget();
+ void LLInitializeARMTargetInfo();
+ void LLInitializeARMTargetMC() ;
+ void LLInitializeARMAsmPrinter();
+ void LLInitializeARMAsmParser() ;
+ void LLInitializeARMDisassembler() ;
 
-/* Declare все of the доступно assembly printer инициализация functions. */
-#определи LLVM_ASM_PRINTER(TargetName) \
-  проц LLVMInitialize##TargetName##AsmPrinter();
-#вклодь "llvm/Config/AsmPrinters.def"
-#undef LLVM_ASM_PRINTER  /* Explicit undef to make SWIG happier */
+ void LLInitializeHexagonTarget() ;
+ void LLInitializeHexagonTargetInfo() ;
+ void LLInitializeHexagonTargetMC() ;
+ void LLInitializeHexagonAsmPrinter();
 
-/* Declare все of the доступно assembly parser инициализация functions. */
-#определи LLVM_ASM_PARSER(TargetName) \
-  проц LLVMInitialize##TargetName##AsmParser();
-#вклодь "llvm/Config/AsmParsers.def"
-#undef LLVM_ASM_PARSER  /* Explicit undef to make SWIG happier */
+ void LLInitializeMipsTarget() ;
+ void LLInitializeMipsTargetInfo() ;
+ void LLInitializeMipsTargetMC() ;
+ void LLInitializeMipsAsmPrinter();
+ void LLInitializeMipsAsmParser() ;
+ void LLInitializeMipsDisassembler() ;
 
-/* Declare все of the доступно disassembler инициализация functions. */
-#определи LLVM_DISASSEMBLER(TargetName) \
-  проц LLVMInitialize##TargetName##Disassembler();
-#вклодь "llvm/Config/Disassemblers.def"
-#undef LLVM_DISASSEMBLER  /* Explicit undef to make SWIG happier */
-+/
+ void LLInitializeMSP430Target() ;
+ void LLInitializeMSP430TargetInfo();
+ void LLInitializeMSP430TargetMC() ;
+ void LLInitializeMSP430AsmPrinter() ;
+
+ void LLInitializeNVPTXTarget();
+ void LLInitializeNVPTXTargetInfo() ;
+ void LLInitializeNVPTXTargetMC() ;
+ void LLInitializeNVPTXAsmPrinter();
+
+ void LLInitializePowerPCTarget() ;
+ void LLInitializePowerPCTargetInfo() ;
+ void LLInitializePowerPCTargetMC() ;
+ void LLInitializePowerPCAsmPrinter() ;
+ void LLInitializePowerPCAsmParser() ;
+ void LLInitializePowerPCDisassembler() ;
+
+ void LLInitializeSparcTarget() ;
+ void LLInitializeSparcTargetInfo();
+ void LLInitializeSparcTargetMC() ;
+ void LLInitializeSparcAsmPrinter() ;
+ void LLInitializeSparcAsmParser();
+ void LLInitializeSparcDisassembler() ;
+
+ void LLInitializeSystemZTarget() ;
+ void LLInitializeSystemZTargetInfo() ;
+ void LLInitializeSystemZTargetMC() ;
+ void LLInitializeSystemZAsmPrinter();
+ void LLInitializeSystemZAsmParser() ;
+ void LLInitializeSystemZDisassembler();
+
+ void LLInitializeX86Target();
+ void LLInitializeX86TargetInfo() ;
+ void LLInitializeX86TargetMC() ;
+ void LLInitializeX86AsmPrinter() ;
+ void LLInitializeX86AsmParser() ;
+ void LLInitializeX86Disassembler() ;
+
+ void LLInitializeXCoreTarget() ;
+ void LLInitializeXCoreTargetInfo();
+ void LLInitializeXCoreTargetMC();
+ void LLInitializeXCoreAsmPrinter() ;
+ void LLInitializeXCoreDisassembler();
+
 /** LLVMInitializeAllTargetInfos - The main program should вызов this function if
     it wants access to все доступно targets that LLVM is configured to
     support. */

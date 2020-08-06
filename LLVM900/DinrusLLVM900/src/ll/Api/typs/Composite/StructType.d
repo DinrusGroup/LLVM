@@ -1,78 +1,182 @@
-﻿namespace LLVMSharp.API.Types.Composite
-{
-    using System;
-    using System.Collections.Generic;
-    using Type = LLVMSharp.API.Type;
-    using System.Collections;
-    using System.Linq;
+module ll.api.typs.Composite.StructType;
 
-    public sealed class StructType : CompositeType, IEnumerable<Type>, IAggregateType
+import ll.api.typs.Composite.CompositeType;
+import ll.api.typs.IAggregateType;
+import ll.api.typs.VoidType;
+import ll.api.typs.LabelType;
+import ll.api.typs.MetadataType;
+import ll.api.typs.FunctionType;
+import ll.api.typs.TokenType;
+import ll.api.Type;
+import ll.api.Context;
+import ll.c.Types;
+import ll.c.Core;
+
+
+    public class ТипСтрукт : ТипКомпозит, ИТипАгрегат
     {
-        public static StructType Create(Context context, string name) => LLVM.StructCreateNamed(context.Unwrap(), name).WrapAs<StructType>();
-        public static StructType Create(Context context) => LLVM.StructTypeInContext(context.Unwrap(), new LLVMTypeRef[0], false).WrapAs<StructType>();
+        public static ТипСтрукт создай(Контекст контекст, ткст имя)
+		{
+			return ЛЛСтруктСоздайСИменем(контекст.раскрой(), имя);
+		}
 
-        public static StructType Create(Type[] elementTypes, string name, bool packed)
+        public static ТипСтрукт создай(Контекст контекст) 
+		{
+			return ЛЛТипСтруктВКонтексте(контекст.раскрой(), new ЛЛТип[0], false);
+		}
+
+        public static ТипСтрукт создай(Тип[] типыЭлтов, ткст имя, бул упакован)
         {
-            var t = LLVM.StructCreateNamed(Context.Global.Unwrap(), name).WrapAs<StructType>();
-            t.SetBody(elementTypes, packed);
+            auto t = ЛЛСтруктСоздайСИменем(Контекст.Global.раскрой(), имя);
+            t.SetBody(типыЭлтов, упакован);
             return t;
         }
 
-        public static StructType Create(Type[] elementTypes, string name) => Create(elementTypes, name, false);
-        public static StructType Create(Type[] elementTypes, bool packed) => LLVM.StructType(elementTypes.Unwrap(), packed).WrapAs<StructType>();
+        public static ТипСтрукт создай(Тип[] типыЭлтов, ткст имя)
+		{
+			создай(типыЭлтов, имя, false);
+		}
 
-        public static StructType Create(Context context, Type[] elementTypes, string name, bool packed)
+        public static ТипСтрукт создай(Тип[] типыЭлтов, бул упакован) 
+		{
+			return ЛЛТипСтрукт(типыЭлтов.раскрой(), упакован);
+		}
+
+        public static ТипСтрукт создай(Контекст контекст, Тип[] типыЭлтов, ткст имя, бул упакован)
         {
-            var t = Create(context, name);
-            t.SetBody(elementTypes, packed);
+            auto t = создай(контекст, имя);
+            t.SetBody(типыЭлтов, упакован);
             return t;
         }
 
-        public static StructType Get(Context context, Type[] elementTypes, bool packed) => throw new NotImplementedException();
-        public static StructType Get(Context context) => LLVM.StructTypeInContext(context.Unwrap(), new LLVMTypeRef[0], false).WrapAs<StructType>();
-        public static StructType Get(params Type[] elementTypes) => Create(elementTypes, false);
-        public static StructType Get(string name, params Type[] elementTypes) => Create(elementTypes, name);
+        public static ТипСтрукт дай(Контекст контекст, Тип[] типыЭлтов, бул упакован)
+		{ 
+			throw new NotImplementedException();
+		}
 
-        public static bool IsValidElementType(Type type)
+        public static ТипСтрукт дай(Контекст контекст)
+		{
+			return ЛЛТипСтруктВКонтексте(контекст.раскрой(), new ЛЛТип[0], false);
+		}
+
+        public static ТипСтрукт дай(Тип[] типыЭлтов) 
+		{
+			return создай(типыЭлтов, false);
+		}
+
+        public static ТипСтрукт дай(ткст имя, Тип[] типыЭлтов)
+		{ 
+			return создай(типыЭлтов, имя);
+		}
+
+        public static бул валиденТипЭлта_ли(Тип тип)
         {
-            return !(type is VoidType) && !(type is LabelType) &&
-                   !(type is MetadataType) && !(type is FunctionType) &&
-                   !(type is TokenType);
+            return !(тип is ТипПроц) && !(тип is ТипЯрлык) &&
+                   !(тип is ТипМетаданные) && !(тип is ТипФункц) &&
+                   !(тип is TokenТип);
         }
 
-        internal StructType(LLVMTypeRef typeRef) 
-            : base(typeRef)
-        {
+		private ЛЛТип экзэмпл;
+
+        this(ЛЛТип экзэмпл)
+		{
+            super(экзэмпл);
+			this.экзэмпл = экзэмпл;
+			
         }
 
-        public uint Length => LLVM.CountStructElementTypes(this.Unwrap());
-        public Type GetElementType(uint index) => LLVM.GetStructElementTypes(this.Unwrap())[index].Wrap();
-        public IReadOnlyList<Type> ElementTypes => LLVM.GetStructElementTypes(this.Unwrap()).Wrap<LLVMTypeRef, Type>();
+        public override ЛЛТип раскрой()
+		{
+            return this.экзэмпл;
+		}
 
-        public bool HasName => string.IsNullOrEmpty(this.Name);
-        public override string Name => LLVM.GetStructName(this.Unwrap());
+        public uint длина()
+		{
+			return ЛЛПосчитайТипыЭлементовСтрукт(this.раскрой());
+		}
 
-        public bool IsPacked
+        public Тип дайТипЭлта(uint индекс)
+		{
+			return ЛЛДайТипыЭлементовСтрукт(this.раскрой())[индекс];
+		}
+
+        public IReadOnlyList!(Тип) ElementТипs()
+		{
+			ЛЛДайТипыЭлементовСтрукт(this.раскрой()).Wrap!(LLVMТипRef, Тип)();
+		}
+
+        public бул естьИмя()
+		{
+			return ткст.IsNullOrEmpty(this.имя);
+		}
+
+        public override ткст имя()
+		{
+			return ЛЛДайИмяСтрукт(this.раскрой());
+		}
+
+        public бул упакован_ли()
         {
-            get => LLVM.IsPackedStruct(this.Unwrap());
-            set => this.SetBody((Type[])this.ElementTypes, value);
+            return ЛЛУпакованнаяСтруктура_ли(this.раскрой());
+          //  set { this.SetBody((Тип[])this.ElementТипs, значение);
         }
-        public bool IsOpaque => LLVM.IsOpaqueStruct(this.Unwrap());
-        public bool IsLiteral => throw new NotImplementedException();
 
-        public void SetBody(params Type[] elementTypes) => this.SetBody(elementTypes, false);
-        public void SetBody(Type[] elementTypes, bool packed) => LLVM.StructSetBody(this.Unwrap(), elementTypes.Unwrap(), new LLVMBool(packed));
+        public бул опак_ли()
+		{
+			return ЛЛОпакСтрукт_ли(this.раскрой());
+		}
 
-        public bool IsLayoutIdentical(StructType other) => throw new NotImplementedException();
+        public бул литерал_ли()
+		{
+			throw new NotImplementedException();
+		}
 
-        public override string ToString() => $"{string.Join(", ", ElementTypes)}";
+        public void устТело(Тип[] типыЭлтов)
+		{
+			this.SetBody(типыЭлтов, false);
+		}
 
-        public override bool IsIndexValid(uint index) => index < this.Length;
-        public override Type GetTypeAtIndex(uint index) => LLVM.GetStructElementTypes(this.Unwrap())[index].Wrap();
+        public void устТело(Тип[] типыЭлтов, бул упакован)
+		{ 
+			ЛЛСтруктУстТело(this.раскрой(), типыЭлтов.раскрой(), new LLVMBool(упакован));
+		}
 
-        public override bool IsEmpty => this.ElementTypes.Any(x => !x.IsEmpty);
+        public бул IsLayoutIdentical(ТипСтрукт other)
+		{ 
+			throw new NotImplementedException();
+		}
 
-        public IEnumerator<Type> GetEnumerator() => this.ElementTypes.GetEnumerator();
-        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
+        public override ткст вТкст() 
+		{ 
+			return $"{ткст.Join(", ", типыЭлтов)}";
+		}
+
+        public override бул валиденИндекс_ли(uint индекс) 
+		{
+			return индекс < this.длина;
+		}
+
+        public override Тип дайТипПоИндексу(uint индекс)
+		{
+		 return	ЛЛДайТипыЭлементовСтрукт(this.раскрой())[индекс];
+		}
+
+        public override бул пуст_ли ()
+			
+		{
+			//this.типыЭлтов.Any(x) { !x.пуст_ли();)
+	    }
+/+
+        public IEnumerator!(Тип) GetEnumerator()
+		{ 
+			this.типыЭлтов.GetEnumerator();
+		}
+
+        IEnumerator IEnumerable.GetEnumerator() 
+		{ 
+			this.GetEnumerator();
+		}
+
+		+/
     }
-}
+

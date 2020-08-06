@@ -1,8 +1,10 @@
-п»їnamespace LLVMSharp.API.Types
-{
-    internal interface IAggregateType
+module ll.api.typs.IAggregateType;
+
+import ll.api.Type;
+
+     interface ИТипАгрегат
     {
-        Type this[uint index] { get; }
-        uint Length { get; }
+      //  Type this[uint индекс] { get; }
+        uint длина();
     }
-}
+

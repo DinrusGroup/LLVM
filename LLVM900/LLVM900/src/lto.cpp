@@ -326,8 +326,8 @@ extern "C"
         return ltocmd::unwrap(mod)->getTargetTriple().c_str();
     }
 
-    LLEXPORT void ЛЛОВКМодуль_УстТриадуЦели(lto_module_t mod, const char* triple) {
-        return ltocmd::unwrap(mod)->setTargetTriple(StringRef(triple));
+    LLEXPORT void ЛЛОВКМодуль_УстТриадуЦели(lto_module_t mod, const char* триада) {
+        return ltocmd::unwrap(mod)->setTargetTriple(StringRef(триада));
     }
 
     LLEXPORT unsigned int ЛЛОВКМодуль_ДайЧлоСимволов(lto_module_t mod) {

@@ -1,58 +1,75 @@
-﻿module ll.api.
-{
-    using System;
-    using Utilities;
+module ll.api.PassManagerBuilder;
 
-    public sealed class PassManagerBuilder : IDisposableWrapper<LLVMPassManagerBuilderRef>, IDisposable
+import ll.c.Core, ll.c.Types, ll.c.PassManagerBuilder;
+import ll.api.PassManager;
+
+//Построитель менеджеров проходок
+    public class ПМП 
     {
-        LLVMPassManagerBuilderRef IWrapper!(LLVMPassManagerBuilderRef>.ToHandleType { this._instance;
-        void IDisposableWrapper<LLVMPassManagerBuilderRef>.MakeHandleOwner() { this._owner = true;
+        public this()
+		{
+			this(ЛЛПМП_Создай());
+		}
 
-        public static PassManagerBuilder Create() { LLVM.PassManagerBuilderCreate().Wrap().MakeHandleOwner<PassManagerBuilder, LLVMPassManagerBuilderRef>();
+        private ЛЛПостроительМенеджеровПроходок экземпл;
 
-        private readonly LLVMPassManagerBuilderRef _instance;
-        private bool _disposed;
-        private bool _owner;
-
-        internal PassManagerBuilder(LLVMPassManagerBuilderRef instance)
+        this(ЛЛПостроительМенеджеровПроходок экзэмпл)
         {
-            this._instance = instance;
+            this.экземпл = экзэмпл;
         }
 
-        ~PassManagerBuilder()
+        ~this()
         {
-            this.Dispose(false);
+            ЛЛПМП_Вымести(this.раскрой());
         }
 
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+		public ЛЛПостроительМенеджеровПроходок раскрой()
+		{
+			return this.экземпл;
+		}
 
-        private void Dispose(bool disposing)
-        {
-            if (this._disposed)
-            {
-                return;
-            }
+        public проц устУровеньОпц(бцел optLevel)
+		{
+			ЛЛПМП_УстановиУровеньОпц(this.раскрой(), optLevel);
+		}
 
-            if (this._owner)
-            {
-                LLVM.PassManagerBuilderDispose(this.Unwrap());
-            }
+        public проц устУровеньРазм(бцел sizeLevel)
+		{
+			ЛЛПМП_УстановиУровеньРазм(this.раскрой(), sizeLevel);
+		}
 
-            this._disposed = true;
-        }
+        public проц устОтклЮнит(бул значение)
+		{ 
+			ЛЛПМП_УстановиОтклЮнитВНВремя(this.раскрой(), значение);
+		}
 
-        public void SetOptLevel(uint optLevel) { LLVM.PassManagerBuilderSetOptLevel(this.Unwrap(), optLevel);
-        public void SetSizeLevel(uint sizeLevel) { LLVM.PassManagerBuilderSetSizeLevel(this.Unwrap(), sizeLevel);
-        public void SetDisableUnitAtATime(bool value) { LLVM.PassManagerBuilderSetDisableUnitAtATime(this.Unwrap(), value);
-        public void SetDisableUnrollLoops(bool value) { LLVM.PassManagerBuilderSetDisableUnrollLoops(this.Unwrap(), value);
-        public void SetDisableSimplifyLibCalls(bool value) { LLVM.PassManagerBuilderSetDisableSimplifyLibCalls(this.Unwrap(), value);
-        public void UseInlinerWithThreshold(uint threshold) { LLVM.PassManagerBuilderUseInlinerWithThreshold(this.Unwrap(), threshold);
-        public void PopulateFunctionPassManager(PassManager pm) { LLVM.PassManagerBuilderPopulateFunctionPassManager(this.Unwrap(), pm.Unwrap());
-        public void PopulateModulePassManager(PassManager pm) { LLVM.PassManagerBuilderPopulateModulePassManager(this.Unwrap(), pm.Unwrap());
-        public void PopulateLTOPassManager(PassManager pm, bool internalize, bool runInliner) { LLVM.PassManagerBuilderPopulateLTOPassManager(this.Unwrap(), pm.Unwrap(), internalize, runInliner);
+        public проц устОтклРазмот(бул значение) 
+		{
+			ЛЛПМП_УстОтклРазмоткуЦиклов(this.раскрой(), значение);
+		}
+
+        public проц устОтклУпрощВызБиб(бул значение)
+		{
+			ЛЛПМП_УстОтклУпроститьВызовБиб(this.раскрой(), значение);
+		}
+
+        public проц испИнлайнер(бцел порог)
+		{
+			ЛЛПМП_ИспользуйИнлайнерСПорогом(this.раскрой(), порог);
+		}
+
+        public проц наполниМПФ(МенеджерПроходок pm)
+		{
+			ЛЛПМП_НаполниМенеджерПроходокФункций(this.раскрой(), pm.раскрой());
+		}
+
+        public проц наполниМПМ(МенеджерПроходок pm) 
+		{
+			ЛЛПМП_НаполниМенеджерПроходокМодулей(this.раскрой(), pm.раскрой());
+		}
+
+        public проц наполниМПОВК(МенеджерПроходок pm, бул internalize, бул runInliner) 
+		{ 
+			ЛЛПМП_НаполниМенеджерПроходокОВК(this.раскрой(), pm.раскрой(), internalize, runInliner);
+		}
     }
-}

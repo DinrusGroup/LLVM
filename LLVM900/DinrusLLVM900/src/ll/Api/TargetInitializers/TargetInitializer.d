@@ -1,6 +1,7 @@
-﻿module ll.c.api.TargetInitializers.TargetInitializer;
+module ll.c.api.TargetInitializers.TargetInitializer;
 
 public{
+ import   ll.c.Target;
 import ll.c.api.TargetInitializers.IAsmParser;
 import ll.c.api.TargetInitializers.ITarget;
 import ll.c.api.TargetInitializers.ITargetInfo;
@@ -12,7 +13,7 @@ import ll.c.api.TargetInitializers.IDisassembler;
     public abstract class TargetInitializer
     {
         this(){}
-
+/+
         public void All()
         {
             if (this is ITarget t)
@@ -36,5 +37,6 @@ import ll.c.api.TargetInitializers.IDisassembler;
                 aprnt.AsmPrinter();
             }
         }
+        +/
     }
 

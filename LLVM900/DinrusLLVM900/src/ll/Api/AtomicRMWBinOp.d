@@ -1,4 +1,4 @@
-﻿module ll.api.AtomicRMWBinOp;
+module ll.api.AtomicRMWBinOp;
 
 public enum AtomicRMWBinOp : int
     {

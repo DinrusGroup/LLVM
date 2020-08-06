@@ -120,7 +120,7 @@
     </Link>
     <PostBuildEvent>
       <Command>$(DINRUS)\implib.exe /system $(OutDir)Dinrus.LLVM900OMF.lib $(OutDir)Dinrus.LLVM900.dll
-copy $(OutDir)Dinrus.LLVM900.dll $(OutDir)..\bin\Dinrus.LLVM900.dll</Command>
+</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

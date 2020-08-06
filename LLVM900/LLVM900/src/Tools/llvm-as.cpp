@@ -37,7 +37,7 @@ static cl::opt<std::string> ВхоИмяФ(cl::Positional,
                                           cl::init("-"));
 
 static cl::opt<std::string> ВыхИмяФ("o",
-                                           cl::desc("Переписать выходное имяф"),
+                                           cl::desc("Переписать выходное filename"),
                                            cl::value_desc("filename"),
                                            cl::cat(АсКат));
 

@@ -10,14 +10,14 @@ alias LLVMOrcOpaqueJITStack *LLVMOrcJITStackRef;
 alias дол LLVMOrcModuleHandle;
 alias дол LLVMOrcTargetAddress;
 
-alias дол function(ткст0 Name, ук LookupCtx)
+alias дол function(ткст0 имя, ук LookupCtx)
 	LLVMOrcSymbolResolverFn;
 
 alias дол function(LLVMOrcJITStackRef JITStack,  ук CallbackCtx)
 	LLVMOrcLazyCompileCallbackFn;
 
 /**
- * Create an ORC JIT stack.
+ * создай an ORC JIT stack.
  *
  * The client owns the результирующий stack, и must вызов OrcDisposeInstance(...)
  * to разрушь it и освободи its memory. The JIT stack will take ownership of the
@@ -28,7 +28,7 @@ alias дол function(LLVMOrcJITStackRef JITStack,  ук CallbackCtx)
 LLVMOrcJITStackRef ЛЛОрк_СоздайЭкземпляр(ЛЛЦелеваяМашина TM);
 
 /**
- * Get the ошибка message for the most recent ошибка (if any).
+ * дай the ошибка message for the most recent ошибка (if any).
  *
  * Сам message is owned by the ORC JIT Stack и will be freed when the stack
  * is disposed of by LLVMOrcDisposeInstance.
@@ -48,14 +48,14 @@ LLVMOrcJITStackRef ЛЛОрк_СоздайЭкземпляр(ЛЛЦелевая�
 проц ЛЛОрк_ВыместиДекорирСимвол(ткст0 MangledSymbol);
 
 /**
- * Create a lazy компилируй callback.
+ * создай a lazy компилируй callback.
  */
 ЛЛОшибка ЛЛОрк_ОбрВызЛенивКомпиляции(
     LLVMOrcJITStackRef JITStack, LLVMOrcTargetAddress *RetAddr,
     LLVMOrcLazyCompileCallbackFn обрвыз, ук CallbackCtx);
 
 /**
- * Create a named indirect вызов stub.
+ * создай a named indirect вызов stub.
  */
 ЛЛОшибка ЛЛОрк_СоздайНепрямСтаб(LLVMOrcJITStackRef JITStack,
                                        ткст0 StubName,
@@ -110,14 +110,14 @@ LLVMOrcJITStackRef ЛЛОрк_СоздайЭкземпляр(ЛЛЦелевая�
                                  LLVMOrcModuleHandle H);
 
 /**
- * Get symbol адрес from JIT instance.
+ * дай symbol адрес from JIT экзэмпл.
  */
 ЛЛОшибка ЛЛОрк_ДайАдресСимвола(LLVMOrcJITStackRef JITStack,
                                      LLVMOrcTargetAddress *RetAddr,
                                      ткст0 SymbolName);
 
 /**
- * Get symbol адрес from JIT instance, searching only the specified
+ * дай symbol адрес from JIT экзэмпл, searching only the specified
  * handle.
  */
 ЛЛОшибка ЛЛОрк_ДайАдресСимволаЭкз(LLVMOrcJITStackRef JITStack,

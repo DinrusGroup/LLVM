@@ -3,7 +3,408 @@
 extern "C"{
 #include "Header.h"
 
+////////////////////////////
+LLEXPORT ЛЛЗначение ЛЛАргумент_ли(ЛЛЗначение v)
+{
+    return LLVMIsAArgument(v);
+}
 
+LLEXPORT ЛЛЗначение ЛЛБазБлок_ли(ЛЛЗначение v)
+{
+    return LLVMIsABasicBlock(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнлайнАсм_ли(ЛЛЗначение v)
+{
+    return LLVMIsAInlineAsm(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛПользователь_ли(ЛЛЗначение v)
+{
+    return LLVMIsAUser(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛКонст_ли(ЛЛЗначение v)
+{
+    return LLVMIsAConstant(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛАдресБлока_ли(ЛЛЗначение v)
+{
+    return LLVMIsABlockAddress(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛКонстАгрегатНоль_ли(ЛЛЗначение v)
+{
+    return LLVMIsAConstantAggregateZero(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛМассивКонстант_ли(ЛЛЗначение v)
+{
+    return LLVMIsAConstantArray(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛКонстПоследовательностьДанных_ли(ЛЛЗначение v)
+{
+    return LLVMIsAConstantDataSequential(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛКонстМассивДанных_ли(ЛЛЗначение v)
+{
+    return LLVMIsAConstantDataArray(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛКонстВекторДанных_ли(ЛЛЗначение v)
+{
+    return LLVMIsAConstantDataVector(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛКонстВыражение_ли(ЛЛЗначение v)
+{
+    return LLVMIsAConstantExpr(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛКонстПЗ_ли(ЛЛЗначение v)
+{
+    return LLVMIsAConstantFP(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛКонстЦел_ли(ЛЛЗначение v)
+{
+    return LLVMIsAConstantInt(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛКонстНуллУказатель_ли(ЛЛЗначение v)
+{
+    return LLVMIsAConstantPointerNull(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛКонстСтрукт_ли(ЛЛЗначение v)
+{
+    return LLVMIsAConstantStruct(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛКонстСемаНичто_ли(ЛЛЗначение v)
+{
+    return LLVMIsAConstantTokenNone(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛКонстВектор_ли(ЛЛЗначение v)
+{
+    return LLVMIsAConstantVector(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛГлобЗначение_ли(ЛЛЗначение v)
+{
+    return LLVMIsAGlobalValue(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛГлобНик_ли(ЛЛЗначение v)
+{
+    return LLVMIsAGlobalAlias(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛГлобИФункц_ли(ЛЛЗначение v)
+{
+    return LLVMIsAGlobalIFunc(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛГлобОбъект_ли(ЛЛЗначение v)
+{
+    return LLVMIsAGlobalObject(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛФункция_ли(ЛЛЗначение v)
+{
+    return LLVMIsAFunction(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛГлобПеременная_ли(ЛЛЗначение v)
+{
+    return LLVMIsAGlobalVariable(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛНеопрЗначение_ли(ЛЛЗначение v)
+{
+    return LLVMIsAUndefValue(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнструкция_ли(ЛЛЗначение v)
+{
+    return LLVMIsAInstruction(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛБинарныйОператор_ли(ЛЛЗначение v)
+{
+    return LLVMIsABinaryOperator(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрВызова_ли(ЛЛЗначение v)
+{
+    return LLVMIsACallInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнтринсикИнстр_ли(ЛЛЗначение v)
+{
+    return LLVMIsAIntrinsicInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнтринсикОтладИнфо_ли(ЛЛЗначение v)
+{
+    return LLVMIsADbgInfoIntrinsic(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнтринсикОтладПеременная_ли(ЛЛЗначение v)
+{
+    return LLVMIsADbgVariableIntrinsic(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрДекларируйОтлад_ли(ЛЛЗначение v)
+{
+    return LLVMIsADbgDeclareInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрОтладЯрлык_ли(ЛЛЗначение v)
+{
+    return LLVMIsADbgLabelInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛПамИнтринсик_ли(ЛЛЗначение v)
+{
+    return LLVMIsAMemIntrinsic(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрКопируйПам_ли(ЛЛЗначение v)
+{
+    return LLVMIsAMemCpyInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрПереместиПам_ли(ЛЛЗначение v)
+{
+    return LLVMIsAMemMoveInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрУстПам_ли(ЛЛЗначение v)
+{
+    return LLVMIsAMemSetInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрСравни_ли(ЛЛЗначение v)
+{
+    return LLVMIsACmpInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрПСравни_ли(ЛЛЗначение v)
+{
+    return LLVMIsAFCmpInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрЦСравни_ли(ЛЛЗначение v)
+{
+    return LLVMIsAICmpInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрИзвлекиЭлт_ли(ЛЛЗначение v)
+{
+    return LLVMIsAExtractElementInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрДайУкНаЭлт_ли(ЛЛЗначение v)
+{
+    return LLVMIsAGetElementPtrInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрВставьЭлемент_ли(ЛЛЗначение v)
+{
+    return LLVMIsAInsertElementInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрВставьЗначение_ли(ЛЛЗначение v)
+{
+    return LLVMIsAInsertValueInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрЛэндингПад_ли(ЛЛЗначение v)
+{
+    return LLVMIsALandingPadInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛУзелПХИ_ли(ЛЛЗначение v)
+{
+    return LLVMIsAPHINode(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрВыбор_ли(ЛЛЗначение v)
+{
+    return LLVMIsASelectInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрШафлВектор_ли(ЛЛЗначение v)
+{
+    return LLVMIsAShuffleVectorInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрХрани_ли(ЛЛЗначение v)
+{
+    return LLVMIsAStoreInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрВетвь_ли(ЛЛЗначение v)
+{
+    return LLVMIsABranchInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрНепрямБр_ли(ЛЛЗначение v)
+{
+    return LLVMIsAIndirectBrInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрИнвок_ли(ЛЛЗначение v)
+{
+    return LLVMIsAInvokeInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрВозврат_ли(ЛЛЗначение v)
+{
+    return LLVMIsAReturnInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрЩит_ли(ЛЛЗначение v)
+{
+    return LLVMIsASwitchInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрНедоступно_ли(ЛЛЗначение v)
+{
+    return LLVMIsAUnreachableInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрВозобнови_ли(ЛЛЗначение v)
+{
+    return LLVMIsAResumeInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрОчистьВозврат_ли(ЛЛЗначение v)
+{
+    return LLVMIsACleanupReturnInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрЛовиВозврат_ли(ЛЛЗначение v)
+{
+    return LLVMIsACatchReturnInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрФунклетПад_ли(ЛЛЗначение v)
+{
+    return LLVMIsAFuncletPadInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрЛовиПад_ли(ЛЛЗначение v)
+{
+    return LLVMIsACatchPadInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрОчистьПад_ли(ЛЛЗначение v)
+{
+    return LLVMIsACleanupPadInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛУнарнаяИнструкция_ли(ЛЛЗначение v)
+{
+    return LLVMIsAUnaryInstruction(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрРазместмас_ли(ЛЛЗначение v)
+{
+    return LLVMIsAAllocaInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрКаст_ли(ЛЛЗначение v)
+{
+    return LLVMIsACastInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрАдрПрострКаст_ли(ЛЛЗначение v)
+{
+    return LLVMIsAAddrSpaceCastInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрБитКаст_ли(ЛЛЗначение v)
+{
+    return LLVMIsABitCastInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрПЗРасш_ли(ЛЛЗначение v)
+{
+    return LLVMIsAFPExtInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрПЗвЗЦ_ли(ЛЛЗначение v)
+{
+    return LLVMIsAFPToSIInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрПЗвБЦ_ли(ЛЛЗначение v)
+{
+    return LLVMIsAFPToUIInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрОбрежьПЗ_ли(ЛЛЗначение v)
+{
+    return LLVMIsAFPTruncInst(v);
+}
+
+
+LLEXPORT ЛЛЗначение ЛЛИнстрЦелВУк_ли(ЛЛЗначение v)
+{
+    return LLVMIsAIntToPtrInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрУкВЦел_ли(ЛЛЗначение v)
+{
+    return LLVMIsAPtrToIntInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрЗРасш_ли(ЛЛЗначение v)
+{
+    return LLVMIsASExtInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрЗЦвПЗ_ли(ЛЛЗначение v)
+{
+    return LLVMIsASIToFPInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрОбрежь_ли(ЛЛЗначение v)
+{
+    return LLVMIsATruncInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрБЦвПЗ_ли(ЛЛЗначение v)
+{
+    return LLVMIsAUIToFPInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрЗэдРасш_ли(ЛЛЗначение v)
+{
+    return LLVMIsAZExtInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрИзвлекиЗначение_ли(ЛЛЗначение v)
+{
+    return LLVMIsAExtractValueInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрГрузи_ли(ЛЛЗначение v)
+{
+    return LLVMIsALoadInst(v);
+}
+
+LLEXPORT ЛЛЗначение ЛЛИнстрАргВА_ли(ЛЛЗначение v)
+{
+    return LLVMIsAVAArgInst(v);
+}
+///////////////////////////////////////////
 
 LLEXPORT void ЛЛШатдаун(void){
 	LLVMShutdown();
@@ -153,7 +554,7 @@ LLEXPORT const char *ЛЛДайРаскладкуДанных(ЛЛМодуль M
 LLEXPORT void ЛЛУстРаскладкуДанных(ЛЛМодуль M, const char* DataLayoutStr) {
     LLVMSetDataLayout(M, DataLayoutStr);
 }
-//--.. Target triple
+//--.. Target триада
 LLEXPORT const char * ЛЛДайЦель(ЛЛМодуль M){
     return LLVMGetTarget(M);
 }
@@ -317,7 +718,7 @@ LLEXPORT ЛЛТип ЛЛТипДвоВКонтексте(ЛЛКонтекст C)
 LLEXPORT ЛЛТип ЛЛТипХ86ФП80ВКонтексте(ЛЛКонтекст C){
 		return LLVMX86FP80TypeInContext(C);
 }
-LLEXPORT ЛЛТип ЛЛТипХ86ФП128ВКонтексте(ЛЛКонтекст C){
+LLEXPORT ЛЛТип ЛЛТипФП128ВКонтексте(ЛЛКонтекст C){
 		return LLVMFP128TypeInContext(C);
 }
 LLEXPORT ЛЛТип ЛЛТипППЦФП128ВКонтексте(ЛЛКонтекст C) {
@@ -535,11 +936,11 @@ LLEXPORT ЛЛЗаписьМетаданныхЗначения *
 
 // Функции преобразования
 
-LLEXPORT ЛЛЗначение ЛЛАМДУзел_ли(ЛЛЗначение Val) {
+LLEXPORT ЛЛЗначение ЛЛМДУзел_ли(ЛЛЗначение Val) {
     return LLVMIsAMDNode(Val);
 }
 
-LLEXPORT ЛЛЗначение ЛЛАМДТкст_ли(ЛЛЗначение Val) {
+LLEXPORT ЛЛЗначение ЛЛМДТкст_ли(ЛЛЗначение Val) {
 return LLVMIsAMDString(Val);
 }
 
@@ -778,7 +1179,7 @@ return LLVMSizeOf(Ty) ;
 LLEXPORT ЛЛЗначение ЛЛКонстОтр(ЛЛЗначение ConstantVal){
 return LLVMConstNeg(ConstantVal) ;
 }
-LLEXPORT ЛЛЗначение LLConstNSWNeg(ЛЛЗначение ConstantVal){
+LLEXPORT ЛЛЗначение ЛЛКонстОтрНСВ(ЛЛЗначение ConstantVal){
 return LLVMConstNSWNeg(ConstantVal) ;
 }
 LLEXPORT ЛЛЗначение LLConstNUWNeg(ЛЛЗначение ConstantVal) {
@@ -985,8 +1386,8 @@ return LLVMIsDeclaration (Global);
 LLEXPORT LLVMLinkage ЛЛДайКомпоновку(ЛЛЗначение Global){
 return LLVMGetLinkage (Global);
 }
-LLEXPORT void ЛЛУстКомпоновку(ЛЛЗначение Global, LLVMLinkage Linkage){
- LLVMSetLinkage(Global, Linkage) ;
+LLEXPORT void ЛЛУстКомпоновку(ЛЛЗначение Global, LLVMLinkage ЛЛКомпоновка){
+ LLVMSetLinkage(Global, ЛЛКомпоновка) ;
 }
 LLEXPORT const char *ЛЛДайСекцию(ЛЛЗначение Global) {
 return LLVMGetSection (Global);
@@ -1182,7 +1583,7 @@ LLEXPORT unsigned ЛЛДАйИнтринсикИД(ЛЛЗначение Fn){
 return LLVMGetIntrinsicID(Fn) ;
 }
 
-LLEXPORT ЛЛЗначение ЛЛДАйИнтринсикДекл(ЛЛМодуль Mod,
+LLEXPORT ЛЛЗначение ЛЛДайИнтринсикДекл(ЛЛМодуль Mod,
                                          unsigned ID,
                                          ЛЛТип *ParamTypes,
                                          size_t ParamCount){
@@ -1514,7 +1915,7 @@ LLEXPORT void ЛЛУстПриёмникОтмотки(ЛЛЗначение Invo
 LLEXPORT unsigned ЛЛДайЧлоПоследователей(ЛЛЗначение Term){
 return LLVMGetNumSuccessors(Term);
 }
-LLEXPORT ЛЛБазовыйБлок ЛЛДайПоследователи(ЛЛЗначение Term, unsigned i){
+LLEXPORT ЛЛБазовыйБлок ЛЛДайПоследователь(ЛЛЗначение Term, unsigned i){
 return LLVMGetSuccessor(Term, i) ;
 }
 LLEXPORT void ЛЛУстПоследователь(ЛЛЗначение Term, unsigned i, ЛЛБазовыйБлок block){
@@ -2156,13 +2557,13 @@ LLEXPORT void LLSetCmpXchgFailureOrdering(ЛЛЗначение CmpXchgInst,
  LLVMSetCmpXchgFailureOrdering(CmpXchgInst, Ordering)  ;
 }
 
-// Модуль-провайдеры 
+// Module-провайдеры 
 
 LLEXPORT ЛЛМодульПровайдер
 ЛЛСоздайМодульПровайдерДляСущМодуля(ЛЛМодуль M){
 return LLVMCreateModuleProviderForExistingModule(M) ;
 }
-LLEXPORT void ЛЛвыместиМодульПровайдер(ЛЛМодульПровайдер MP) {
+LLEXPORT void ЛЛВыместиМодульПровайдер(ЛЛМодульПровайдер MP) {
  LLVMDisposeModuleProvider(MP);
 }
 

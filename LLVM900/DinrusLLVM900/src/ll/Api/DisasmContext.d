@@ -1,121 +1,96 @@
-﻿module ll.api.DisasmContext;
+module ll.api.DisasmContext;
+
+import ll.c.Disassembler;
+import ll.c.Types;
+import ll.c.DisassemblerTypes;
 /*
-    using OpInfoCallback = System.Func<System.IntPtr, ulong, ulong, ulong, int, System.IntPtr, int>;
-    using SymbolLookupCallback = System.Func<System.IntPtr, ulong, ulong, System.Tuple<System.IntPtr, ulong, System.IntPtr>>;
+    import OpInfoCallback = System.Func<System.ук, ulong, ulong, ulong, int, System.ук, int>;
+    import SymbolLookupCallback = System.Func<System.ук, ulong, ulong, System.Tuple<System.ук, ulong, System.ук>>;
 */
-    public class DisasmContext : IDisposableWrapper!(LLVMDisasmContextRef), IDisposable
+    public class КонтекстДизасма 
     {
-        LLVMDisasmContextRef IWrapper!(LLVMDisasmContextRef>.ToHandleType { this._instance;
-        void IDisposableWrapper<LLVMDisasmContextRef>.MakeHandleOwner() { this._owner = true;
-        
         private class SymbolLookupClosure
         {
             private SymbolLookupCallback _callback;
 
-            public SymbolLookupClosure(SymbolLookupCallback c)
+            public this(SymbolLookupCallback c)
             {
                 this._callback = c;
             }
 
-            public IntPtr Invoke(IntPtr @DisInfo, ulong @ReferenceValue, out ulong @ReferenceType, ulong @ReferencePC, out IntPtr @ReferenceName)
+            public ук Invoke(ук инфоДиз, бдол значСсылки, outбдол типСсылки, Бдол ссылПК, out ук имяСсылки)
             {
-                var r = this._callback(DisInfo, ReferenceValue, ReferencePC);
-                ReferenceType = r.Item2;
-                ReferenceName = r.Item3;
+                auto r = this._callback(инфоДиз, значСсылки, ссылПК);
+                типСсылки = r.Item2;
+                имяСсылки = r.Item3;
                 return r.Item1;
             }
         }
         
-        public static DisasmContext CreateDisasm(string tripleName, IntPtr disInfo, int tagType, OpInfoCallback getOpInfo,
-                                           SymbolLookupCallback symbolLookUp)
+        public static КонтекстДизасма создайДизасм(ткст имяТриады, ук дизИнфо, int типТэга, OpInfoCallback дайОпИнфо,
+                                           SymbolLookupCallback поискСимвола)
         {
-            var opInfoCallback = new LLVMOpInfoCallback(getOpInfo);
-            var symbolCallback = new LLVMSymbolLookupCallback(new SymbolLookupClosure(symbolLookUp).Invoke);
-            var disasmContext =
-                LLVM.CreateDisasm(tripleName, disInfo, tagType, opInfoCallback, symbolCallback)
-                    .Wrap()
-                    .MakeHandleOwner<DisasmContext, LLVMDisasmContextRef>();
+            auto opInfoCallback = new ЛЛОбрвызОпИнфо(дайОпИнфо);
+            auto symbolCallback = new ЛЛОбрвызПоискСимвола(new SymbolLookupClosure(поискСимвола).Invoke);
+            auto disasmContext =
+                ЛЛСоздайДизасм(имяТриады, дизИнфо, типТэга, opInfoCallback, symbolCallback);
             disasmContext._opInfoCallback = opInfoCallback;
             return disasmContext;
         }
 
-        public static DisasmContext CreateDisasmCPU(string triple, string cpu, IntPtr disInfo, int tagType, OpInfoCallback getOpInfo,
-                                            SymbolLookupCallback symbolLookUp)
+        public static КонтекстДизасма создайДизасмЦПБ(ткст триада, ткст цпб, ук дизИнфо, int типТэга, OpInfoCallback дайОпИнфо,
+                                            SymbolLookupCallback поискСимвола)
         {
-            var opInfoCallback = new LLVMOpInfoCallback(getOpInfo);
-            var symbolCallback = new LLVMSymbolLookupCallback(new SymbolLookupClosure(symbolLookUp).Invoke);
-            var disasmContext = 
-                LLVM.CreateDisasmCPU(triple, cpu, disInfo, tagType, opInfoCallback, symbolCallback)
-                    .Wrap()
-                    .MakeHandleOwner<DisasmContext, LLVMDisasmContextRef>();
+            auto opInfoCallback = new ЛЛОбрвызОпИнфо(дайОпИнфо);
+            auto symbolCallback = new ЛЛОбрвызПоискСимвола(new SymbolLookupClosure(поискСимвола).Invoke);
+            auto disasmContext = 
+                ЛЛСоздайДизасмЦПБ(триада, цпб, дизИнфо, типТэга, opInfoCallback, symbolCallback);
             disasmContext._opInfoCallback = opInfoCallback;
             disasmContext._symbolLookupCallback = symbolCallback;
             return disasmContext;
         }
 
-        public static DisasmContext CreateDisasmCPUFeatures(string triple, string cpu, string features, IntPtr disInfo,
-                                                     int tagType, OpInfoCallback getOpInfo,
-                                                     SymbolLookupCallback symbolLookUp)
+        public static КонтекстДизасма создайФичиДзасмЦПБ(ткст триада, ткст цпб, ткст features, ук дизИнфо,
+                                                     int типТэга, OpInfoCallback дайОпИнфо,
+                                                     SymbolLookupCallback поискСимвола)
         {
-            var opInfoCallback = new LLVMOpInfoCallback(getOpInfo);
-            var symbolCallback = new LLVMSymbolLookupCallback(new SymbolLookupClosure(symbolLookUp).Invoke);
-            var disasmContext = LLVM.CreateDisasmCPUFeatures(triple, cpu, features, disInfo, tagType, opInfoCallback, symbolCallback)
-                       .Wrap()
-                       .MakeHandleOwner<DisasmContext, LLVMDisasmContextRef>();
+            auto opInfoCallback = new ЛЛОбрвызОпИнфо(дайОпИнфо);
+            auto symbolCallback = new ЛЛОбрвызПоискСимвола(new SymbolLookupClosure(поискСимвола).Invoke);
+            auto disasmContext = ЛЛСоздайДизасмЦПБФичи(триада, цпб, features, дизИнфо, типТэга, opInfoCallback, symbolCallback);
             disasmContext._opInfoCallback = opInfoCallback;
             disasmContext._symbolLookupCallback = symbolCallback;
             return disasmContext;
         }
 
-        private readonly LLVMDisasmContextRef _instance;
-        private bool _disposed;
-        private bool _owner;
-        private LLVMOpInfoCallback _opInfoCallback;
-        private LLVMSymbolLookupCallback _symbolLookupCallback;
+        private ЛЛКонтекстДизасма экземпл;
+        private ЛЛОбрвызОпИнфо _opInfoCallback;
+        private ЛЛОбрвызПоискСимвола _symbolLookupCallback;
 
-        internal DisasmContext(LLVMDisasmContextRef instance)
+        this(ЛЛКонтекстДизасма экзэмпл)
         {
-            this._instance = instance;
+            this.экземпл = экзэмпл;
         }
 
-        ~DisasmContext()
+        ~this()
         {
-            this.Dispose(false);
+            ЛЛВыместиДизасм(this.раскрой());
         }
 
-        public int SetDisasmOptions(ulong options) { LLVM.SetDisasmOptions(this.Unwrap(), options);
+        public int устОпцииДизасма(ulong options)
+		{
+			ЛЛУстОпцииДизасм(this.раскрой(), options);
+		}
 
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        private void Dispose(bool disposing)
-        {
-            if (this._disposed)
-            {
-                return;
-            }
-
-            if (this._owner)
-            {
-                LLVM.DisasmDispose(this.Unwrap());
-            }
-
-            this._disposed = true;
-        }
-
-        public unsafe Tuple<string, int> DisasmInstruction(byte[] instructionBytes, ulong programCounter)
+        public Tuple!(ткст, int) инструкцииДизасма(byte[] instructionBytes, ulong programCounter)
         {
             fixed(byte* iptr = &instructionBytes[0])
             {
-                var outputBuffer = new byte[1024];
+                auto outputBuffer = new byte[1024];
                 fixed(byte* optr = &outputBuffer[0])
                 {
-                    var count = LLVM.DisasmInstruction(this.Unwrap(), new IntPtr(iptr), (ulong)instructionBytes.Length, programCounter, new IntPtr(optr), new size_t(outputBuffer.Length));
-                    var text = new UTF8Encoding().GetString(outputBuffer, 0, outputBuffer.Length);
-                    return new Tuple<string, int>(text, count.Pointer.ToInt32());
+                    auto count = ЛЛИнструкцияДмзасм(this.раскрой(), new ук(iptr), cast(ulong)instructionBytes.длина, programCounter, new ук(optr), new size_t(outputBuffer.длина));
+                    auto text = new UTF8Encoding().GetString(outputBuffer, 0, outputBuffer.длина);
+                    return new Tuple<ткст, int)(text, count.Pointer.ToInt32());
                 }
             }
         }

@@ -1,13 +1,25 @@
-﻿namespace LLVMSharp.API.Types
-{
-    public sealed class VoidType : Type
+module ll.api.typs.VoidType;
+
+import ll.api.Type;
+import ll.c.Types;
+
+    public class ТипПроц : Тип
     {
-        internal VoidType(LLVMTypeRef typeRef)
-            : base(typeRef)
-        {
+		private ЛЛТип экзэмпл;
+
+        this(ЛЛТип экзэмпл)
+		{
+            super(экзэмпл);
+			this.экзэмпл = экзэмпл;
+			
         }
 
-        public override string Name => "void";
-        public override bool IsFirstClassType => false;
+        public override ЛЛТип раскрой()
+		{
+            return this.экзэмпл;
+		}
+
+        public override string имя () {return "проц";}
+        public override bool типПервКласса_ли() {return false;}
     }
 }

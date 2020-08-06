@@ -1,6 +1,6 @@
-п»їmodule ll.api.
-{
-    public enum RealPredicate : int
+module ll.api.ЛЛПредикатРеала;
+
+    public enum ЛЛПредикатРеала : int
     {
         False = 0,
         OEQ = 1,
@@ -19,4 +19,3 @@
         UNE = 14,
         True = 15,
     }
-}

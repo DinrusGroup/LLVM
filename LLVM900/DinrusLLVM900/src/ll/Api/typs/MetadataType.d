@@ -1,10 +1,22 @@
-﻿namespace LLVMSharp.API.Types
-{
-    public sealed class MetadataType : Type
+module ll.api.typs.MetadataType;
+
+import ll.api.Type;
+import ll.c.Types;
+
+    public  class ТипМетаданные : Тип
     {
-        internal MetadataType(LLVMTypeRef typeRef)
-            : base(typeRef)
-        {
+		private ЛЛТип экзэмпл;
+
+        this(ЛЛТип экзэмпл)
+		{
+            super(экзэмпл);
+			this.экзэмпл = экзэмпл;
+			
         }
+
+        public override ЛЛТип раскрой()
+		{
+            return this.экзэмпл;
+		}
     }
-}
+

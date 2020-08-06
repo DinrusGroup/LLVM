@@ -1,20 +1,23 @@
-п»їmodule ll.api.TargetData;
+module ll.api.TargetData;
 
 
-    public class TargetData : IDisposableWrapper<LLVMTargetDataRef>, IDisposable
+    public class TargetData : IDisposableWrapper!(LLVMTargetDataRef), IDisposable
     {
-        LLVMTargetDataRef IWrapper!(LLVMTargetDataRef>.ToHandleType { this._instance;
-        void IDisposableWrapper<LLVMTargetDataRef>.MakeHandleOwner() { this._owner = true;
+       // LLVMTargetDataRef IWrapper!(LLVMTargetDataRef).ToHandleType { this.экземпл;
+       // void IDisposableWrapper!(LLVMTargetDataRef).MakeHandleOwner() { this._owner = true;
 
-        public static TargetData Create(string stringRep) { LLVM.CreateTargetData(stringRep).Wrap().MakeHandleOwner<TargetData, LLVMTargetDataRef>();
+        public static TargetData создай(string stringRep)
+		{
+			LLVM.CreateTargetData(stringRep).Wrap().MakeHandleOwner!(TargetData, LLVMTargetDataRef)();
+		}
 
-        private readonly LLVMTargetDataRef _instance;
+        private LLVMTargetDataRef экземпл;
         private bool _disposed;
         private bool _owner;
 
-        internal this(LLVMTargetDataRef instance)
+        this(LLVMTargetDataRef экзэмпл)
         {
-            this._instance = instance;
+            this.экземпл = экзэмпл;
         }
 
         ~this()
@@ -22,26 +25,79 @@
             this.Dispose(false);
         }
 
-        public string CopyStringRepOfTargetData() { LLVM.CopyStringRepOfTargetData(this.Unwrap()).MessageToString();
+        public string CopyStringRepOfTargetData()
+		{
+			return LLVM.CopyStringRepOfTargetData(this.раскрой()).MessageToString();
+		}
 
-        public LLVMByteOrdering ByteOrder { LLVM.ByteOrder(this.Unwrap());
+        public LLVMByteOrdering ByteOrder ()
+		{
+			return LLVM.ByteOrder(this.раскрой());
+		}
 
-        public uint GetPointerSize() { LLVM.PointerSize(this.Unwrap());
-        public uint GetPointerSize(uint addressSpace) { LLVM.PointerSizeForAS(this.Unwrap(), addressSpace);
+        public uint GetPointerSize() 
+		{
+			return LLVM.PointerSize(this.раскрой());
+        }
 
-        public Type GetIntPtrType() { LLVM.IntPtrType(this.Unwrap()).Wrap();
-        public Type GetIntPtrType(uint addressSpace) { LLVM.IntPtrTypeForAS(this.Unwrap(), addressSpace).Wrap();
+        public uint GetPointerSize(uint адреснПрострво) 
+		{ 
+			return LLVM.PointerSizeForAS(this.раскрой(), адреснПрострво);
+		}
 
-        public ulong SizeOfTypeInBits(Type ty) { LLVM.SizeOfTypeInBits(this.Unwrap(), ty.Unwrap());
-        public ulong StoreSizeOfType(Type ty) { LLVM.StoreSizeOfType(this.Unwrap(), ty.Unwrap());
-        public ulong ABISizeOfType(Type ty) { LLVM.ABISizeOfType(this.Unwrap(), ty.Unwrap());
-        public uint ABIAlignmentOfType(Type ty) { LLVM.ABIAlignmentOfType(this.Unwrap(), ty.Unwrap());
-        public uint CallFrameAlignmentOfType(Type ty) { LLVM.CallFrameAlignmentOfType(this.Unwrap(), ty.Unwrap());
-        public uint PreferredAlignmentOfType(Type ty) { LLVM.PreferredAlignmentOfType(this.Unwrap(), ty.Unwrap());
-        public uint PreferredAlignmentOfGlobal(Value globalVar) { LLVM.PreferredAlignmentOfGlobal(this.Unwrap(), globalVar.Unwrap());
+        public Type GetIntPtrType() 
+		{
+			return LLVM.IntPtrType(this.раскрой()).Wrap();
+		}
 
-        public uint ElementAtOffset(Type structTy, ulong offset) { LLVM.ElementAtOffset(this.Unwrap(), structTy.Unwrap(), offset);
-        public ulong OffsetOfElement(Type structTy, uint element) { LLVM.OffsetOfElement(this.Unwrap(), structTy.Unwrap(), element);
+        public Type GetIntPtrType(uint адреснПрострво) 
+		{
+			return LLVM.IntPtrTypeForAS(this.раскрой(), адреснПрострво).Wrap();
+		}
+
+        public ulong SizeOfTypeInBits(Type ty) 
+		{
+			return LLVM.SizeOfTypeInBits(this.раскрой(), ty.раскрой());
+		}
+        public ulong StoreSizeOfType(Type ty)
+		{
+			return LLVM.StoreSizeOfType(this.раскрой(), ty.раскрой());
+		}
+
+        public ulong ABISizeOfType(Type ty)
+		{
+			return LLVM.ABISizeOfType(this.раскрой(), ty.раскрой());
+		}
+
+        public uint ABIAlignmentOfType(Type ty)
+		{
+			return LLVM.ABIAlignmentOfType(this.раскрой(), ty.раскрой());
+		}
+
+        public uint CallFrameAlignmentOfType(Type ty)
+		{
+			return LLVM.CallFrameAlignmentOfType(this.раскрой(), ty.раскрой());
+		}
+
+        public uint PreferredAlignmentOfType(Type ty)
+		{
+			return LLVM.PreferredAlignmentOfType(this.раскрой(), ty.раскрой());
+		}
+
+        public uint PreferredAlignmentOfGlobal(Значение globalVar)
+		{
+			return LLVM.PreferredAlignmentOfGlobal(this.раскрой(), globalVar.раскрой());
+		}
+
+        public uint ElementAtOffset(Type structTy, ulong offset) 
+		{
+			return LLVM.ElementAtOffset(this.раскрой(), structTy.раскрой(), offset);
+		}
+
+        public ulong OffsetOfElement(Type structTy, uint element)
+		{
+			LLVM.OffsetOfElement(this.раскрой(), structTy.раскрой(), element);
+		}
 
         public void Dispose()
         {
@@ -58,7 +114,7 @@
 
             if (this._owner)
             {
-                LLVM.DisposeTargetData(this.Unwrap());
+                LLVM.DisposeTargetData(this.раскрой());
             }
 
             this._disposed = true;

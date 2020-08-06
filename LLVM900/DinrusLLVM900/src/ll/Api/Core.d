@@ -1,7 +1,9 @@
-﻿module ll.api.Core;
+module ll.api.Core;
 
-    public static class Core
+import ll.c.Core;
+
+    public static struct Ядро
     {
-        public static void Shutdown() { LLVM.Shutdown();}
+        public static void шатдаун() { ЛЛШатдаун();}
     }
 

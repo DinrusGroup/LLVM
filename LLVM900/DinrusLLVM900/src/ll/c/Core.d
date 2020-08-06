@@ -53,10 +53,10 @@ extern (C) {
 /// Внешние пользователи зависят от стабильности следующих значений. Небезопасно
 /// менять их порядок.
 enum ЛЛОпкод {
-  /* Инструкции Терminатора */
-  Возвр            = 1,
-  Бр             = 2,
-  Щит         = 3,
+  /* Инструкции Терминатора */
+  Возвр            = 1,//Ret
+  Бр             = 2,//Br
+  Щит         = 3,//Switch
   НепрямБр     = 4,
   Инвок         = 5,
   /* removed 6 due to API changes */
@@ -76,9 +76,9 @@ enum ЛЛОпкод {
   БДели           = 14,
   ЗДели           = 15,
   ПДели           = 16,
-  URem           = 17,
-  SRem           = 18,
-  FRem           = 19,
+  Брем           = 17,
+  ЗРем           = 18,
+  ПРем           = 19,
 
   /* Логические Операторы */
   Shl            = 20,
@@ -112,7 +112,7 @@ enum ЛЛОпкод {
   /* Прочие Операторы */
   ЦСравн           = 42,
   ПСравн           = 43,
-  PHI            = 44,
+  ПХИ            = 44,
   Вызов           = 45,
   Выбор         = 46,
   ЮзерОп1        = 47,
@@ -357,16 +357,16 @@ enum LLVMAtomicRMWBinOp {
     Или, /**< OR значение и вернуть старое */
     Ииль, /**< Ииль значение и вернуть старое */
     Max, /**< Sets the знач if it's greater than the
-                             original using a signed comparison и return
+                             original import a signed comparison и return
                              the old один */
     Мин, /**< Sets the знач if it's Smaller than the
-                             original using a signed comparison и return
+                             original import a signed comparison и return
                              the old один */
     UMax, /**< Sets the знач if it's greater than the
-                             original using an бцел comparison и return
+                             original import an бцел comparison и return
                              the old один */
     UMin /**< Sets the знач if it's greater than the
-                             original using an бцел comparison  и return
+                             original import an бцел comparison  и return
                              the old один */
 } ;
 
@@ -480,6 +480,198 @@ alias бцел ЛЛИндексАтрибута;
 alias проц function(ЛЛИнфоДиагностики, ук ) ЛЛОбработчикДиагностики;
 alias проц function(ЛЛКонтекст, ук ) ЛЛОбрвызовЖни;
 
+
+ЛЛЗначение ЛЛДайТерминаторБазБлока(ЛЛБазовыйБлок BB);
+
+ЛЛБул ЛЛВараргФункц_ли(ЛЛТип функТип);
+
+/**
+ * @defgroup LLVMCCoreValues Значения
+ *
+ * Часть объектной модели LLVM состоит из значений, которые образуют
+ * очень богатую иерархию типов.
+ *
+ * ЛЛЗначение как правило представляет llvm::Значение. В этом типе
+ * богатая иерархия классов. В зависимости от полученного экземпляра,
+ * не все API доступны.
+ *
+ * Вызывающие функции могут определять тип ЛЛЗначения посредством вызова
+ * семейства функций LLVMIsA* (напр., LLVMIsAArgument()). Эти функции
+ * определены макросом, поэтому не очевидна их доступность
+ * при просмотре исходного кода Doxygen. Вместо этого смотрите
+ * исходное определение LLVM_FOR_EACH_VALUE_SUBCLASS и обратите внимание
+ * на приведённый список имён значений. Эти имена значений также
+ * соответствуют классам в иерархии llvm::Значение.
+ *
+ * @{
+ */
+/*
+#define LLVM_FOR_EACH_VALUE_SUBCLASS(macro) \
+  macro(Аргумент)                           \
+  macro(BasicBlock)                         \
+  macro(InlineAsm)                          \
+  macro(User)                               \
+    macro(Константа)                         \
+      macro(BlockAddress)                   \
+      macro(ConstantAggregateZero)          \
+      macro(МассивКонстант)                  \
+      macro(ConstantDataSequential)         \
+        macro(ConstantDataArray)            \
+        macro(ConstantDataVector)           \
+      macro(ConstantExpr)                   \
+      macro(ConstantFP)                     \
+      macro(ConstantInt)                    \
+      macro(ConstantPointerNull)            \
+      macro(ConstantStruct)                 \
+      macro(ConstantTokenNone)              \
+      macro(ConstantVector)                 \
+      macro(GlobalValue)                    \
+        macro(GlobalAlias)                  \
+        macro(GlobalIFunc)                  \
+        macro(GlobalObject)                 \
+          macro(Function)                   \
+          macro(GlobalVariable)             \
+      macro(UndefValue)                     \
+    macro(Instruction)                      \
+      macro(БинарныйОператор)                 \
+      macro(CallInst)                       \
+        macro(IntrinsicInst)                \
+          macro(DbgInfoIntrinsic)           \
+            macro(DbgVariableIntrinsic)     \
+              macro(DbgDeclareInst)         \
+            macro(DbgLabelInst)             \
+          macro(MemIntrinsic)               \
+            macro(MemCpyInst)               \
+            macro(MemMoveInst)              \
+            macro(MemSetInst)               \
+      macro(CmpInst)                        \
+        macro(FCmpInst)                     \
+        macro(ICmpInst)                     \
+      macro(ExtractElementInst)             \
+      macro(GetElementPtrInst)              \
+      macro(InsertElementInst)              \
+      macro(InsertValueInst)                \
+      macro(LandingPadInst)                 \
+      macro(PHINode)                        \
+      macro(SelectInst)                     \
+      macro(ShuffleVectorInst)              \
+      macro(StoreInst)                      \
+      macro(BranchInst)                     \
+      macro(IndirectBrInst)                 \
+      macro(инстрВып)                     \
+      macro(ReturnInst)                     \
+      macro(SwitchInst)                     \
+      macro(UnreachableInst)                \
+      macro(ResumeInst)                     \
+      macro(CleanupReturnInst)              \
+      macro(CatchReturnInst)                \
+      macro(FuncletPadInst)                 \
+        macro(CatchPadInst)                 \
+        macro(CleanupPadInst)               \
+      macro(UnaryInstruction)               \
+        macro(AllocaInst)                   \
+        macro(CastInst)                     \
+          macro(AddrSpaceCastInst)          \
+          macro(BitCastInst)                \
+          macro(FPExtInst)                  \
+          macro(FPToSIInst)                 \
+          macro(FPToUIInst)                 \
+          macro(FPTruncInst)                \
+          macro(IntToPtrInst)               \
+          macro(PtrToIntInst)               \
+          macro(SExtInst)                   \
+          macro(SIToFPInst)                 \
+          macro(TruncInst)                  \
+          macro(UIToFPInst)                 \
+          macro(ZExtInst)                   \
+        macro(ExtractValueInst)             \
+        macro(LoadInst)                     \
+        macro(VAArgInst)
+*/
+
+ЛЛЗначение ЛЛАргумент_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛБазБлок_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнлайнАсм_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛПользователь_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛКонст_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛАдресБлока_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛКонстАгрегатНоль_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛМассивКонстант_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛКонстПоследовательностьДанных_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛКонстМассивДанных_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛКонстВекторДанных_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛКонстВыражение_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛКонстПЗ_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛКонстЦел_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛКонстНуллУказатель_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛКонстСтрукт_ли(ЛЛЗначение v);
+ ЛЛЗначение ЛЛКонстСемаНичто_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛКонстВектор_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛГлобЗначение_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛГлобНик_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛГлобИФункц_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛГлобОбъект_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛФункция_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛГлобПеременная_ли(ЛЛЗначение v);
+ ЛЛЗначение ЛЛНеопрЗначение_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнструкция_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛБинарныйОператор_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрВызова_ли(ЛЛЗначение v);
+ ЛЛЗначение ЛЛИнтринсикИнстр_ли(ЛЛЗначение v);
+ ЛЛЗначение ЛЛИнтринсикОтладИнфо_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнтринсикОтладПеременная_ли(ЛЛЗначение v);;
+ЛЛЗначение ЛЛИнстрДекларируйОтлад_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрОтладЯрлык_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛПамИнтринсик_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрКопируйПам_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрПереместиПам_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрУстПам_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрСравни_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрПСравни_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрЦСравни_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрИзвлекиЭлт_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрДайУкНаЭлт_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрВставьЭлемент_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрВставьЗначение_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрЛэндингПад_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛУзелПХИ_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрВыбор_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрШафлВектор_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрХрани_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрВетвь_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрНепрямБр_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрИнвок_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрВозврат_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрЩит_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрНедоступно_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрВозобнови_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрОчистьВозврат_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрЛовиВозврат_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрФунклетПад_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрЛовиПад_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрОчистьПад_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛУнарнаяИнструкция_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрРазместмас_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрКаст_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрАдрПрострКаст_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрБитКаст_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрПЗРасш_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрПЗвЗЦ_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрПЗвБЦ_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрОбрежьПЗ_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрЦелВУк_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрУкВЦел_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрЗРасш_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрЗЦвПЗ_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрОбрежь_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрБЦвПЗ_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрЗэдРасш_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрИзвлекиЗначение_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрГрузи_ли(ЛЛЗначение v);
+ЛЛЗначение ЛЛИнстрАргВА_ли(ЛЛЗначение v);
+
+/////////////////////////////////////////
+
 /**
  * Создать новый контекст.
  *
@@ -528,7 +720,7 @@ alias проц function(ЛЛКонтекст, ук ) ЛЛОбрвызовЖни;
 /**
  * Установить сброс контекстом имён всех значений.
  *
- * Если да, то только имена объектов GlobalValue будут доступны в IR.
+ * Если да, то только имена объектов ГлобЗначение будут доступны в IR.
  * Можно использовать для сбережения памяти и времени выполнения, особенно в режиме освободи.
  *
  * @see LLVMContext::setDiscardValueNames()
@@ -939,31 +1131,31 @@ alias проц function(ЛЛКонтекст, ук ) ЛЛОбрвызовЖни;
 
 /**
  * Вернуть папку отладочной локации для данного значения, которая должна быть
- * одной из: llvm::Instruction, llvm::GlobalVariable или llvm::Function.
+ * одной из: llvm::Instruction, llvm::GlobalVariable или llvm::Функция.
  *
  * @see llvm::Instruction::getDebugLoc()
  * @see llvm::GlobalVariable::getDebugInfo()
- * @see llvm::Function::getSubprogram()
+ * @see llvm::Функция::getSubprogram()
  */
 ткст0 ЛЛДайОтладЛокПапку(ЛЛЗначение знач, бцел *длина);
 
 /**
  * Return the имяФайла of the debug location for this знач, which must be
- * an llvm::Instruction, llvm::GlobalVariable, или llvm::Function.
+ * an llvm::Instruction, llvm::GlobalVariable, или llvm::Функция.
  *
  * @see llvm::Instruction::getDebugLoc()
  * @see llvm::GlobalVariable::getDebugInfo()
- * @see llvm::Function::getSubprogram()
+ * @see llvm::Функция::getSubprogram()
  */
 ткст0 ЛЛДайОтладЛокИмяф(ЛЛЗначение знач, бцел *длина);
 
 /**
  * Return the строка number of the debug location for this знач, which must be
- * an llvm::Instruction, llvm::GlobalVariable, или llvm::Function.
+ * an llvm::Instruction, llvm::GlobalVariable, или llvm::Функция.
  *
  * @see llvm::Instruction::getDebugLoc()
  * @see llvm::GlobalVariable::getDebugInfo()
- * @see llvm::Function::getSubprogram()
+ * @see llvm::Функция::getSubprogram()
  */
 бцел ЛЛДайОтладЛокСтроку(ЛЛЗначение знач);
 
@@ -978,14 +1170,14 @@ alias проц function(ЛЛКонтекст, ук ) ЛЛОбрвызовЖни;
 /**
  * Добавить функцию в модуль с заданным именем.
  *
- * @see llvm::Function::Create()
+ * @see llvm::Функция::создай()
  */
 ЛЛЗначение ЛЛДобавьФункц(ЛЛМодуль м, ткст0 имя, ЛЛТип типФункц);
 
 /**
  * Получить значение Функции из Модуля по её имени.
  *
- * Возвращённое значение соответствует llvm::Function.
+ * Возвращённое значение соответствует llvm::Функция.
  *
  * @see llvm::Модуль2::getFunction()
  */
@@ -1161,7 +1353,7 @@ alias проц function(ЛЛКонтекст, ук ) ЛЛОбрвызовЖни;
  * Получить из контекста 128-битный тип с плавающей точкой 
  * (112-битная мантисса) .
  */
-ЛЛТип ЛЛТипХ86ФП128ВКонтексте(ЛЛКонтекст к);
+ЛЛТип ЛЛТипФП128ВКонтексте(ЛЛКонтекст к);
 
 /**
  * Получить 128-битный тип с плавающей точкой (два 64-битника)
@@ -1410,7 +1602,7 @@ alias проц function(ЛЛКонтекст, ук ) ЛЛОбрвызовЖни;
  * Созданный тип будет существовать в том же контексте, что
  * и его элементы.
  *
- * @see llvm::VectorType::get()
+ * @see llvm::ТипВектор::get()
  */
 ЛЛТип ЛЛТипВектор(ЛЛТип типЭлта, бцел члоЭлтов);
 
@@ -1419,7 +1611,7 @@ alias проц function(ЛЛКонтекст, ук ) ЛЛОбрвызовЖни;
  *
  * Работает только над типами, представляющими собой векторы.
  *
- * @see llvm::VectorType::getNumElements()
+ * @see llvm::ТипВектор::getNumElements()
  */
 бцел ЛЛДайРазмерВектора(ЛЛТип типВектор);
 
@@ -1465,123 +1657,12 @@ alias проц function(ЛЛКонтекст, ук ) ЛЛОбрвызовЖни;
 ЛЛТип ЛЛТипЯрлык();
 ЛЛТип ЛЛТипХ86ММХ();
 
-/**
- * @}
- */
-
-/**
- * @}
- */
-
-/**
- * @defgroup LLVMCCoreValues Значения
- *
- * Часть объектной модели LLVM состоит из значений, которые образуют
- * очень богатую иерархию типов.
- *
- * ЛЛЗначение как правило представляет llvm::Значение. В этом типе
- * богатая иерархия классов. В зависимости от полученного экземпляра,
- * не все API доступны.
- *
- * Вызывающие функции могут определять тип ЛЛЗначения посредством вызова
- * семейства функций LLVMIsA* (напр., LLVMIsAArgument()). Эти функции
- * определены макросом, поэтому не очевидна их доступность
- * при просмотре исходного кода Doxygen. Вместо этого смотрите
- * исходное определение LLVM_FOR_EACH_VALUE_SUBCLASS и обратите внимание
- * на приведённый список имён значений. Эти имена значений также
- * соответствуют классам в иерархии llvm::Value.
- *
- * @{
- */
-/+
-#define LLVM_FOR_EACH_VALUE_SUBCLASS(macro) \
-  macro(Argument)                           \
-  macro(BasicBlock)                         \
-  macro(InlineAsm)                          \
-  macro(User)                               \
-    macro(Constant)                         \
-      macro(BlockAddress)                   \
-      macro(ConstantAggregateZero)          \
-      macro(ConstantArray)                  \
-      macro(ConstantDataSequential)         \
-        macro(ConstantDataArray)            \
-        macro(ConstantDataVector)           \
-      macro(ConstantExpr)                   \
-      macro(ConstantFP)                     \
-      macro(ConstantInt)                    \
-      macro(ConstantPointerNull)            \
-      macro(ConstantStruct)                 \
-      macro(ConstantTokenNone)              \
-      macro(ConstantVector)                 \
-      macro(GlobalValue)                    \
-        macro(GlobalAlias)                  \
-        macro(GlobalIFunc)                  \
-        macro(GlobalObject)                 \
-          macro(Function)                   \
-          macro(GlobalVariable)             \
-      macro(UndefValue)                     \
-    macro(Instruction)                      \
-      macro(BinaryOperator)                 \
-      macro(инстрВыз)                       \
-        macro(IntrinsicInst)                \
-          macro(DbgInfoIntrinsic)           \
-            macro(DbgVariableIntrinsic)     \
-              macro(DbgDeclareInst)         \
-            macro(DbgLabelInst)             \
-          macro(MemIntrinsic)               \
-            macro(MemCpyInst)               \
-            macro(MemMoveInst)              \
-            macro(MemSetInst)               \
-      macro(CmpInst)                        \
-        macro(FCmpInst)                     \
-        macro(ICmpInst)                     \
-      macro(ExtractElementInst)             \
-      macro(GetElementPtrInst)              \
-      macro(InsertElementInst)              \
-      macro(InsertValueInst)                \
-      macro(LandingPadInst)                 \
-      macro(PHINode)                        \
-      macro(SelectInst)                     \
-      macro(ShuffleVectorInst)              \
-      macro(StoreInst)                      \
-      macro(BranchInst)                     \
-      macro(IndirectBrInst)                 \
-      macro(инстрВып)                     \
-      macro(ReturnInst)                     \
-      macro(SwitchInst)                     \
-      macro(UnreachableInst)                \
-      macro(ResumeInst)                     \
-      macro(CleanupReturnInst)              \
-      macro(CatchReturnInst)                \
-      macro(FuncletPadInst)                 \
-        macro(кэчПадInst)                 \
-        macro(CleanupPadInst)               \
-      macro(UnaryInstruction)               \
-        macro(AllocaInst)                   \
-        macro(CastInst)                     \
-          macro(AddrSpaceCastInst)          \
-          macro(BitCastInst)                \
-          macro(FPExtInst)                  \
-          macro(FPToSIInst)                 \
-          macro(FPToUIInst)                 \
-          macro(FPTruncInst)                \
-          macro(IntToPtrInst)               \
-          macro(PtrToIntInst)               \
-          macro(SExtInst)                   \
-          macro(SIToFPInst)                 \
-          macro(TruncInst)                  \
-          macro(UIToFPInst)                 \
-          macro(ZExtInst)                   \
-        macro(ExtractValueInst)             \
-        macro(LoadInst)                     \
-        macro(VAArgInst)
-+/
-/**
- * @defgroup LLVMCCoreValueGeneral General APIs
+/*
+ * @defgroup LLVMCCoreValueGeneral Общие API
  *
  * Функции из этой секции работают со всеми экземплярами ЛЛЗначение,
- * несмотря на их под-тип. Они соответствубт функциям, доступным
- * в llvm::Value.
+ * несмотря на их под-тип. Они соответствуют функциям, доступным
+ * в llvm::Значение.
  *
  * @{
  */
@@ -1692,7 +1773,7 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
  *
  * Uses are obtained in an iterator fashion. First, вызов this function
  * to obtain a reference to the first use. Then, вызов LLVMGetNextUse()
- * on that instance и all subsequently obtained instances until
+ * on that экзэмпл и all subsequently obtained instances until
  * LLVMGetNextUse() returns NULL.
  *
  * @see llvm::Значение::use_begin()
@@ -1730,7 +1811,7 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
 /**
  * @defgroup LLVMCCoreValueUser User знач
  *
- * Function in this group pertain to ЛЛЗначение instances that descent
+ * Функция in this group pertain to ЛЛЗначение instances that descent
  * from llvm::User. This includes constants, instructions, и
  * operators.
  *
@@ -1773,9 +1854,9 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
  * @defgroup LLVMCCoreValueConstant Константы
  *
  * This section содержит APIs for interacting with ЛЛЗначение that
- * correspond to llvm::Constant instances.
+ * correspond to llvm::Константа instances.
  *
- * These functions will work for any ЛЛЗначение in the llvm::Constant
+ * These functions will work for any ЛЛЗначение in the llvm::Константа
  * class hierarchy.
  *
  * @{
@@ -1784,17 +1865,17 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
 /**
  * Получить константное значение, ссылающееся на пустой (null) экземпляр какого-л. типа.
  *
- * @see llvm::Constant::getNullValue()
+ * @see llvm::Константа::getNullValue()
  */
 ЛЛЗначение ЛЛКонстПусто(ЛЛТип тип); /* all zeroes */
 
 /**
- * Obtain a constant знач referring to the instance of a тип
+ * Obtain a constant знач referring to the экзэмпл of a тип
  * consisting of all ones.
  *
  * This is only valid for integer types.
  *
- * @see llvm::Constant::getAllOnesValue()
+ * @see llvm::Константа::getAllOnesValue()
  */
 ЛЛЗначение ЛЛКонстВсеЕд(ЛЛТип тип);
 
@@ -1806,9 +1887,9 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
 ЛЛЗначение ЛЛДайНеопр(ЛЛТип тип);
 
 /**
- * Determine whether a знач instance is null.
+ * Determine whether a знач экзэмпл is null.
  *
- * @see llvm::Constant::isNullValue()
+ * @see llvm::Константа::isNullValue()
  */
 ЛЛБул ЛЛПусто_ли(ЛЛЗначение знач);
 
@@ -1825,7 +1906,7 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
  * to constants referring to scalar types.
  *
  * For integer types, the ЛЛТип параметр should correspond to a
- * llvm::цчТиpe instance и the returned ЛЛЗначение will
+ * llvm::цчТиpe экзэмпл и the returned ЛЛЗначение will
  * correspond to a llvm::ConstantInt.
  *
  * For floating point types, the ЛЛТип returned corresponds to a
@@ -1842,7 +1923,7 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
  * @see llvm::ConstantInt::get()
  *
  * @param типЦел Integer тип to obtain знач of.
- * @param N The знач the returned instance should refer to.
+ * @param N The знач the returned экзэмпл should refer to.
  * @param SignExtend Whether to sign extend the produced знач.
  */
 ЛЛЗначение ЛЛКонстЦел(ЛЛТип типЦел, бдол n, ЛЛБул расшЗнака);
@@ -1929,7 +2010,7 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
  */
 
 /**
- * Create a ConstantDataSequential и иниц it with a ткст.
+ * создай a ConstantDataSequential и иниц it with a ткст.
  *
  * @see llvm::ConstantDataArray::getString()
  */
@@ -1937,10 +2018,10 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
                                       бцел длина, ЛЛБул оканчиватьНаНулл_ли);
 
 /**
- * Create a ConstantDataSequential with ткст content in the глоб2 context.
+ * создай a ConstantDataSequential with ткст content in the глоб2 контекст.
  *
  * This is the same as LLVMConstStringInContext except it operates on the
- * глоб2 context.
+ * глоб2 контекст.
  *
  * @see LLVMConstStringInContext()
  * @see llvm::ConstantDataArray::getString()
@@ -1955,14 +2036,14 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
 ЛЛБул ЛЛКонстТкст_ли(ЛЛЗначение конст);
 
 /**
- * Get the given constant данные sequential as a ткст.
+ * дай the given constant данные sequential as a ткст.
  *
  * @see ConstantDataSequential::getAsString()
  */
 ткст0 ЛЛДайКакТкст(ЛЛЗначение конст, т_мера *длина);
 
 /**
- * Create an анонимный ConstantStruct with the specified values.
+ * создай an анонимный ConstantStruct with the specified values.
  *
  * @see llvm::ConstantStruct::getAnon()
  */
@@ -1970,7 +2051,7 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
                                       бцел чло, ЛЛБул упакован_ли);
 
 /**
- * Create a ConstantStruct in the глоб2 Context.
+ * создай a ConstantStruct in the глоб2 Context.
  *
  * This is the same as LLVMConstStructInContext except it operates on the
  * глоб2 Context.
@@ -1980,14 +2061,14 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
 ЛЛЗначение ЛЛКонстСтрукт(ЛЛЗначение *констЗначч, бцел чло, ЛЛБул упакован_ли);
 
 /**
- * Create a ConstantArray from values.
+ * создай a МассивКонстант from values.
  *
- * @see llvm::ConstantArray::get()
+ * @see llvm::МассивКонстант::get()
  */
 ЛЛЗначение ЛЛКонстМассив(ЛЛТип типЭлт, ЛЛЗначение *констЗначч, бцел длина);
 
 /**
- * Create a non-анонимный ConstantStruct from values.
+ * создай a non-анонимный ConstantStruct from values.
  *
  * @see llvm::ConstantStruct::get()
  */
@@ -1995,14 +2076,14 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
                                   бцел чло);
 
 /**
- * Get an element эт specified инд as a constant.
+ * дай an element эт specified инд as a constant.
  *
  * @see ConstantDataSequential::getElementAsConstant()
  */
 ЛЛЗначение ЛЛДайЭлтКакКонст(ЛЛЗначение к, бцел инд);
 
 /**
- * Create a ConstantVector from values.
+ * создай a ConstantVector from values.
  *
  * @see llvm::ConstantVector::get()
  */
@@ -2025,8 +2106,11 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
 ЛЛЗначение ЛЛРаскладУ(ЛЛТип тип);
 ЛЛЗначение ЛЛРазмерУ(ЛЛТип тип);
 ЛЛЗначение ЛЛКонстОтр(ЛЛЗначение констЗнач);
-ЛЛЗначение LLConstNSWNeg(ЛЛЗначение констЗнач);
+ЛЛЗначение ЛЛКонстОтрНСВ(ЛЛЗначение констЗнач);
+alias ЛЛКонстОтрНСВ LLConstNSWNeg;
+
 ЛЛЗначение LLConstNUWNeg(ЛЛЗначение констЗнач);
+
 ЛЛЗначение ЛЛКонстПОтриц(ЛЛЗначение констЗнач);
 ЛЛЗначение ЛЛКонстНе(ЛЛЗначение констЗнач);
 ЛЛЗначение ЛЛКонстДобавь(ЛЛЗначение константаLHS, ЛЛЗначение константаRHS);
@@ -2123,9 +2207,9 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
  * @defgroup LLVMCCoreValueConstantGlobals глоб Values
  *
  * This group содержит functions that operate on глоб2 values. Functions in
- * this group relate to functions in the llvm::GlobalValue class tree.
+ * this group relate to functions in the llvm::ГлобЗначение class tree.
  *
- * @see llvm::GlobalValue
+ * @see llvm::ГлобЗначение
  *
  * @{
  */
@@ -2147,7 +2231,7 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
  * Возвращает the "знач тип" of a глоб2 знач.  This differs from the formal
  * тип of a глоб2 знач which is always a pointer тип.
  *
- * @see llvm::GlobalValue::getValueType()
+ * @see llvm::ГлобЗначение::getValueType()
  */
 ЛЛТип ЛЛГлобДайТипЗначения(ЛЛЗначение глоб);
 
@@ -2168,7 +2252,7 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
  * @see llvm::AllocaInst::getAlignment()
  * @see llvm::LoadInst::getAlignment()
  * @see llvm::StoreInst::getAlignment()
- * @see llvm::GlobalValue::getAlignment()
+ * @see llvm::ГлобЗначение::getAlignment()
  */
 бцел ЛЛДайРаскладку(ЛЛЗначение З);
 
@@ -2177,7 +2261,7 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
  * @see llvm::AllocaInst::setAlignment()
  * @see llvm::LoadInst::setAlignment()
  * @see llvm::StoreInst::setAlignment()
- * @see llvm::GlobalValue::setAlignment()
+ * @see llvm::ГлобЗначение::setAlignment()
  */
 проц ЛЛУстРаскладку(ЛЛЗначение З, бцел байты);
 
@@ -2185,21 +2269,21 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
  * Sets a metadata attachment, erasing the existing metadata attachment if
  * it already существует for the given вид.
  *
- * @see llvm::GlobalObject::setMetadata()
+ * @see llvm::ГлобОбъект::setMetadata()
  */
 проц ЛЛГлоб_УстановиМетаданные(ЛЛЗначение глоб, бцел род, ЛЛМетаданные МД);
 
 /**
  * Erases a metadata attachment of the given вид if it существует.
  *
- * @see llvm::GlobalObject::eraseMetadata()
+ * @see llvm::ГлобОбъект::eraseMetadata()
  */
 проц ЛЛГлоб_СотриМетаданные(ЛЛЗначение глоб, бцел род);
 
 /**
  * Removes all metadata attachments from this знач.
  *
- * @see llvm::GlobalObject::clearMetadata()
+ * @see llvm::ГлобОбъект::clearMetadata()
  */
 проц ЛЛГлоб_СбросьМетаданные(ЛЛЗначение глоб);
 
@@ -2208,7 +2292,7 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
  * this знач. The caller is responsible for freeing this массив by calling
  * \конст LLVMDisposeValueMetadataEntries.
  *
- * @see llvm::GlobalObject::getAllMetadata()
+ * @see llvm::ГлобОбъект::getAllMetadata()
  */
 ЛЛЗаписьМетаданныхЗначения *ЛЛГлоб_КопируйВсеМетаданные(ЛЛЗначение знач,
                                                   т_мера *члоЗапп);
@@ -2334,12 +2418,12 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
  */
 
 /**
- * @defgroup LLVMCCoreValueFunction Function values
+ * @defgroup LLVMCCoreValueFunction Функция values
  *
  * Functions in this group operate on ЛЛЗначение instances that
- * correspond to llvm::Function instances.
+ * correspond to llvm::Функция instances.
  *
- * @see llvm::Function
+ * @see llvm::Функция
  *
  * @{
  */
@@ -2347,52 +2431,52 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
 /**
  * Remove a function from its containing module и deletes it.
  *
- * @see llvm::Function::eraseFromParent()
+ * @see llvm::Функция::eraseFromParent()
  */
 проц ЛЛУдалиФункц(ЛЛЗначение фн);
 
 /**
  * Check whether the given function has a personality function.
  *
- * @see llvm::Function::hasPersonalityFn()
+ * @see llvm::Функция::hasPersonalityFn()
  */
 ЛЛБул ЛЛЕстьПерсоналФн_ли(ЛЛЗначение фн);
 
 /**
  * Obtain the personality function attached to the function.
  *
- * @see llvm::Function::getPersonalityFn()
+ * @see llvm::Функция::getPersonalityFn()
  */
 ЛЛЗначение ЛЛДайПерсоналФн(ЛЛЗначение фн);
 
 /**
  * Set the personality function attached to the function.
  *
- * @see llvm::Function::setPersonalityFn()
+ * @see llvm::Функция::setPersonalityFn()
  */
 проц ЛЛУстПерсоналФн(ЛЛЗначение фн, ЛЛЗначение PersonalityFn);
 
 /**
  * Obtain the intrinsic ид number which matches the given function имя.
  *
- * @see llvm::Function::lookupIntrinsicID()
+ * @see llvm::Функция::lookupIntrinsicID()
  */
 бцел ЛЛИщиИнтринсикИД(ткст0 имя, т_мера длинаИм);
 
 /**
- * Obtain the ид number from a function instance.
+ * Obtain the ид number from a function экзэмпл.
  *
- * @see llvm::Function::getIntrinsicID()
+ * @see llvm::Функция::getIntrinsicID()
  */
 бцел ЛЛДАйИнтринсикИД(ЛЛЗначение фн);
 
 /**
- * Create или вставь the декларация of an intrinsic.  For overloaded intrinsics,
+ * создай или вставь the декларация of an intrinsic.  For overloaded intrinsics,
  * параметр types must be provided to uniquely identify an overload.
  *
  * @see llvm::Intrinsic::getDeclaration()
  */
-ЛЛЗначение ЛЛДАйИнтринсикДекл(ЛЛМодуль мод, бцел ид, ЛЛТип *типыПарам,
+ЛЛЗначение ЛЛДайИнтринсикДекл(ЛЛМодуль мод, бцел ид, ЛЛТип *типыПарам,
                                          т_мера члоПарам);
 
 /**
@@ -2435,39 +2519,38 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
  *
  * The returned знач corresponds to the ЛЛКонвВызова enumeration.
  *
- * @see llvm::Function::getCallingConv()
+ * @see llvm::Функция::getCallingConv()
  */
 бцел ЛЛДайКонвВызФунции(ЛЛЗначение фн);
 
 /**
  * Set the calling convention of a function.
  *
- * @see llvm::Function::setCallingConv()
+ * @see llvm::Функция::setCallingConv()
  *
- * @param фн Function to operate on
+ * @param фн Функция to operate on
  * @param кВыз ЛЛКонвВызова to set calling convention to
  */
 проц ЛЛУстКонвВызФунции(ЛЛЗначение фн, бцел кВыз);
 
 /**
- * Obtain the имя of the garbage collector to use during код
- * generation.
+ * Получить имя сборщика мусора, используемое при генерации кода.
  *
- * @see llvm::Function::getGC()
+ * @see llvm::Функция::getGC()
  */
 ткст0 ЛЛДайСМ(ЛЛЗначение фн);
 
 /**
  * Определить используемый сборщик мусора при генерации кода.
  *
- * @see llvm::Function::setGC()
+ * @see llvm::Функция::setGC()
  */
 проц ЛЛУстСМ(ЛЛЗначение фн, ткст0 имя);
 
 /**
  * Добавить атрибут к функции.
  *
- * @see llvm::Function::addAttribute()
+ * @see llvm::Функция::addAttribute()
  */
 проц ЛЛДобавьАтрПоИндексу(ЛЛЗначение ф, ЛЛИндексАтрибута инд,
                              ЛЛАтрибут атр);
@@ -2497,7 +2580,7 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
  * Functions in this group relate to аргументы/параметры on functions.
  *
  * Functions in this group expect ЛЛЗначение instances that correspond
- * to llvm::Function instances.
+ * to llvm::Функция instances.
  *
  * @{
  */
@@ -2505,7 +2588,7 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
 /**
  * Получить у функции число параметров.
  *
- * @see llvm::Function::arg_size()
+ * @see llvm::Функция::arg_size()
  */
 бцел ЛЛПосчитайПарамы(ЛЛЗначение фн);
 
@@ -2515,10 +2598,10 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
  * The takes a pointer to a pre-allocated массив of ЛЛЗначение that is
  * эт least LLVMCountParams() дол. This массив will be filled with
  * ЛЛЗначение instances which correspond to the параметры the
- * function receives. Each ЛЛЗначение corresponds to a llvm::Argument
- * instance.
+ * function receives. Each ЛЛЗначение corresponds to a llvm::Аргумент
+ * экзэмпл.
  *
- * @see llvm::Function::arg_begin()
+ * @see llvm::Функция::arg_begin()
  */
 проц ЛЛДайПарамы(ЛЛЗначение фн, ЛЛЗначение *парамы);
 
@@ -2527,7 +2610,7 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
  *
  * Параметры индексируются от 0.
  *
- * @see llvm::Function::arg_begin()
+ * @see llvm::Функция::arg_begin()
  */
 ЛЛЗначение ЛЛДайПарам(ЛЛЗначение фн, бцел индекс);
 
@@ -2537,7 +2620,7 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
  * Unlike другой functions in this group, this один takes an ЛЛЗначение
  * that corresponds to a llvm::Attribute.
  *
- * The returned ЛЛЗначение is the llvm::Function to which this
+ * The returned ЛЛЗначение is the llvm::Функция to which this
  * argument belongs.
  */
 ЛЛЗначение ЛЛДайПредкаПарам(ЛЛЗначение инстр);
@@ -2545,14 +2628,14 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
 /**
  * Obtain the first параметр to a function.
  *
- * @see llvm::Function::arg_begin()
+ * @see llvm::Функция::arg_begin()
  */
 ЛЛЗначение ЛЛДайПервПарам(ЛЛЗначение фн);
 
 /**
  * Получить последний параметр функции.
  *
- * @see llvm::Function::arg_end()
+ * @see llvm::Функция::arg_end()
  */
 ЛЛЗначение ЛЛДайПоследнПарам(ЛЛЗначение фн);
 
@@ -2575,7 +2658,7 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
 /**
  * Установить раскладку для параметра функции.
  *
- * @see llvm::Argument::addAttr()
+ * @see llvm::Аргумент::addAttr()
  * @see llvm::AttrBuilder::addAlignmentAttr()
  */
 проц ЛЛУстРаскладПарама(ЛЛЗначение арг, бцел расклад);
@@ -2683,7 +2766,7 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
  */
 
 /**
- * Create an MDString знач from a given ткст знач.
+ * создай an MDString знач from a given ткст знач.
  *
  * The MDString знач does не take ownership of the given ткст, it remains
  * the responsibility of the caller to освободи it.
@@ -2693,7 +2776,7 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
 ЛЛМетаданные ЛЛМДТкстВКонтексте2(ЛЛКонтекст к, ткст0 текст, т_мера длинс);
 
 /**
- * Create an MDNode знач with the given массив of operands.
+ * создай an MDNode знач with the given массив of operands.
  *
  * @see llvm::MDNode::get()
  */
@@ -2770,7 +2853,7 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
  */
 
 /**
- * Convert a basic блок instance to a знач тип.
+ * Convert a basic блок экзэмпл to a знач тип.
  */
 ЛЛЗначение ЛЛБазБлокКакЗначение(ЛЛБазовыйБлок ББ);
 
@@ -2780,7 +2863,7 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
 ЛЛБул ЛЛЗначение_БазБлок_ли(ЛЛЗначение знач);
 
 /**
- * Convert an ЛЛЗначение to an ЛЛБазовыйБлок instance.
+ * Convert an ЛЛЗначение to an ЛЛБазовыйБлок экзэмпл.
  */
 ЛЛБазовыйБлок ЛЛЗначениеКакБазБлок(ЛЛЗначение знач);
 
@@ -2811,7 +2894,7 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
 /**
  * Obtain the number of basic blocks in a function.
  *
- * @param фн Function знач to operate on.
+ * @param фн Функция знач to operate on.
  */
 бцел ЛЛПосчитайБазБлоки(ЛЛЗначение фн);
 
@@ -2831,14 +2914,14 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
  * The returned basic блок can be используется as an iterator. You will likely
  * eventually вызов into LLVMGetNextBasicBlock() with it.
  *
- * @see llvm::Function::begin()
+ * @see llvm::Функция::begin()
  */
 ЛЛБазовыйБлок ЛЛДайПервБазБлок(ЛЛЗначение фн);
 
 /**
  * Obtain the last basic блок in a function.
  *
- * @see llvm::Function::end()
+ * @see llvm::Функция::end()
  */
 ЛЛБазовыйБлок ЛЛДайПоследнБазБлок(ЛЛЗначение фн);
 
@@ -2856,7 +2939,7 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
  * Obtain the basic блок that corresponds to the entry point of a
  * function.
  *
- * @see llvm::Function::getEntryBlock()
+ * @see llvm::Функция::getEntryBlock()
  */
 ЛЛБазовыйБлок ЛЛДайВводнБазБлок(ЛЛЗначение фн);
 
@@ -2865,7 +2948,7 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
  *
  * The insertion point must be valid.
  *
- * @see llvm::Function::BasicBlockListType::insertAfter()
+ * @see llvm::Функция::BasicBlockListType::insertAfter()
  */
 проц ЛЛВставьСущБазБлокПослеБлокаВставки(ЛЛПостроитель построитель,
                                                   ЛЛБазовыйБлок ББ);
@@ -2873,29 +2956,29 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
 /**
  * Append the given basic блок to the basic блок список of the given function.
  *
- * @see llvm::Function::BasicBlockListType::push_back()
+ * @see llvm::Функция::BasicBlockListType::push_back()
  */
 проц ЛЛПриставьСущБазБлок(ЛЛЗначение фн, ЛЛБазовыйБлок ББ);
   
 /**
- * Create a new basic блок without inserting it into a function.
+ * создай a new basic блок without inserting it into a function.
  *
- * @see llvm::BasicBlock::Create()
+ * @see llvm::BasicBlock::создай()
  */
 ЛЛБазовыйБлок ЛЛСоздайБазБлокВКонтексте(ЛЛКонтекст к, ткст0 имя);
 
 /**
  * Append a basic блок to the end of a function.
  *
- * @see llvm::BasicBlock::Create()
+ * @see llvm::BasicBlock::создай()
  */
 ЛЛБазовыйБлок ЛЛПриставьБазБлокВКонтексте(ЛЛКонтекст к,ЛЛЗначение фн, ткст0 имя);
 
 /**
- * Append a basic блок to the end of a function using the глоб2
- * context.
+ * Append a basic блок to the end of a function import the глоб2
+ * контекст.
  *
- * @see llvm::BasicBlock::Create()
+ * @see llvm::BasicBlock::создай()
  */
 ЛЛБазовыйБлок ЛЛПриставьБазБлок(ЛЛЗначение фн, ткст0 имя);
 
@@ -2905,14 +2988,14 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
  * The function to прибавь to is determined by the function of the
  * passed basic блок.
  *
- * @see llvm::BasicBlock::Create()
+ * @see llvm::BasicBlock::создай()
  */
 ЛЛБазовыйБлок ЛЛВставьБазБлокВКонтекст(ЛЛКонтекст к, ЛЛБазовыйБлок ББ, ткст0 имя);
 
 /**
- * Insert a basic блок in a function using the глоб2 context.
+ * Insert a basic блок in a function import the глоб2 контекст.
  *
- * @see llvm::BasicBlock::Create()
+ * @see llvm::BasicBlock::создай()
  */
 ЛЛБазовыйБлок ЛЛВставьБазБлок(ЛЛБазовыйБлок вставкаПередББ, ткст0 имя);
 
@@ -2954,7 +3037,7 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
  * Obtain the first instruction in a basic блок.
  *
  * The returned ЛЛЗначение corresponds to a llvm::Instruction
- * instance.
+ * экзэмпл.
  */
 ЛЛЗначение ЛЛДайПервИнстр(ЛЛБазовыйБлок ББ);
 
@@ -3001,6 +3084,12 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
  */
 проц ЛЛУстМетаданные(ЛЛЗначение знач, бцел идРода, ЛЛЗначение узел);
 
+// Функции преобразования
+
+ ЛЛЗначение ЛЛМДУзел_ли(ЛЛЗначение Val) ;
+
+ ЛЛЗначение ЛЛМДТкст_ли(ЛЛЗначение Val);
+ 
 /**
  * Возвращает the metadata associated with an instruction знач, but filters out
  * all the debug locations.
@@ -3083,7 +3172,7 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
 ЛЛПредикатРеала ЛЛДайПредикатПСравн(ЛЛЗначение инстр);
 
 /**
- * Create a копируй of 'this' instruction that is identical in all ways
+ * создай a копируй of 'this' instruction that is identical in all ways
  * except the following:
  *   * The instruction has Нет родитель
  *   * The instruction has Нет имя
@@ -3261,7 +3350,7 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
  *
  * @see llvm::Instruction::getSuccessor
  */
-ЛЛБазовыйБлок ЛЛДайПоследователи(ЛЛЗначение терм, бцел i);
+ЛЛБазовыйБлок ЛЛДайПоследователь(ЛЛЗначение терм, бцел i);
 
 /**
  * Update the specified successor to point эт the provided блок.
@@ -3461,7 +3550,7 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
 проц ЛЛУстТекЛокОтладки2(ЛЛПостроитель построитель, ЛЛМетаданные лок);
 
 /**
- * Attempts to set the debug location for the given instruction using the
+ * Attempts to set the debug location for the given instruction import the
  * текущ debug location for the given построитель.  If the построитель has Нет текущ
  * debug location, this function is a Нет-оп.
  *
@@ -3557,7 +3646,7 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
 /* Сложи a catch или filter clause to the landingpad instruction */
 проц ЛЛДобавьКлоз(ЛЛЗначение лэндингПад, ЛЛЗначение клозЗнач);
 
-/* Get the 'cleanup' флаг in the landingpad instruction */
+/* дай the 'cleanup' флаг in the landingpad instruction */
 ЛЛБул ЛЛОчистка_ли(ЛЛЗначение лэндингПад);
 
 /* Set the 'cleanup' флаг in the landingpad instruction */
@@ -3566,7 +3655,7 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
 /* Сложи a destination to the catchswitch instruction */
 проц ЛЛДобавьОбработчик(ЛЛЗначение кэчЩит, ЛЛБазовыйБлок приёмник);
 
-/* Get the number of handlers on the catchswitch instruction */
+/* дай the number of handlers on the catchswitch instruction */
 бцел ЛЛДайЧлоОбработчиков(ЛЛЗначение кэчЩит);
 
 /**
@@ -3584,7 +3673,7 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
 
 // Функлеты 
 
-/* Get the number of funcletpad аргументы. */
+/* дай the number of funcletpad аргументы. */
 ЛЛЗначение ЛЛДайАргОперанд(ЛЛЗначение функлет, бцел i);
 
 /* Set a funcletpad argument эт the given инд. */
@@ -3876,7 +3965,7 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
 /**
  * Удалить модуль м.
  */
-проц ЛЛвыместиМодульПровайдер(ЛЛМодульПровайдер м);
+проц ЛЛВыместиМодульПровайдер(ЛЛМодульПровайдер м);
 
 /**
  * @}
@@ -3951,7 +4040,7 @@ LLVM_FOR_EACH_VALUE_SUBCLASS(LLVM_DECLARE_VALUE_CAST)
 
 /** Выполняет все проходки по функциям,запланированные в менеджере проходок по
     функциям. Возвращает 1, если любая из проходок изменяет модуль, или иначе 0.
-    @see llvm::FunctionPassManager::run(Function&) */
+    @see llvm::FunctionPassManager::run(Функция&) */
 ЛЛБул ЛЛЗапустиМенеджерФукнцПроходок(ЛЛМенеджерПроходок FPM, ЛЛЗначение ф);
 
 /** Финилизует все проходки по функциям, запланированные в менеджере проходок по

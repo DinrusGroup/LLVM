@@ -1,14 +1,26 @@
-﻿namespace LLVMSharp.API.Types
-{
-    public sealed class X86FP80Type : FPType
+module ll.api.typs.X86FP80Type;
+
+import ll.api.typs.FPType;
+import ll.c.Types;
+
+    public  class ТипХ86ПЗ80 : ТипПЗ
     {
-        internal X86FP80Type(LLVMTypeRef typeRef)
-            : base(typeRef)
-        {
+		private ЛЛТип экзэмпл;
+
+        this(ЛЛТип экзэмпл)
+		{
+            super(экзэмпл);
+			this.экзэмпл = экзэмпл;
+			
         }
 
-        public override string Name => "x86_fp80";
-        public override uint PrimitiveSizeInBits => 80;
-        public override int MantissaWidth => 64;
+        public override ЛЛТип раскрой()
+		{
+            return this.экзэмпл;
+		}
+
+        public override string имя() {return "х86_пз80";}
+        public override uint примитивнРазмерВБитах() {return 80;}
+        public override int ширинаМантиссы() {return 64;}
     }
 }

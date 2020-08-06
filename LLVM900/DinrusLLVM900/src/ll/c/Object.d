@@ -23,7 +23,7 @@ import ll.c.Types;
 extern (C){
 
 /**
- * @defgroup LLVMCObject Object файл reading и writing
+ * @defgroup LLVMCObject Чтение и запись объектного файла
  * @ingroup LLVMC
  *
  * @{
@@ -40,30 +40,30 @@ alias LLVMOpaqueRelocationIterator *ЛЛИтераторРелокаций;
 struct LLVMOpaqueObjectFile{}
 alias LLVMOpaqueObjectFile *ЛЛФайлОбъекта;
 
-enum LLVMBinaryType {
-  Archive,                /**< Archive файл. */
-  MachOUniversalBinary,   /**< Mach-O Universal Binary файл. */
-  COFFImportFile,         /**< COFF Импорт файл. */
-  IR,                     /**< LLVM IR. */
-  WinRes,                 /**< Windows resource (.рез) файл. */
-  COFF,                   /**< COFF Object файл. */
-  ELF32L,                 /**< ELF 32-bit, little endian. */
-  ELF32B,                 /**< ELF 32-bit, big endian. */
-  ELF64L,                 /**< ELF 64-bit, little endian. */
-  ELF64B,                 /**< ELF 64-bit, big endian. */
-  MachO32L,               /**< MachO 32-bit, little endian. */
-  MachO32B,               /**< MachO 32-bit, big endian. */
-  MachO64L,               /**< MachO 64-bit, little endian. */
-  MachO64B,               /**< MachO 64-bit, big endian. */
-  Wasm,                   /**< Web Assembly. */
+enum ЛЛБинТип {
+  Архив,                /**< Archive файл. */
+  МохОУнивБин,   /**< Mach-O Universal Binary файл. */
+  КОФФИмпортФайл,         /**< COFF Импорт файл. */
+  ПП,                     /**< LLVM IR. */
+  ВинРес,                 /**< Windows resource (.рез) файл. */
+  КОФФ,                   /**< COFF Object файл. */
+  ЭЛФ32Л,                 /**< ELF 32-bit, little endian. */
+  ЭЛФ32Б,                 /**< ELF 32-bit, big endian. */
+  ЭЛФ64Л,                 /**< ELF 64-bit, little endian. */
+  ЭЛФ64Б,                 /**< ELF 64-bit, big endian. */
+  МахО32Л,               /**< MachO 32-bit, little endian. */
+  МахО32Б,               /**< MachO 32-bit, big endian. */
+  МахО64Л,               /**< MachO 64-bit, little endian. */
+  МахО64Б,               /**< MachO 64-bit, big endian. */
+  Васм,                   /**< Web Assembly. */
 } ;
 
 /**
- * Create a binary файл from the given memory буфер.
+ * Создаёт бинарный файл из заданного буфера памяти.
  *
- * The exact тип of the binary файл will be inferred automatically, и the
- * appropriate implementation selected.  The context may be NULL except if
- * the результирующий файл is an LLVM IR файл.
+ * Точный тип бинарного файла определяется автоматически, и 
+ * выбирается соответствующая имплементация.  Контекст м.б. NULL; за искл.
+ * случаев, когда результирующий файл является файлом LLVM IR.
  *
  * The memory буфер is не consumed by this function.  It is the responsibilty
  * of the caller to освободи it with \конст LLVMDisposeMemoryBuffer.
@@ -102,7 +102,7 @@ enum LLVMBinaryType {
  *
  * @see llvm::объект::Binary::дайТип
  */
-LLVMBinaryType ЛЛБинДайТип(ЛЛБинарник BR);
+ЛЛБинТип ЛЛБинДайТип(ЛЛБинарник BR);
 
 /*
  * For a Mach-O universal binary файл, retrieves the объект файл corresponding

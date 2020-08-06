@@ -1,4 +1,4 @@
-﻿module ll.c.api.TargetInitializers.SparcTargetInitializer;
+module ll.c.api.TargetInitializers.SparcTargetInitializer;
 
 
 import ll.c.api.TargetInitializers.TargetInitializer;
@@ -9,11 +9,11 @@ import ll.c.api.TargetInitializers.TargetInitializer;
     {
 		this(){}
 
-        public void Target() { LLVM.InitializeSparcTarget();}
-        public void TargetInfo() { LLVM.InitializeSparcTargetInfo();}
-        public void TargetMC() { LLVM.InitializeSparcTargetMC();}
-        public void AsmPrinter() { LLVM.InitializeSparcAsmPrinter();}
-        public void AsmParser() { LLVM.InitializeSparcAsmParser();}
-        public void Disassembler() { LLVM.InitializeSparcDisassembler();}
+        public void Target() { LLInitializeSparcTarget();}
+        public void TargetInfo() { LLInitializeSparcTargetInfo();}
+        public void TargetMC() { LLInitializeSparcTargetMC();}
+        public void AsmPrinter() { LLInitializeSparcAsmPrinter();}
+        public void AsmParser() { LLInitializeSparcAsmParser();}
+        public void Disassembler() { LLInitializeSparcDisassembler();}
     }
 

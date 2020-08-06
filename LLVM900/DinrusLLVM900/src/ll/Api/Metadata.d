@@ -1,9 +1,9 @@
-﻿module ll.api.
-{
-    public abstract class Metadata
+module ll.api.Metadata;
+
+    public abstract class Метаданные
     {
-        internal Metadata()
+        this()
         {
         }
     }
-}
+

@@ -1,63 +1,84 @@
-﻿namespace LLVMSharp.API.Types.Composite.SequentialTypes
-{
-    using System;
-    using Type = LLVMSharp.API.Type;
+module ll.api.typs.Composite.SequentialTypes.VectorType;
 
-    public sealed class VectorType : SequentialType
+import ll.api.typs.Composite.SequentialType;
+import ll.api.Type;
+import ll.api.typs.IntegerType;
+import ll.api.typs.FPType;
+import ll.api.typs.Composite.SequentialTypes.PointerType;
+import ll.c.Core;
+import ll.c.Types;
+
+    public  class ТипВектор : SequentialType
     {
-        public static VectorType Get(Type elementType, uint numElements) => LLVM.VectorType(elementType.Unwrap(), numElements).WrapAs<VectorType>();
+        public static ТипВектор дай(Тип типЭлта, бцел члоЭлтов)
+		{ 
+			return cast(ТипВектор) ЛЛТипВектор(типЭлта.раскрой(), члоЭлтов);
+		}
 
-        public static VectorType GetInteger(VectorType vectorType)
+        public static ТипВектор дайЦелое(ТипВектор типВектор)
         {
-            if (vectorType.Length == 0)
+            if (типВектор.длина == 0)
             {
-                throw new ArgumentException("Element count cannot be zero.", nameof(vectorType));
+                //throw new ArgumentException("Element count cannot be zero.", nameof(типВектор));
             }
-            return GetSubstituteVectorType(vectorType, s => s, n => n);
+          //  return GetSubstituteVectorType(типВектор, s { s, n { n);
         }
 
-        public static VectorType GetExtendedElementVectorType(VectorType vectorType) => GetSubstituteVectorType(vectorType, s => s * 2, n => n);
+        public static ТипВектор GetExtendedElementVectorType(ТипВектор типВектор)
+	    {
+		// return GetSubstituteVectorType(типВектор, s { s * 2, n { n);
+		}
 
-        public static VectorType GetTruncatedElementVectorType(VectorType vectorType)
+        public static ТипВектор GetTruncatedElementVectorType(ТипВектор типВектор)
         {
-            if ((vectorType.ElementType.PrimitiveSizeInBits & 1) == 0)
+            if ((типВектор.типЭлемента.примитивнРазмерВБитах & 1) == 0)
             {
-                throw new ArgumentException("Element size in bits cannot be odd.", nameof(vectorType));
+               // throw new ArgumentException("Element size in bits cannot be odd.", nameof(типВектор));
             }
-            return GetSubstituteVectorType(vectorType, s => s / 2, n => n);
+           // return GetSubstituteVectorType(типВектор, s { s / 2, n { n);
         }
 
-        public static VectorType GetHalfElementsVectorType(VectorType vectorType)
+        public static ТипВектор GetHalfElementsVectorType(ТипВектор типВектор)
         {
-            if ((vectorType.Length & 1) == 0)
+            if ((типВектор.длина & 1) == 0)
             {
-                throw new ArgumentException("Element count cannot be odd.", nameof(vectorType));
+               // throw new ArgumentException("Element count cannot be odd.", nameof(типВектор));
             }
-            return GetSubstituteVectorType(vectorType, s => s, n => n / 2);
+           // return GetSubstituteVectorType(типВектор, s { s, n { n / 2);
         }
 
-        public static VectorType GetDoubleElementsVectorType(VectorType vectorType) => GetSubstituteVectorType(vectorType, s => s, n => n * 2);
-
-        private static VectorType GetSubstituteVectorType(VectorType vectorType,Func<uint, uint> elementSizeSelector, Func<uint, uint> elementCountSelector)
+        public static ТипВектор GetDoubleElementsVectorType(ТипВектор типВектор)
+		{
+			//return GetSubstituteVectorType(типВектор, s { s, n { n * 2);
+	    }
+/*
+        private static ТипВектор GetSubstituteVectorType(ТипВектор типВектор,Func!(бцел, бцел) elementSizeSelector, Func!(бцел, бцел) elementCountSelector)
         {
-            var originalSize = vectorType.ElementType.PrimitiveSizeInBits;
-            var substituteSize = elementSizeSelector(originalSize);
-            var integerType = vectorType.Context.IntType(substituteSize);
-            return Get(integerType, vectorType.Length);
+            auto originalSize = типВектор.типЭлемента.примитивнРазмерВБитах;
+            auto substituteSize = elementSizeSelector(originalSize);
+            auto типЦелое = типВектор.контекст.типЦел(substituteSize);
+            return дай(типЦелое, типВектор.длина);
+        }
+*/
+        public static bool валиденТипЭлта_ли(Тип тип)
+		{
+			return(тип is ТипЦелое || тип is ТипПЗ || тип is ТипУказатель);
+		}
+
+		this(ЛЛТип типРеф)
+		{
+            super(типРеф);
         }
 
-        public static bool IsValidElementType(Type type) => type is IntegerType || type is FPType || type is PointerType;
+        public uint битШирина()
+		{
+			return (this.длина * this.типЭлемента.примитивнРазмерВБитах);
+		}
 
-        internal VectorType(LLVMTypeRef typeRef)
-            : base(typeRef)
-        {
-        }
+        public override бул типСОднимЗначением_ли() {return true;}
 
-        public uint BitWidth => this.Length * this.ElementType.PrimitiveSizeInBits;
+        public override Тип типСкаляр() {return this.типЭлемента;}
 
-        public override bool IsSingleValueType => true;
-
-        public override Type ScalarType => this.ElementType;
-        public override uint Length => LLVM.GetVectorSize(this.Unwrap());
+        public override бцел длина() {return ЛЛДайРазмерВектора(this.раскрой());}
     }
-}
+

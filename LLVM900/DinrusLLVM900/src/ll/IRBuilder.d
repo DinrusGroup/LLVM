@@ -1,543 +1,539 @@
-﻿namespace LLVMSharp
-{
-    using System;
+﻿module ll.IRBuilder;
 
-    public sealed class IRBuilder : IDisposable
+import ll.c.Core;
+import ll.c.Types;
+import stdrus;
+
+    public  class ПостроительПП
     {
-        private readonly LLVMBuilderRef instance;
+        private ЛЛПостроитель экземпл;
 
-        private bool disposed;
+       private бул вымещен;
 
-        public IRBuilder(LLVMContextRef context)
+        public this(ЛЛКонтекст контекст)
         {
-            this.instance = LLVM.CreateBuilderInContext(context);
+            this.экземпл = ЛЛСоздайПостроительВКонтексте(контекст);
         }
 
-        public IRBuilder() : this(LLVM.GetGlobalContext())
+        public this()
         {
+		this(ЛЛДайГлобКонтекст());
         }
 
-        ~IRBuilder()
+        ~this()
         {
-            this.Dispose(false);
+           
         }
 
-        public void PositionBuilder(LLVMBasicBlockRef @Block, LLVMValueRef @Instr)
+        public void построительПозиции(ЛЛБазовыйБлок блок, ЛЛЗначение инстр)
         {
-            LLVM.PositionBuilder(this.instance, @Block, @Instr);
+            ЛЛПостроительПозиции(this.экземпл, блок, инстр);
         }
 
-        public void PositionBuilderBefore(LLVMValueRef @Instr)
+        public void построительПозицииПеред(ЛЛЗначение инстр)
         {
-            LLVM.PositionBuilderBefore(this.instance, @Instr);
+            ЛЛПостроительПозицииПеред(this.экземпл, инстр);
         }
 
-        public void PositionBuilderAtEnd(LLVMBasicBlockRef @Block)
+        public void построительПозицииВКонце(ЛЛБазовыйБлок блок)
         {
-            LLVM.PositionBuilderAtEnd(this.instance, @Block);
+            ЛЛПостроительПозицииВКонце(this.экземпл, блок);
         }
 
-        public LLVMBasicBlockRef GetInsertBlock()
+        public ЛЛБазовыйБлок дайБлокВставки()
         {
-            return LLVM.GetInsertBlock(this.instance);
+            return ЛЛДайБлокВставки(this.экземпл);
         }
 
-        public void ClearInsertionPosition()
+        public void очистьПозициюВставки()
         {
-            LLVM.ClearInsertionPosition(this.instance);
+            ЛЛОчистиПозициюВставки(this.экземпл);
         }
 
-        public void InsertIntoBuilder(LLVMValueRef @Instr)
+        public void вставьВПостроитель(ЛЛЗначение инстр)
         {
-            LLVM.InsertIntoBuilder(this.instance, @Instr);
+            ЛЛВставьВПостроитель(this.экземпл, инстр);
         }
 
-        public void InsertIntoBuilderWithName(LLVMValueRef @Instr, string @Name)
+        public void вставьВПостроительСИменем(ЛЛЗначение инстр, ткст имя)
         {
-            LLVM.InsertIntoBuilderWithName(this.instance, @Instr, @Name);
+            ЛЛВставьВПостроительСИменем(this.экземпл, инстр, вТкст0(имя));
         }
 
-        public void Dispose()
+        private void вымести()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        private void Dispose(bool disposing)
-        {
-            if (this.disposed)
+            if (this.вымещен)
             {
                 return;
             }
 
-            LLVM.DisposeBuilder(this.instance);
+            ЛЛВыместиПостроитель(this.экземпл);
 
-            this.disposed = true;
+            this.вымещен = true;
         }
 
-        public void SetCurrentDebugLocation(LLVMValueRef @L)
+        public void устТекЛокОтладки(ЛЛЗначение п)
         {
-            LLVM.SetCurrentDebugLocation(this.instance, @L);
+            ЛЛУстТекЛокОтладки(this.экземпл, п);
         }
 
-        public LLVMValueRef GetCurrentDebugLocation()
+        public ЛЛЗначение дайТекЛокОтладки()
         {
-            return LLVM.GetCurrentDebugLocation(this.instance);
+            return ЛЛДайТекЛокОтладки(this.экземпл);
         }
 
-        public void SetInstDebugLocation(LLVMValueRef @Inst)
+        public void устТекЛОкОтладкиИнстр(ЛЛЗначение инстр)
         {
-            LLVM.SetInstDebugLocation(this.instance, @Inst);
+            ЛЛУстТекЛокОтладкиИнстр(this.экземпл, инстр);
         }
 
-        public LLVMValueRef CreateRetVoid()
+        public ЛЛЗначение создайВозврПроц()
         {
-            return LLVM.BuildRetVoid(this.instance);
+            return ЛЛСтройВозврПроц(this.экземпл);
         }
 
-        public LLVMValueRef CreateRet(LLVMValueRef @V)
+        public ЛЛЗначение создайВозвр(ЛЛЗначение з)
         {
-            return LLVM.BuildRet(this.instance, @V);
+            return ЛЛСтройВозвр(this.экземпл, з);
         }
 
-        public LLVMValueRef CreateAggregateRet(LLVMValueRef[] @RetVals)
+        public ЛЛЗначение создайАгрегатВозвр(ЛЛЗначение[] возврЗнач)
         {
-            return LLVM.BuildAggregateRet(this.instance, @RetVals);
+            return ЛЛСтройАгрегатВозвр(this.экземпл, возврЗнач);
         }
 
-        public LLVMValueRef CreateBr(LLVMBasicBlockRef @Dest)
+        public ЛЛЗначение создайБр(ЛЛБазовыйБлок где)
         {
-            return LLVM.BuildBr(this.instance, @Dest);
+            return ЛЛСтройБр(this.экземпл, где);
         }
 
-        public LLVMValueRef CreateCondBr(LLVMValueRef @If, LLVMBasicBlockRef @Then, LLVMBasicBlockRef @Else)
+        public ЛЛЗначение создайУсловнБр(ЛЛЗначение если, ЛЛБазовыйБлок то, ЛЛБазовыйБлок иначе)
         {
-            return LLVM.BuildCondBr(this.instance, @If, @Then, @Else);
+            return ЛЛСтройУсловнБр(this.экземпл, если, то, иначе);
         }
 
-        public LLVMValueRef CreateSwitch(LLVMValueRef @V, LLVMBasicBlockRef @Else, uint @NumCases)
+        public ЛЛЗначение создайЩит(ЛЛЗначение з, ЛЛБазовыйБлок иначе, бцел члоРеле)
         {
-            return LLVM.BuildSwitch(this.instance, @V, @Else, @NumCases);
+            return ЛЛСтройЩит(this.экземпл, , иначе, члоРеле);
         }
 
-        public LLVMValueRef CreateIndirectBr(LLVMValueRef @Addr, uint @NumDests)
+        public ЛЛЗначение создайНепрямБр(ЛЛЗначение адр, бцел члоПриёмн)
         {
-            return LLVM.BuildIndirectBr(this.instance, @Addr, @NumDests);
+            return ЛЛСтройНепрямБр(this.экземпл, адр, члоПриёмн);
         }
 
-        public LLVMValueRef CreateInvoke(LLVMValueRef @Fn, LLVMValueRef[] @Args, LLVMBasicBlockRef @Then, LLVMBasicBlockRef @Catch, string @Name)
+        public ЛЛЗначение создайИнвок(ЛЛЗначение фн, ЛЛЗначение[] арги, ЛЛБазовыйБлок тогда, ЛЛБазовыйБлок лови, ткст имя)
         {
-            return LLVM.BuildInvoke(this.instance, @Fn, Args, @Then, @Catch, @Name);
+            return ЛЛСтройИнвок(this.экземпл, фн, арги, тогда, лови, имя);
         }
 
-        public LLVMValueRef CreateLandingPad(LLVMTypeRef @Ty, LLVMValueRef @PersFn, uint @NumClauses, string @Name)
+        public ЛЛЗначение создайЛэндингПад(ЛЛТип тип, ЛЛЗначение персФн, бцел члоКлоз, ткст имя)
         {
-            return LLVM.BuildLandingPad(this.instance, @Ty, @PersFn, @NumClauses, @Name);
+            return ЛЛСтойЛэндингПад(this.экземпл, тип, персФн, члоКлоз, имя);
         }
 
-        public LLVMValueRef CreateResume(LLVMValueRef @Exn)
+        public ЛЛЗначение создайРезюм(ЛЛЗначение расш)
         {
-            return LLVM.BuildResume(this.instance, @Exn);
+            return ЛЛСтройВозобнови(this.экземпл, расш);
         }
 
-        public LLVMValueRef CreateUnreachable()
+        public ЛЛЗначение CreateUnreachable()
         {
-            return LLVM.BuildUnreachable(this.instance);
+            return LLVM.BuildUnreachable(this.экземпл);
         }
 
-        public LLVMValueRef CreateAdd(LLVMValueRef @LHS, LLVMValueRef @RHS, string @Name)
+        public ЛЛЗначение CreateAdd(ЛЛЗначение @LHS, ЛЛЗначение @RHS, ткст имя)
         {
-            return LLVM.BuildAdd(this.instance, @LHS, @RHS, @Name);
+            return LLVM.BuildAdd(this.экземпл, @LHS, @RHS, имя);
         }
 
-        public LLVMValueRef CreateNSWAdd(LLVMValueRef @LHS, LLVMValueRef @RHS, string @Name)
+        public ЛЛЗначение CreateNSWAdd(ЛЛЗначение @LHS, ЛЛЗначение @RHS, ткст имя)
         {
-            return LLVM.BuildNSWAdd(this.instance, @LHS, @RHS, @Name);
+            return LLVM.BuildNSWAdd(this.экземпл, @LHS, @RHS, имя);
         }
 
-        public LLVMValueRef CreateNUWAdd(LLVMValueRef @LHS, LLVMValueRef @RHS, string @Name)
+        public ЛЛЗначение CreateNUWAdd(ЛЛЗначение @LHS, ЛЛЗначение @RHS, ткст имя)
         {
-            return LLVM.BuildNUWAdd(this.instance, @LHS, @RHS, @Name);
+            return LLVM.BuildNUWAdd(this.экземпл, @LHS, @RHS, имя);
         }
 
-        public LLVMValueRef CreateFAdd(LLVMValueRef @LHS, LLVMValueRef @RHS, string @Name)
+        public ЛЛЗначение CreateFAdd(ЛЛЗначение @LHS, ЛЛЗначение @RHS, ткст имя)
         {
-            return LLVM.BuildFAdd(this.instance, @LHS, @RHS, @Name);
+            return LLVM.BuildFAdd(this.экземпл, @LHS, @RHS, имя);
         }
 
-        public LLVMValueRef CreateSub(LLVMValueRef @LHS, LLVMValueRef @RHS, string @Name)
+        public ЛЛЗначение CreateSub(ЛЛЗначение @LHS, ЛЛЗначение @RHS, ткст имя)
         {
-            return LLVM.BuildSub(this.instance, @LHS, @RHS, @Name);
+            return LLVM.BuildSub(this.экземпл, @LHS, @RHS, имя);
         }
 
-        public LLVMValueRef CreateNSWSub(LLVMValueRef @LHS, LLVMValueRef @RHS, string @Name)
+        public ЛЛЗначение CreateNSWSub(ЛЛЗначение @LHS, ЛЛЗначение @RHS, ткст имя)
         {
-            return LLVM.BuildNSWSub(this.instance, @LHS, @RHS, @Name);
+            return LLVM.BuildNSWSub(this.экземпл, @LHS, @RHS, имя);
         }
 
-        public LLVMValueRef CreateNUWSub(LLVMValueRef @LHS, LLVMValueRef @RHS, string @Name)
+        public ЛЛЗначение CreateNUWSub(ЛЛЗначение @LHS, ЛЛЗначение @RHS, ткст имя)
         {
-            return LLVM.BuildNUWSub(this.instance, @LHS, @RHS, @Name);
+            return LLVM.BuildNUWSub(this.экземпл, @LHS, @RHS, имя);
         }
 
-        public LLVMValueRef CreateFSub(LLVMValueRef @LHS, LLVMValueRef @RHS, string @Name)
+        public ЛЛЗначение CreateFSub(ЛЛЗначение @LHS, ЛЛЗначение @RHS, ткст имя)
         {
-            return LLVM.BuildFSub(this.instance, @LHS, @RHS, @Name);
+            return LLVM.BuildFSub(this.экземпл, @LHS, @RHS, имя);
         }
 
-        public LLVMValueRef CreateMul(LLVMValueRef @LHS, LLVMValueRef @RHS, string @Name)
+        public ЛЛЗначение CreateMul(ЛЛЗначение @LHS, ЛЛЗначение @RHS, ткст имя)
         {
-            return LLVM.BuildMul(this.instance, @LHS, @RHS, @Name);
+            return LLVM.BuildMul(this.экземпл, @LHS, @RHS, имя);
         }
 
-        public LLVMValueRef CreateNSWMul(LLVMValueRef @LHS, LLVMValueRef @RHS, string @Name)
+        public ЛЛЗначение CreateNSWMul(ЛЛЗначение @LHS, ЛЛЗначение @RHS, ткст имя)
         {
-            return LLVM.BuildNSWMul(this.instance, @LHS, @RHS, @Name);
+            return LLVM.BuildNSWMul(this.экземпл, @LHS, @RHS, имя);
         }
 
-        public LLVMValueRef CreateNUWMul(LLVMValueRef @LHS, LLVMValueRef @RHS, string @Name)
+        public ЛЛЗначение CreateNUWMul(ЛЛЗначение @LHS, ЛЛЗначение @RHS, ткст имя)
         {
-            return LLVM.BuildNUWMul(this.instance, @LHS, @RHS, @Name);
+            return LLVM.BuildNUWMul(this.экземпл, @LHS, @RHS, имя);
         }
 
-        public LLVMValueRef CreateFMul(LLVMValueRef @LHS, LLVMValueRef @RHS, string @Name)
+        public ЛЛЗначение CreateFMul(ЛЛЗначение @LHS, ЛЛЗначение @RHS, ткст имя)
         {
-            return LLVM.BuildFMul(this.instance, @LHS, @RHS, @Name);
+            return LLVM.BuildFMul(this.экземпл, @LHS, @RHS, имя);
         }
 
-        public LLVMValueRef CreateUDiv(LLVMValueRef @LHS, LLVMValueRef @RHS, string @Name)
+        public ЛЛЗначение CreateUDiv(ЛЛЗначение @LHS, ЛЛЗначение @RHS, ткст имя)
         {
-            return LLVM.BuildUDiv(this.instance, @LHS, @RHS, @Name);
+            return LLVM.BuildUDiv(this.экземпл, @LHS, @RHS, имя);
         }
 
-        public LLVMValueRef CreateSDiv(LLVMValueRef @LHS, LLVMValueRef @RHS, string @Name)
+        public ЛЛЗначение CreateSDiv(ЛЛЗначение @LHS, ЛЛЗначение @RHS, ткст имя)
         {
-            return LLVM.BuildSDiv(this.instance, @LHS, @RHS, @Name);
+            return LLVM.BuildSDiv(this.экземпл, @LHS, @RHS, имя);
         }
 
-        public LLVMValueRef CreateExactSDiv(LLVMValueRef @LHS, LLVMValueRef @RHS, string @Name)
+        public ЛЛЗначение CreateExactSDiv(ЛЛЗначение @LHS, ЛЛЗначение @RHS, ткст имя)
         {
-            return LLVM.BuildExactSDiv(this.instance, @LHS, @RHS, @Name);
+            return LLVM.BuildExactSDiv(this.экземпл, @LHS, @RHS, имя);
         }
 
-        public LLVMValueRef CreateFDiv(LLVMValueRef @LHS, LLVMValueRef @RHS, string @Name)
+        public ЛЛЗначение CreateFDiv(ЛЛЗначение @LHS, ЛЛЗначение @RHS, ткст имя)
         {
-            return LLVM.BuildFDiv(this.instance, @LHS, @RHS, @Name);
+            return LLVM.BuildFDiv(this.экземпл, @LHS, @RHS, имя);
         }
 
-        public LLVMValueRef CreateURem(LLVMValueRef @LHS, LLVMValueRef @RHS, string @Name)
+        public ЛЛЗначение CreateURem(ЛЛЗначение @LHS, ЛЛЗначение @RHS, ткст имя)
         {
-            return LLVM.BuildURem(this.instance, @LHS, @RHS, @Name);
+            return LLVM.BuildURem(this.экземпл, @LHS, @RHS, имя);
         }
 
-        public LLVMValueRef CreateSRem(LLVMValueRef @LHS, LLVMValueRef @RHS, string @Name)
+        public ЛЛЗначение CreateSRem(ЛЛЗначение @LHS, ЛЛЗначение @RHS, ткст имя)
         {
-            return LLVM.BuildSRem(this.instance, @LHS, @RHS, @Name);
+            return LLVM.BuildSRem(this.экземпл, @LHS, @RHS, имя);
         }
 
-        public LLVMValueRef CreateFRem(LLVMValueRef @LHS, LLVMValueRef @RHS, string @Name)
+        public ЛЛЗначение CreateFRem(ЛЛЗначение @LHS, ЛЛЗначение @RHS, ткст имя)
         {
-            return LLVM.BuildFRem(this.instance, @LHS, @RHS, @Name);
+            return LLVM.BuildFRem(this.экземпл, @LHS, @RHS, имя);
         }
 
-        public LLVMValueRef CreateShl(LLVMValueRef @LHS, LLVMValueRef @RHS, string @Name)
+        public ЛЛЗначение CreateShl(ЛЛЗначение @LHS, ЛЛЗначение @RHS, ткст имя)
         {
-            return LLVM.BuildShl(this.instance, @LHS, @RHS, @Name);
+            return LLVM.BuildShl(this.экземпл, @LHS, @RHS, имя);
         }
 
-        public LLVMValueRef CreateLShr(LLVMValueRef @LHS, LLVMValueRef @RHS, string @Name)
+        public ЛЛЗначение CreateLShr(ЛЛЗначение @LHS, ЛЛЗначение @RHS, ткст имя)
         {
-            return LLVM.BuildLShr(this.instance, @LHS, @RHS, @Name);
+            return LLVM.BuildLShr(this.экземпл, @LHS, @RHS, имя);
         }
 
-        public LLVMValueRef CreateAShr(LLVMValueRef @LHS, LLVMValueRef @RHS, string @Name)
+        public ЛЛЗначение CreateAShr(ЛЛЗначение @LHS, ЛЛЗначение @RHS, ткст имя)
         {
-            return LLVM.BuildAShr(this.instance, @LHS, @RHS, @Name);
+            return LLVM.BuildAShr(this.экземпл, @LHS, @RHS, имя);
         }
 
-        public LLVMValueRef CreateAnd(LLVMValueRef @LHS, LLVMValueRef @RHS, string @Name)
+        public ЛЛЗначение CreateAnd(ЛЛЗначение @LHS, ЛЛЗначение @RHS, ткст имя)
         {
-            return LLVM.BuildAnd(this.instance, @LHS, @RHS, @Name);
+            return LLVM.BuildAnd(this.экземпл, @LHS, @RHS, имя);
         }
 
-        public LLVMValueRef CreateOr(LLVMValueRef @LHS, LLVMValueRef @RHS, string @Name)
+        public ЛЛЗначение CreateOr(ЛЛЗначение @LHS, ЛЛЗначение @RHS, ткст имя)
         {
-            return LLVM.BuildOr(this.instance, @LHS, @RHS, @Name);
+            return LLVM.BuildOr(this.экземпл, @LHS, @RHS, имя);
         }
 
-        public LLVMValueRef CreateXor(LLVMValueRef @LHS, LLVMValueRef @RHS, string @Name)
+        public ЛЛЗначение CreateXor(ЛЛЗначение @LHS, ЛЛЗначение @RHS, ткст имя)
         {
-            return LLVM.BuildXor(this.instance, @LHS, @RHS, @Name);
+            return LLVM.BuildXor(this.экземпл, @LHS, @RHS, имя);
         }
 
-        public LLVMValueRef CreateBinOp(LLVMOpcode @Op, LLVMValueRef @LHS, LLVMValueRef @RHS, string @Name)
+        public ЛЛЗначение CreateBinOp(LLVMOpcode @Op, ЛЛЗначение @LHS, ЛЛЗначение @RHS, ткст имя)
         {
-            return LLVM.BuildBinOp(this.instance, @Op, @LHS, @RHS, @Name);
+            return LLVM.BuildBinOp(this.экземпл, @Op, @LHS, @RHS, имя);
         }
 
-        public LLVMValueRef CreateNeg(LLVMValueRef @V, string @Name)
+        public ЛЛЗначение CreateNeg(ЛЛЗначение @V, ткст имя)
         {
-            return LLVM.BuildNeg(this.instance, @V, @Name);
+            return LLVM.BuildNeg(this.экземпл, @V, имя);
         }
 
-        public LLVMValueRef CreateNSWNeg(LLVMValueRef @V, string @Name)
+        public ЛЛЗначение CreateNSWNeg(ЛЛЗначение @V, ткст имя)
         {
-            return LLVM.BuildNSWNeg(this.instance, @V, @Name);
+            return LLVM.BuildNSWNeg(this.экземпл, @V, имя);
         }
 
-        public LLVMValueRef CreateNUWNeg(LLVMValueRef @V, string @Name)
+        public ЛЛЗначение CreateNUWNeg(ЛЛЗначение @V, ткст имя)
         {
-            return LLVM.BuildNUWNeg(this.instance, @V, @Name);
+            return LLVM.BuildNUWNeg(this.экземпл, @V, имя);
         }
 
-        public LLVMValueRef CreateFNeg(LLVMValueRef @V, string @Name)
+        public ЛЛЗначение CreateFNeg(ЛЛЗначение @V, ткст имя)
         {
-            return LLVM.BuildFNeg(this.instance, @V, @Name);
+            return LLVM.BuildFNeg(this.экземпл, @V, имя);
         }
 
-        public LLVMValueRef CreateNot(LLVMValueRef @V, string @Name)
+        public ЛЛЗначение CreateNot(ЛЛЗначение @V, ткст имя)
         {
-            return LLVM.BuildNot(this.instance, @V, @Name);
+            return LLVM.BuildNot(this.экземпл, @V, имя);
         }
 
-        public LLVMValueRef CreateMalloc(LLVMTypeRef @Ty, string @Name)
+        public ЛЛЗначение CreateMalloc(ЛЛТип @Ty, ткст имя)
         {
-            return LLVM.BuildMalloc(this.instance, @Ty, @Name);
+            return LLVM.BuildMalloc(this.экземпл, @Ty, имя);
         }
 
-        public LLVMValueRef CreateArrayMalloc(LLVMTypeRef @Ty, LLVMValueRef @Val, string @Name)
+        public ЛЛЗначение CreateArrayMalloc(ЛЛТип @Ty, ЛЛЗначение @Val, ткст имя)
         {
-            return LLVM.BuildArrayMalloc(this.instance, @Ty, @Val, @Name);
+            return LLVM.BuildArrayMalloc(this.экземпл, @Ty, @Val, имя);
         }
 
-        public LLVMValueRef CreateAlloca(LLVMTypeRef @Ty, string @Name)
+        public ЛЛЗначение CreateAlloca(ЛЛТип @Ty, ткст имя)
         {
-            return LLVM.BuildAlloca(this.instance, @Ty, @Name);
+            return LLVM.BuildAlloca(this.экземпл, @Ty, имя);
         }
 
-        public LLVMValueRef CreateArrayAlloca(LLVMTypeRef @Ty, LLVMValueRef @Val, string @Name)
+        public ЛЛЗначение CreateArrayAlloca(ЛЛТип @Ty, ЛЛЗначение @Val, ткст имя)
         {
-            return LLVM.BuildArrayAlloca(this.instance, @Ty, @Val, @Name);
+            return LLVM.BuildArrayAlloca(this.экземпл, @Ty, @Val, имя);
         }
 
-        public LLVMValueRef CreateFree(LLVMValueRef @PointerVal)
+        public ЛЛЗначение CreateFree(ЛЛЗначение @PointerVal)
         {
-            return LLVM.BuildFree(this.instance, @PointerVal);
+            return LLVM.BuildFree(this.экземпл, @PointerVal);
         }
 
-        public LLVMValueRef CreateLoad(LLVMValueRef @PointerVal, string @Name)
+        public ЛЛЗначение CreateLoad(ЛЛЗначение @PointerVal, ткст имя)
         {
-            return LLVM.BuildLoad(this.instance, @PointerVal, @Name);
+            return LLVM.BuildLoad(this.экземпл, @PointerVal, имя);
         }
 
-        public LLVMValueRef CreateStore(LLVMValueRef @Val, LLVMValueRef @Ptr)
+        public ЛЛЗначение CreateStore(ЛЛЗначение @Val, ЛЛЗначение @Ptr)
         {
-            return LLVM.BuildStore(this.instance, @Val, @Ptr);
+            return LLVM.BuildStore(this.экземпл, @Val, @Ptr);
         }
 
-        public LLVMValueRef CreateGEP(LLVMValueRef @Pointer, LLVMValueRef[] @Indices, string @Name)
+        public ЛЛЗначение CreateGEP(ЛЛЗначение @Pointer, ЛЛЗначение[] @Indices, ткст имя)
         {
-            return LLVM.BuildGEP(this.instance, @Pointer, @Indices, @Name);
+            return LLVM.BuildGEP(this.экземпл, @Pointer, @Indices, имя);
         }
 
-        public LLVMValueRef CreateInBoundsGEP(LLVMValueRef @Pointer, LLVMValueRef[] @Indices, string @Name)
+        public ЛЛЗначение CreateInBoundsGEP(ЛЛЗначение @Pointer, ЛЛЗначение[] @Indices, ткст имя)
         {
-            return LLVM.BuildInBoundsGEP(this.instance, @Pointer, @Indices, @Name);
+            return LLVM.BuildInBoundsGEP(this.экземпл, @Pointer, @Indices, имя);
         }
 
-        public LLVMValueRef CreateStructGEP(LLVMValueRef @Pointer, uint @Idx, string @Name)
+        public ЛЛЗначение CreateStructGEP(ЛЛЗначение @Pointer, uint @Idx, ткст имя)
         {
-            return LLVM.BuildStructGEP(this.instance, @Pointer, @Idx, @Name);
+            return LLVM.BuildStructGEP(this.экземпл, @Pointer, @Idx, имя);
         }
 
-        public LLVMValueRef CreateGlobalString(string @Str, string @Name)
+        public ЛЛЗначение CreateGlobalString(ткст @Str, ткст имя)
         {
-            return LLVM.BuildGlobalString(this.instance, @Str, @Name);
+            return LLVM.BuildGlobalString(this.экземпл, @Str, имя);
         }
 
-        public LLVMValueRef CreateGlobalStringPtr(string @Str, string @Name)
+        public ЛЛЗначение CreateGlobalStringPtr(ткст @Str, ткст имя)
         {
-            return LLVM.BuildGlobalStringPtr(this.instance, @Str, @Name);
+            return LLVM.BuildGlobalStringPtr(this.экземпл, @Str, имя);
         }
 
-        public LLVMValueRef CreateTrunc(LLVMValueRef @Val, LLVMTypeRef @DestTy, string @Name)
+        public ЛЛЗначение CreateTrunc(ЛЛЗначение @Val, ЛЛТип @DestTy, ткст имя)
         {
-            return LLVM.BuildTrunc(this.instance, @Val, @DestTy, @Name);
+            return LLVM.BuildTrunc(this.экземпл, @Val, @DestTy, имя);
         }
 
-        public LLVMValueRef CreateZExt(LLVMValueRef @Val, LLVMTypeRef @DestTy, string @Name)
+        public ЛЛЗначение CreateZExt(ЛЛЗначение @Val, ЛЛТип @DestTy, ткст имя)
         {
-            return LLVM.BuildZExt(this.instance, @Val, @DestTy, @Name);
+            return LLVM.BuildZExt(this.экземпл, @Val, @DestTy, имя);
         }
 
-        public LLVMValueRef CreateSExt(LLVMValueRef @Val, LLVMTypeRef @DestTy, string @Name)
+        public ЛЛЗначение CreateSExt(ЛЛЗначение @Val, ЛЛТип @DestTy, ткст имя)
         {
-            return LLVM.BuildSExt(this.instance, @Val, @DestTy, @Name);
+            return LLVM.BuildSExt(this.экземпл, @Val, @DestTy, имя);
         }
 
-        public LLVMValueRef CreateFPToUI(LLVMValueRef @Val, LLVMTypeRef @DestTy, string @Name)
+        public ЛЛЗначение CreateFPToUI(ЛЛЗначение @Val, ЛЛТип @DestTy, ткст имя)
         {
-            return LLVM.BuildFPToUI(this.instance, @Val, @DestTy, @Name);
+            return LLVM.BuildFPToUI(this.экземпл, @Val, @DestTy, имя);
         }
 
-        public LLVMValueRef CreateFPToSI(LLVMValueRef @Val, LLVMTypeRef @DestTy, string @Name)
+        public ЛЛЗначение CreateFPToSI(ЛЛЗначение @Val, ЛЛТип @DestTy, ткст имя)
         {
-            return LLVM.BuildFPToSI(this.instance, @Val, @DestTy, @Name);
+            return LLVM.BuildFPToSI(this.экземпл, @Val, @DestTy, имя);
         }
 
-        public LLVMValueRef CreateUIToFP(LLVMValueRef @Val, LLVMTypeRef @DestTy, string @Name)
+        public ЛЛЗначение CreateUIToFP(ЛЛЗначение @Val, ЛЛТип @DestTy, ткст имя)
         {
-            return LLVM.BuildUIToFP(this.instance, @Val, @DestTy, @Name);
+            return LLVM.BuildUIToFP(this.экземпл, @Val, @DestTy, имя);
         }
 
-        public LLVMValueRef CreateSIToFP(LLVMValueRef @Val, LLVMTypeRef @DestTy, string @Name)
+        public ЛЛЗначение CreateSIToFP(ЛЛЗначение @Val, ЛЛТип @DestTy, ткст имя)
         {
-            return LLVM.BuildSIToFP(this.instance, @Val, @DestTy, @Name);
+            return LLVM.BuildSIToFP(this.экземпл, @Val, @DestTy, имя);
         }
 
-        public LLVMValueRef CreateFPTrunc(LLVMValueRef @Val, LLVMTypeRef @DestTy, string @Name)
+        public ЛЛЗначение CreateFPTrunc(ЛЛЗначение @Val, ЛЛТип @DestTy, ткст имя)
         {
-            return LLVM.BuildFPTrunc(this.instance, @Val, @DestTy, @Name);
+            return LLVM.BuildFPTrunc(this.экземпл, @Val, @DestTy, имя);
         }
 
-        public LLVMValueRef CreateFPExt(LLVMValueRef @Val, LLVMTypeRef @DestTy, string @Name)
+        public ЛЛЗначение CreateFPExt(ЛЛЗначение @Val, ЛЛТип @DestTy, ткст имя)
         {
-            return LLVM.BuildFPExt(this.instance, @Val, @DestTy, @Name);
+            return LLVM.BuildFPExt(this.экземпл, @Val, @DestTy, имя);
         }
 
-        public LLVMValueRef CreatePtrToInt(LLVMValueRef @Val, LLVMTypeRef @DestTy, string @Name)
+        public ЛЛЗначение CreatePtrToInt(ЛЛЗначение @Val, ЛЛТип @DestTy, ткст имя)
         {
-            return LLVM.BuildPtrToInt(this.instance, @Val, @DestTy, @Name);
+            return LLVM.BuildPtrToInt(this.экземпл, @Val, @DestTy, имя);
         }
 
-        public LLVMValueRef CreateIntToPtr(LLVMValueRef @Val, LLVMTypeRef @DestTy, string @Name)
+        public ЛЛЗначение CreateIntToPtr(ЛЛЗначение @Val, ЛЛТип @DestTy, ткст имя)
         {
-            return LLVM.BuildIntToPtr(this.instance, @Val, @DestTy, @Name);
+            return LLVM.BuildIntToPtr(this.экземпл, @Val, @DestTy, имя);
         }
 
-        public LLVMValueRef CreateBitCast(LLVMValueRef @Val, LLVMTypeRef @DestTy, string @Name)
+        public ЛЛЗначение CreateBitCast(ЛЛЗначение @Val, ЛЛТип @DestTy, ткст имя)
         {
-            return LLVM.BuildBitCast(this.instance, @Val, @DestTy, @Name);
+            return LLVM.BuildBitCast(this.экземпл, @Val, @DestTy, имя);
         }
 
-        public LLVMValueRef CreateAddrSpaceCast(LLVMValueRef @Val, LLVMTypeRef @DestTy, string @Name)
+        public ЛЛЗначение CreateAddrSpaceCast(ЛЛЗначение @Val, ЛЛТип @DestTy, ткст имя)
         {
-            return LLVM.BuildAddrSpaceCast(this.instance, @Val, @DestTy, @Name);
+            return LLVM.BuildAddrSpaceCast(this.экземпл, @Val, @DestTy, имя);
         }
 
-        public LLVMValueRef CreateZExtOrBitCast(LLVMValueRef @Val, LLVMTypeRef @DestTy, string @Name)
+        public ЛЛЗначение CreateZExtOrBitCast(ЛЛЗначение @Val, ЛЛТип @DestTy, ткст имя)
         {
-            return LLVM.BuildZExtOrBitCast(this.instance, @Val, @DestTy, @Name);
+            return LLVM.BuildZExtOrBitCast(this.экземпл, @Val, @DestTy, имя);
         }
 
-        public LLVMValueRef CreateSExtOrBitCast(LLVMValueRef @Val, LLVMTypeRef @DestTy, string @Name)
+        public ЛЛЗначение CreateSExtOrBitCast(ЛЛЗначение @Val, ЛЛТип @DestTy, ткст имя)
         {
-            return LLVM.BuildSExtOrBitCast(this.instance, @Val, @DestTy, @Name);
+            return LLVM.BuildSExtOrBitCast(this.экземпл, @Val, @DestTy, имя);
         }
 
-        public LLVMValueRef CreateTruncOrBitCast(LLVMValueRef @Val, LLVMTypeRef @DestTy, string @Name)
+        public ЛЛЗначение CreateTruncOrBitCast(ЛЛЗначение @Val, ЛЛТип @DestTy, ткст имя)
         {
-            return LLVM.BuildTruncOrBitCast(this.instance, @Val, @DestTy, @Name);
+            return LLVM.BuildTruncOrBitCast(this.экземпл, @Val, @DestTy, имя);
         }
 
-        public LLVMValueRef CreateCast(LLVMOpcode @Op, LLVMValueRef @Val, LLVMTypeRef @DestTy, string @Name)
+        public ЛЛЗначение CreateCast(LLVMOpcode @Op, ЛЛЗначение @Val, ЛЛТип @DestTy, ткст имя)
         {
-            return LLVM.BuildCast(this.instance, @Op, @Val, @DestTy, @Name);
+            return LLVM.BuildCast(this.экземпл, @Op, @Val, @DestTy, имя);
         }
 
-        public LLVMValueRef CreatePointerCast(LLVMValueRef @Val, LLVMTypeRef @DestTy, string @Name)
+        public ЛЛЗначение CreatePointerCast(ЛЛЗначение @Val, ЛЛТип @DestTy, ткст имя)
         {
-            return LLVM.BuildPointerCast(this.instance, @Val, @DestTy, @Name);
+            return LLVM.BuildPointerCast(this.экземпл, @Val, @DestTy, имя);
         }
 
-        public LLVMValueRef CreateIntCast(LLVMValueRef @Val, LLVMTypeRef @DestTy, string @Name)
+        public ЛЛЗначение CreateIntCast(ЛЛЗначение @Val, ЛЛТип @DestTy, ткст имя)
         {
-            return LLVM.BuildIntCast(this.instance, @Val, @DestTy, @Name);
+            return LLVM.BuildIntCast(this.экземпл, @Val, @DestTy, имя);
         }
 
-        public LLVMValueRef CreateFPCast(LLVMValueRef @Val, LLVMTypeRef @DestTy, string @Name)
+        public ЛЛЗначение CreateFPCast(ЛЛЗначение @Val, ЛЛТип @DestTy, ткст имя)
         {
-            return LLVM.BuildFPCast(this.instance, @Val, @DestTy, @Name);
+            return LLVM.BuildFPCast(this.экземпл, @Val, @DestTy, имя);
         }
 
-        public LLVMValueRef CreateICmp(LLVMIntPredicate @Op, LLVMValueRef @LHS, LLVMValueRef @RHS, string @Name)
+        public ЛЛЗначение CreateICmp(LLVMIntPredicate @Op, ЛЛЗначение @LHS, ЛЛЗначение @RHS, ткст имя)
         {
-            return LLVM.BuildICmp(this.instance, @Op, @LHS, @RHS, @Name);
+            return LLVM.BuildICmp(this.экземпл, @Op, @LHS, @RHS, имя);
         }
 
-        public LLVMValueRef CreateFCmp(LLVMRealPredicate @Op, LLVMValueRef @LHS, LLVMValueRef @RHS, string @Name)
+        public ЛЛЗначение CreateFCmp(LLVMRealPredicate @Op, ЛЛЗначение @LHS, ЛЛЗначение @RHS, ткст имя)
         {
-            return LLVM.BuildFCmp(this.instance, @Op, @LHS, @RHS, @Name);
+            return LLVM.BuildFCmp(this.экземпл, @Op, @LHS, @RHS, имя);
         }
 
-        public LLVMValueRef CreatePhi(LLVMTypeRef @Ty, string @Name)
+        public ЛЛЗначение CreatePhi(ЛЛТип @Ty, ткст имя)
         {
-            return LLVM.BuildPhi(this.instance, @Ty, @Name);
+            return LLVM.BuildPhi(this.экземпл, @Ty, имя);
         }
 
-        public LLVMValueRef CreateCall(LLVMValueRef @Fn, LLVMValueRef[] @Args, string @Name)
+        public ЛЛЗначение CreateCall(ЛЛЗначение @Fn, ЛЛЗначение[] @Args, ткст имя)
         {
-            return LLVM.BuildCall(this.instance, @Fn, @Args, @Name);
+            return LLVM.BuildCall(this.экземпл, @Fn, @Args, имя);
         }
 
-        public LLVMValueRef CreateSelect(LLVMValueRef @If, LLVMValueRef @Then, LLVMValueRef @Else, string @Name)
+        public ЛЛЗначение CreateSelect(ЛЛЗначение @If, ЛЛЗначение @Then, ЛЛЗначение @Else, ткст имя)
         {
-            return LLVM.BuildSelect(this.instance, @If, @Then, @Else, @Name);
+            return LLVM.BuildSelect(this.экземпл, @If, @Then, @Else, имя);
         }
 
-        public LLVMValueRef CreateVAArg(LLVMValueRef @List, LLVMTypeRef @Ty, string @Name)
+        public ЛЛЗначение CreateVAArg(ЛЛЗначение @List, ЛЛТип @Ty, ткст имя)
         {
-            return LLVM.BuildVAArg(this.instance, @List, @Ty, @Name);
+            return LLVM.BuildVAArg(this.экземпл, @List, @Ty, имя);
         }
 
-        public LLVMValueRef CreateExtractElement(LLVMValueRef @VecVal, LLVMValueRef @Index, string @Name)
+        public ЛЛЗначение CreateExtractElement(ЛЛЗначение @VecVal, ЛЛЗначение @Index, ткст имя)
         {
-            return LLVM.BuildExtractElement(this.instance, @VecVal, @Index, @Name);
+            return LLVM.BuildExtractElement(this.экземпл, @VecVal, @Index, имя);
         }
 
-        public LLVMValueRef CreateInsertElement(LLVMValueRef @VecVal, LLVMValueRef @EltVal, LLVMValueRef @Index, string @Name)
+        public ЛЛЗначение CreateInsertElement(ЛЛЗначение @VecVal, ЛЛЗначение @EltVal, ЛЛЗначение @Index, ткст имя)
         {
-            return LLVM.BuildInsertElement(this.instance, @VecVal, @EltVal, @Index, @Name);
+            return LLVM.BuildInsertElement(this.экземпл, @VecVal, @EltVal, @Index, имя);
         }
 
-        public LLVMValueRef CreateShuffleVector(LLVMValueRef @V1, LLVMValueRef @V2, LLVMValueRef @Mask, string @Name)
+        public ЛЛЗначение CreateShuffleVector(ЛЛЗначение @V1, ЛЛЗначение @V2, ЛЛЗначение @Mask, ткст имя)
         {
-            return LLVM.BuildShuffleVector(this.instance, @V1, @V2, @Mask, @Name);
+            return LLVM.BuildShuffleVector(this.экземпл, @V1, @V2, @Mask, имя);
         }
 
-        public LLVMValueRef CreateExtractValue(LLVMValueRef @AggVal, uint @Index, string @Name)
+        public ЛЛЗначение CreateExtractValue(ЛЛЗначение @AggVal, uint @Index, ткст имя)
         {
-            return LLVM.BuildExtractValue(this.instance, @AggVal, @Index, @Name);
+            return LLVM.BuildExtractValue(this.экземпл, @AggVal, @Index, имя);
         }
 
-        public LLVMValueRef CreateInsertValue(LLVMValueRef @AggVal, LLVMValueRef @EltVal, uint @Index, string @Name)
+        public ЛЛЗначение CreateInsertValue(ЛЛЗначение @AggVal, ЛЛЗначение @EltVal, uint @Index, ткст имя)
         {
-            return LLVM.BuildInsertValue(this.instance, @AggVal, @EltVal, @Index, @Name);
+            return LLVM.BuildInsertValue(this.экземпл, @AggVal, @EltVal, @Index, имя);
         }
 
-        public LLVMValueRef CreateIsNull(LLVMValueRef @Val, string @Name)
+        public ЛЛЗначение CreateIsNull(ЛЛЗначение @Val, ткст имя)
         {
-            return LLVM.BuildIsNull(this.instance, @Val, @Name);
+            return LLVM.BuildIsNull(this.экземпл, @Val, имя);
         }
 
-        public LLVMValueRef CreateIsNotNull(LLVMValueRef @Val, string @Name)
+        public ЛЛЗначение CreateIsNotNull(ЛЛЗначение @Val, ткст имя)
         {
-            return LLVM.BuildIsNotNull(this.instance, @Val, @Name);
+            return LLVM.BuildIsNotNull(this.экземпл, @Val, имя);
         }
 
-        public LLVMValueRef CreatePtrDiff(LLVMValueRef @LHS, LLVMValueRef @RHS, string @Name)
+        public ЛЛЗначение CreatePtrDiff(ЛЛЗначение @LHS, ЛЛЗначение @RHS, ткст имя)
         {
-            return LLVM.BuildPtrDiff(this.instance, @LHS, @RHS, @Name);
+            return LLVM.BuildPtrDiff(this.экземпл, @LHS, @RHS, имя);
         }
 
-        public LLVMValueRef CreateFence(LLVMAtomicOrdering @ordering, bool @singleThread, string @Name)
+        public ЛЛЗначение CreateFence(LLVMAtomicOrdering @ordering, bool @singleThread, ткст имя)
         {
-            return LLVM.BuildFence(this.instance, @ordering, @singleThread, @Name);
+            return LLVM.BuildFence(this.экземпл, @ordering, @singleThread, имя);
         }
 
-        public LLVMValueRef CreateAtomicRMW(LLVMAtomicRMWBinOp @op, LLVMValueRef @PTR, LLVMValueRef @Val, LLVMAtomicOrdering @ordering, bool @singleThread)
+        public ЛЛЗначение CreateAtomicRMW(LLVMAtomicRMWBinOp @op, ЛЛЗначение @PTR, ЛЛЗначение @Val, LLVMAtomicOrdering @ordering, bool @singleThread)
         {
-            return LLVM.BuildAtomicRMW(this.instance, @op, @PTR, @Val, @ordering, @singleThread);
+            return LLVM.BuildAtomicRMW(this.экземпл, @op, @PTR, @Val, @ordering, @singleThread);
         }
     }
-}

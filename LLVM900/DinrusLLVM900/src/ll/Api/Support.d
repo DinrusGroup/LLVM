@@ -1,10 +1,10 @@
-ï»¿module ll.api.Support;
+module ll.api.Support;
 
     public static class Support
     {
-        public static bool LoadLibraryPermanently(string filename)
+        public static bool LoadLibraryPermanently(string èìÿô)
 		{ 
-			return LLVM.LoadLibraryPermanently(filename);
+			return LLVM.LoadLibraryPermanently(èìÿô);
 		}
         public static void ParseCommandLineOptions(int argc, string[] argv, string overview)
 		{ 

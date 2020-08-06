@@ -1,4 +1,4 @@
-﻿module ll.api.DLLStorageClass;
+module ll.api.DLLStorageClass;
 
 
     public enum DLLStorageClass : int

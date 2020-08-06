@@ -1,5 +1,5 @@
-﻿module ll.api.ThreadLocalMode;
-{
+module ll.api.ThreadLocalMode;
+
     public enum ThreadLocalMode : int
     {
         NotThreadLocal = 0,
@@ -8,4 +8,4 @@
         InitialExecTLSModel = 3,
         LocalExecTLSModel = 4,
     }
-}
+

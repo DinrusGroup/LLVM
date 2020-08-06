@@ -1,57 +1,62 @@
-﻿module ll.api.
-{
-    using ll.api..Types;
-    using System;
-    using Utilities;
+module ll.api.GenericValue;
 
-    public sealed class GenericValue : IDisposableWrapper<LLVMGenericValueRef>, IDisposable
+import ll.c.ExecutionEngine;
+import ll.api.typs.IntegerType;
+import ll.api.typs.FPType;
+
+    public  class ГенерноеЗначение
     {
-        LLVMGenericValueRef IWrapper!(LLVMGenericValueRef>.ToHandleType { this._instance;
-        void IDisposableWrapper<LLVMGenericValueRef>.MakeHandleOwner() { this._owner = true;
+       private  ЛЛГенерноеЗначение экземпл;
 
-        public static GenericValue Create(IntegerType t, ulong n, bool isSigned) { LLVM.CreateGenericValueOfInt(t.Unwrap(), n, isSigned).Wrap().MakeHandleOwner<GenericValue, LLVMGenericValueRef>();
-        public static GenericValue Create(IntegerType t, ulong n) { Create(t, n, false);
-        public static GenericValue Create(FPType ty, double n) { LLVM.CreateGenericValueOfFloat(ty.Unwrap(), n).Wrap().MakeHandleOwner<GenericValue, LLVMGenericValueRef>();
-        public static GenericValue Create(IntPtr p) { LLVM.CreateGenericValueOfPointer(p).Wrap().MakeHandleOwner<GenericValue, LLVMGenericValueRef>();
+        this(ТипЦелое t, бдол n, бул соЗнаком)
+		{
+			 this.экземпл = ЛЛСоздайГенЗначЦел(t.раскрой(), n, соЗнаком);
+		}
 
-        private readonly LLVMGenericValueRef _instance;
-        private bool _disposed;
-        private bool _owner;
+        this(ТипЦелое t, бдол n)
+		 {
+			this(t, n, false);
+		 }
 
-        internal GenericValue(LLVMGenericValueRef instance)
+        this(ТипПЗ ty, дво n)
+		{
+		   this.экземпл = ЛЛСоздайГенЗначПлав(ty.раскрой(), n);
+		}
+
+        public this(ук p)
+		{
+			this.экземпл = ЛЛСоздайГенЗначУк(p);
+		}
+
+		this(ЛЛГенерноеЗначение экзэмпл)
         {
-            this._instance = instance;
+            this.экземпл = экзэмпл;
         }
 
-        ~GenericValue()
+        ~this()
         {
-            this.Dispose(false);
+            ЛЛВыместиГенЗнач(this.раскрой());
         }
 
-        public uint IntWidth { LLVM.GenericValueIntWidth(this.Unwrap());
-        public ulong ToInt(bool isSigned) { LLVM.GenericValueToInt(this.Unwrap(), isSigned);
-        public IntPtr ToPointer() { LLVM.GenericValueToPointer(this.Unwrap());
-        public double ToFloat(Type ty) { LLVM.GenericValueToFloat(ty.Unwrap(), this.Unwrap());
+        public бцел целШирина()
+			{ 
+				return ЛЛШиринаГенЗначЦел(this.раскрой());
+			}
 
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+        public бдол вЦел(бул соЗнаком)
+		 { 
+			return ЛЛГенЗначВЦел(this.раскрой(), соЗнаком);
+		 }
 
-        public void Dispose(bool disposing)
-        {
-            if (this._disposed)
-            {
-                return;
-            }
+        public ук вУк()
+		{
+			return ЛЛГенЗначВУк(this.раскрой());
+		}
 
-            if (this._owner)
-            {
-                LLVM.DisposeGenericValue(this.Unwrap());
-            }
+        public дво вПлав(Тип ty)
+		{ 
+			return ЛЛГенЗначВПлав(ty.раскрой(), this.раскрой());
+		}
 
-            this._disposed = true;
-        }
     }
-}
+

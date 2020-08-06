@@ -1,16 +1,16 @@
-﻿module ll.api..TargetInitializers
-{
-    public sealed class XCoreTargetInitializer : TargetInitializer,
+module ll.api.TargetInitializers.XCoreTargetInitializer;
+
+import ll.c.api.TargetInitializers.TargetInitializer;
+
+    public  class XCoreTargetInitializer : TargetInitializer,
         ITarget, ITargetInfo, ITargetMC, IAsmPrinter, IDisassembler
     {
-        internal XCoreTargetInitializer()
-        {
-        }
+        this(){}
 
-        public void Target() { LLVM.InitializeXCoreTarget();
-        public void TargetInfo() { LLVM.InitializeXCoreTargetInfo();
-        public void TargetMC() { LLVM.InitializeXCoreTargetMC();
-        public void AsmPrinter() { LLVM.InitializeXCoreAsmPrinter();
-        public void Disassembler() { LLVM.InitializeXCoreDisassembler();
+        public void Target() { LLInitializeXCoreTarget();}
+        public void TargetInfo() { LLInitializeXCoreTargetInfo();}
+        public void TargetMC() { LLInitializeXCoreTargetMC();}
+        public void AsmPrinter() { LLInitializeXCoreAsmPrinter();}
+        public void Disassembler() { LLInitializeXCoreDisassembler();}
     }
-}
+

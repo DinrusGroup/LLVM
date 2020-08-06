@@ -332,7 +332,7 @@ static	 ManagedStatic<std::vector<std::string>> RunPassNames;
                 return 1;
             }
 
-            // If we are supposed to override the target triple, do so now.
+            // If we are supposed to override the target триада, do so now.
             if (!TargetTriple.empty())
                 M->setTargetTriple(Triple::normalize(TargetTriple));
             TheTriple = Triple(M->getTargetTriple());
@@ -475,7 +475,7 @@ static	 ManagedStatic<std::vector<std::string>> RunPassNames;
         // Build up all of the passes that we want to do to the module.
         legacy::PassManager PM;
 
-        // Add an appropriate TargetLibraryInfo pass for the module's triple.
+        // Add an appropriate TargetLibraryInfo pass for the module's триада.
         TargetLibraryInfoImpl TLII(Triple(M->getTargetTriple()));
 
         // The -disable-simplify-libcalls flag actually disables all builtin optzns.

@@ -1,54 +1,67 @@
-﻿module ll.api.SectionIterator;
+module ll.api.SectionIterator;
 
-    public  class SectionIterator : IDisposableWrapper<LLVMSectionIteratorRef>, IDisposable
-    {
-        LLVMSectionIteratorRef IWrapper!(LLVMSectionIteratorRef>.ToHandleType { this._instance;
-        void IDisposableWrapper<LLVMSectionIteratorRef>.MakeHandleOwner() { this._owner = true;
+import ll.c.Types, ll.c.Object, ll.common;
+import ll.api.SymbolIterator;
+import ll.api.RelocationIterator;
 
-        private LLVMSectionIteratorRef _instance;
-        private bool _disposed;
-        private bool _owner;
+    public  class ИтераторСекций
+	{
+        private ЛЛИтераторСекций экземпл;
 
-        internal SectionIterator(LLVMSectionIteratorRef instance)
+        this(ЛЛИтераторСекций экзэмпл)
         {
-            this._instance = instance;
+            this.экземпл = экзэмпл;
         }
 
-        ~SectionIterator()
+        ~this()
         {
-            this.Dispose(false);
+            ЛЛВыместиИтераторСекций(this.раскрой());
         }
 
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+		public ЛЛИтераторСекций раскрой(){return this.экземпл;}
 
-        private void Dispose(bool disposing)
-        {
-            if (this._disposed)
-            {
-                return;
-            }
+        public проц перейдиКСледщСекц()
+		{
+			ЛЛПереместисьКСледщСекции(this.раскрой());
+		}
 
-            if (this._owner)
-            {
-                LLVM.DisposeSectionIterator(this.Unwrap());
-            }
+        public проц перейдиКСодержащСекц(СимвИтератор sym)
+		{ 
+		ЛЛПерместисьКСодержащСекции(this.раскрой(), sym.раскрой());
+		}
 
-            this._disposed = true;
-        }
+        public ткст имяСекции()
+		{
+			return вТкст(ЛЛДайИмяСекции(this.раскрой()));
+		}
 
-        public void MoveToNextSection() { LLVM.MoveToNextSection(this.Unwrap());
-        public void MoveToContainingSection(SymbolIterator sym) { LLVM.MoveToContainingSection(this.Unwrap(), sym.Unwrap());
-        public string SectionName { LLVM.GetSectionName(this.Unwrap());
-        public ulong SectionSize { LLVM.GetSectionSize(this.Unwrap());
-        public string SectionContents { LLVM.GetSectionContents(this.Unwrap());
-        public ulong SectionAddress { LLVM.GetSectionAddress(this.Unwrap());
+        public бдол размерСекции()
+		{
+			return ЛЛДАйРазмСекции(this.раскрой());
+		}
 
-        public RelocationIterator Relocations { LLVM.GetRelocations(this.Unwrap()).Wrap();
-        public bool IsRelocationIteratorAtEnd(RelocationIterator ri) { LLVM.IsRelocationIteratorAtEnd(this.Unwrap(), ri.Unwrap());
+        public ткст содержимоеСекции()
+		{ 
+			return вТкст(ЛЛДайСодержимоеСекции(this.раскрой()));
+		}
 
-        public bool SectionContainsSymbol(SymbolIterator sym) { LLVM.GetSectionContainsSymbol(this.Unwrap(), sym.Unwrap());
+        public бдол адресСекции()
+		{ 
+			return ЛЛДайАдресСекции(this.раскрой());
+		}
+
+        public ИтераторРелокаций релокации()
+		{ 
+			return new ИтераторРелокаций(ЛЛДайРелокации(this.раскрой()));
+		}
+
+        public бул вКонцеРелИтер_ли(ИтераторРелокаций ri)
+		{ 
+			return ЛЛИтераторРелокацийВКонце_ли(this.раскрой(), ri.раскрой());
+		}
+
+        public бул естьСимВСекц_ли(СимвИтератор sym) 
+		{
+			return ЛЛСодержитСекцияСимвол_ли(this.раскрой(), sym.раскрой());
+		}
     }

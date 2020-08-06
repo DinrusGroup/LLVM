@@ -1,4 +1,4 @@
-﻿module ll.api.CallingConvention;
+module ll.api.CallingConvention;
 
      enum CallingConv : uint
     {

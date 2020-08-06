@@ -1,4 +1,4 @@
-﻿module ll.api.DiagnosticSeverity;
+module ll.api.DiagnosticSeverity;
 
     public enum DiagnosticSeverity : int
     {

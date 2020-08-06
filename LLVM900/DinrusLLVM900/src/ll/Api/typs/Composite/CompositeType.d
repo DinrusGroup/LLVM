@@ -1,15 +1,29 @@
-﻿namespace LLVMSharp.API.Types.Composite
-{
-    public abstract class CompositeType : Type
+module ll.api.typs.Composite.CompositeType;
+
+import ll.api.Type;
+import ll.c.Types;
+
+    public abstract class ТипКомпозит : Тип
     {
-        internal CompositeType(LLVMTypeRef typeRef)
-            : base(typeRef)
-        {
+		private ЛЛТип экзэмпл;
+
+        this(ЛЛТип экзэмпл)
+		{
+            super(экзэмпл);
+			this.экзэмпл = экзэмпл;
+			
         }
 
-        public Type this[uint index] => this.GetTypeAtIndex(index);
+        public override ЛЛТип раскрой()
+		{
+            return this.экзэмпл;
+		}
 
-        public abstract bool IsIndexValid(uint index);
-        public abstract Type GetTypeAtIndex(uint index);
+        //public Тип this[бцел индекс] { this.дайТипПоИндексу(индекс);}
+
+        public abstract бул валиденИндекс_ли(бцел индекс);
+        public abstract Тип дайТипПоИндексу(бцел индекс);
     }
-}
+
+    
+

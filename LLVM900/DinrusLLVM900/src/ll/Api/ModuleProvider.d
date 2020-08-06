@@ -1,46 +1,23 @@
-﻿module ll.api.
-{
-    using System;
-    using Utilities;
+module ll.api.ModuleProvider;
 
-    public sealed class ModuleProvider : IDisposableWrapper<LLVMModuleProviderRef>, IDisposable
+import ll.c.Core, ll.c.Types;
+
+    public  class МодульПровайдер
     {
-        LLVMModuleProviderRef IWrapper!(LLVMModuleProviderRef>.ToHandleType { this._instance;
-        void IDisposableWrapper<LLVMModuleProviderRef>.MakeHandleOwner() { this._owner = true;
+        private ЛЛМодульПровайдер экземпл;
 
-        private readonly LLVMModuleProviderRef _instance;
-        private bool _disposed;
-        private bool _owner;
-
-        internal ModuleProvider(LLVMModuleProviderRef instance)
+        this(ЛЛМодульПровайдер экзэмпл)
         {
-            this._instance = instance;
+            this.экземпл = экзэмпл;
         }
 
-        ~ModuleProvider()
+        ~this()
         {
-            this.Dispose(false);
+           ЛЛВыместиМодульПровайдер(this.экземпл);
         }
 
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        private void Dispose(bool disposing)
-        {
-            if (this._disposed)
-            {
-                return;
-            }
-
-            if (this._owner)
-            {
-                LLVM.DisposeModuleProvider(this.Unwrap());
-            }
-
-            this._disposed = true;
-        }
+        public ЛЛМодульПровайдер раскрой()
+		{
+            return this.экземпл;
+		}
     }
-}

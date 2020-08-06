@@ -1,12 +1,29 @@
-﻿module ll.api.
-{
-    public abstract class MetadataAsValue : Value
+module ll.api.MetadataAsValue;
+
+import ll.common;
+import ll.c.Types, ll.c.Core;
+import ll.api.Value;
+
+    public abstract class МетаданКакЗначение : Значение
     {
-        internal MetadataAsValue(LLVMValueRef instance) 
-            : base(instance)
-        {
+        бцел длина;
+        ЛЛЗначение экзэмпл;
+
+        this(ЛЛЗначение экзэмпл) 
+		{
+            super(экзэмпл);        
         }
 
-        public string MDString { LLVM.GetMDString(this.Unwrap(), out uint len);
+        public ЛЛЗначение раскрой()
+		{
+            return this.экземпл;
+		}
+
+        public ткст текстМД()
+		{
+            бцел длин;
+			return вТкст(ЛЛДайМДТкст(this.раскрой(), &длина));
+
+		}
     }
-}
+

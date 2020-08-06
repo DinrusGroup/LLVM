@@ -1,19 +1,49 @@
-﻿namespace LLVMSharp.API.Types
-{
-    public sealed class IntegerType : Type
-    {
-        public static IntegerType Create(uint bitWidth) => LLVM.IntType(bitWidth).WrapAs<IntegerType>();
-        public static IntegerType Create(Context context, uint bitWidth) => LLVM.IntTypeInContext(context.Unwrap(), bitWidth).WrapAs<IntegerType>();
+module ll.api.typs.IntegerType;
 
-        internal IntegerType(LLVMTypeRef typeRef)
-            : base(typeRef)
-        {
+import ll.api.Type;
+import ll.api.Context;
+import ll.c.Core;
+import ll.c.Types;
+import ll.common;
+
+    public  class ТипЦелое : Тип
+    {
+        public this(бцел битШирина)
+		{ 
+			this(ЛЛТипЦел(битШирина));
+		}
+
+        public this(Контекст контекст, бцел битШирина)
+		{
+			this(ЛЛТипЦелВКонтексте(контекст.раскрой(), битШирина));
+		}
+
+		private ЛЛТип экзэмпл;
+
+        this(ЛЛТип экзэмпл)
+		{
+            super(экзэмпл);
+			this.экзэмпл = экзэмпл;
+			
         }
 
-        public uint BitWidth => LLVM.GetIntTypeWidth(this.Unwrap());
-        public override bool IsSingleValueType => true;
+        public override ЛЛТип раскрой()
+		{
+            return this.экзэмпл;
+		}
 
-        public override string Name => $"i{this.BitWidth}";
-        public override uint PrimitiveSizeInBits => this.BitWidth;
+        public бцел битШирина()
+		{ 
+			return ЛДайШиринуЦелТипа(this.раскрой());
+		}
+
+        public override бул типСОднимЗначением_ли() {return true;}
+
+        public override ткст имя()
+		{
+			return фм("i{}", this.битШирина);
+		}
+
+        public override бцел примитивнРазмерВБитах() {return this.битШирина();}
     }
-}
+

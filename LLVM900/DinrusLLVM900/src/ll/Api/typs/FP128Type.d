@@ -1,14 +1,26 @@
-﻿namespace LLVMSharp.API.Types
-{
-    public sealed class FP128Type : FPType
+module ll.api.typs.FP128Type;
+
+import ll.api.typs.FPType;
+import ll.c.Types;
+
+    public class ТипПЗ128 : ТипПЗ
     {
-        internal FP128Type(LLVMTypeRef typeRef)
-            : base(typeRef)
-        {
+		private ЛЛТип экзэмпл;
+
+        this(ЛЛТип экзэмпл)
+		{
+            super(экзэмпл);
+			this.экзэмпл = экзэмпл;
+			
         }
 
-        public override string Name => "fp128";
-        public override uint PrimitiveSizeInBits => 128;
-        public override int MantissaWidth => 113;
+        public override ЛЛТип раскрой()
+		{
+            return this.экзэмпл;
+		}
+
+        public override ткст имя() {return "fp128";}
+        public override бцел примитивнРазмерВБитах() {return  128;}
+        public override цел ширинаМантиссы() {return  113;}
     }
-}
+

@@ -24,22 +24,22 @@ extern (C){
 ЛЛКонтекстДизасма ЛЛСоздайДизасм(ткст0 имяТриады, ук инфоДиз, цел типТэга, ЛЛОбрвызОпИнфо дайОпИнфо, ЛЛОбрвызПоискСимвола поискСим);
 
 /**
- * Create a disassembler for the имяТриады и a specific ЦПБ.  Symbolic
+ * Создаёт дизассемблер для имяТриады и a specific ЦПБ.  Symbolic
  * disassembly is supported by passing a блок of information in the инфоДиз
  * параметр и specifying the типТэга и callback functions as described
  * above.  These can все be passed * as NULL.  If successful, this returns a
- * disassembler context.  If не, it returns NULL. Сам function is equivalent
+ * disassembler контекст.  If не, it returns NULL. Сам function is equivalent
  * to calling LLVMCreateDisasmCPUFeatures() with an пуст feature set.
  */
 ЛЛКонтекстДизасма ЛЛСоздайДизасмЦПБ(ткст0 триада, ткст0 ЦПБ, ук инфоДиз, цел типТэга,
      ЛЛОбрвызОпИнфо дайОпИнфо, ЛЛОбрвызПоискСимвола поискСим);
 
 /**
- * Create a disassembler for the имяТриады, a specific ЦПБ и specific feature
+ * Создаёт дизассемблер для  имяТриады, a specific ЦПБ и specific feature
  * ткст.  Symbolic disassembly is supported by passing a блок of information
  * in the инфоДиз параметр и specifying the типТэга и callback functions as
  * described above.  These can все be passed * as NULL.  If successful, this
- * returns a disassembler context.  If не, it returns NULL.
+ * returns a disassembler контекст.  If не, it returns NULL.
  */
 ЛЛКонтекстДизасма
 ЛЛСоздайДизасмЦПБФичи(ткст0 триада, ткст0 цпу,
@@ -72,7 +72,7 @@ const LLVMDisassembler_Option_PrintLatency = 16;
 проц ЛЛВыместиДизасм(ЛЛКонтекстДизасма DC);
 
 /**
- * Disassemble a single instruction using the disassembler context specified in
+ * Disassemble a single instruction import the disassembler контекст specified in
  * the параметр DC.  The байты of the instruction are specified in the
  * параметр байты, и содержит эт least BytesSize number of байты.  The
  * instruction is эт the адрес specified by the PC параметр.  If a valid

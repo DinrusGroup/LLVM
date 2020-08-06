@@ -1,4 +1,4 @@
-﻿module ll.c.api.TargetInitializers.IAsmPrinter;
+module ll.c.api.TargetInitializers.IAsmPrinter;
 
     public interface IAsmPrinter
     {

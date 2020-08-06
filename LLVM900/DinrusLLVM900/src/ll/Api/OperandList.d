@@ -1,35 +1,41 @@
-﻿module ll.api.
-{
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Diagnostics;
+module ll.api.OperandList;
 
-    [DebuggerDisplay("Count = {Count}")]
-    public sealed class OperandList : IEnumerable<Value>
+import ll.api.Value;
+import ll.c.Types, ll.c.Core;
+
+    public  class СписокОперандов
     {
-        internal Value Value { get; }
+         private Значение значение;
 
-        internal OperandList(Value value)
+        this(Значение значение)
         {
-            this.Value = value;
+            this.значение = значение;
         }
 
-        public int Count { LLVM.GetNumOperands(this.Value.Unwrap());
+        public цел счёт()
+		{
+			return ЛЛДайЧлоОперандов(this.значение.раскрой());
+		}
 
-        public Value this[uint index]
+        public Значение дайОперанд(бцел индекс)
         {
-            get { LLVM.GetOperand(this.Value.Unwrap(), index).Wrap();
-            set { LLVM.SetOperand(this.Value.Unwrap(), index, value.Unwrap());
+            return new Значение(ЛЛДайОперанд(this.значение.раскрой(), индекс));
         }
 
-        public IEnumerator<Value> GetEnumerator()
+        public проц устОперанд(Значение зн)
+		{
+            ЛЛУстОперанд(this.значение.раскрой(), индекс, зн.раскрой());
+
+		}
+/+
+        public IEnumerator!(Значение) GetEnumerator()
         {
-            for(var i = 0u; i < this.Count; i++)
+            for(auto i = 0u; i < this.счёт; i++)
             {
                 yield return this[i];
             }
         }
 
-        IEnumerator IEnumerable.GetEnumerator() { this.GetEnumerator();
++/
     }
-}
+

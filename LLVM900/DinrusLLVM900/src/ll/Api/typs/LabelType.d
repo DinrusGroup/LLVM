@@ -1,15 +1,39 @@
-﻿namespace LLVMSharp.API.Types
-{
-    public sealed class LabelType : Type
-    {
-        public static LabelType Create() => LLVM.LabelType().WrapAs<LabelType>();
-        public static LabelType Create(Context context) => LLVM.LabelTypeInContext(context.Unwrap()).WrapAs<LabelType>();
+module ll.api.typs.LabelType;
 
-        internal LabelType(LLVMTypeRef typeRef)
-            : base(typeRef)
-        {
+import ll.api.Type;
+import ll.c.Types;
+import ll.c.Core;
+import ll.api.Context;
+
+    public class ТипЯрлык : Тип
+    {
+        public this()
+		{ 
+			this(ЛЛТипЯрлык());
+		}
+
+        public this(Контекст контекст)
+		{ 
+			this(ЛЛТипЯрлыкВКонтексте(контекст.раскрой()));
+		}
+
+		private ЛЛТип экзэмпл;
+
+        this(ЛЛТип экзэмпл)
+		{
+            super(экзэмпл);
+			this.экзэмпл = экзэмпл;
+			
         }
 
-        public override string Name => "label";
+        public override ЛЛТип раскрой()
+		{
+            return this.экзэмпл;
+		}
+
+        public override ткст имя()
+		{ 
+			return "ярлык";
+		}
     }
-}
+

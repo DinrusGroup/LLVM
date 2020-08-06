@@ -1,31 +1,78 @@
-п»їmodule ll.api.
-{
-    using Utilities;
+module ll.api.PassRegistry;
 
-    public sealed class PassRegistry : IWrapper!(LLVMPassRegistryRef>
+    public class PassRegistry : IWrapper!(LLVMPassRegistryRef)
     {
-        LLVMPassRegistryRef IWrapper!(LLVMPassRegistryRef>.ToHandleType { this._instance;
+       // LLVMPassRegistryRef IWrapper!(LLVMPassRegistryRef).ToHandleType { this.экземпл;
 
-        public static PassRegistry Global { LLVM.GetGlobalPassRegistry().Wrap();
+        public static PassRegistry Global()
+		{
+			return LLVM.GetGlobalPassRegistry().Wrap();
+		}
 
-        private readonly LLVMPassRegistryRef _instance;
+        private LLVMPassRegistryRef экземпл;
 
-        internal PassRegistry(LLVMPassRegistryRef instance)
+        package PassRegistry(LLVMPassRegistryRef экзэмпл)
         {
-            this._instance = instance;
+            this.экземпл = экзэмпл;
         }
 
-        public void InitializeCore() { LLVM.InitializeCore(this.Unwrap());
-        public void InitializeTransformUtils() { LLVM.InitializeTransformUtils(this.Unwrap());
-        public void InitializeScalarOpts() { LLVM.InitializeScalarOpts(this.Unwrap());
-        public void InitializeObjCARCOpts() { LLVM.InitializeObjCARCOpts(this.Unwrap());
-        public void InitializeVectorization() { LLVM.InitializeVectorization(this.Unwrap());
-        public void InitializeInstCombine() { LLVM.InitializeInstCombine(this.Unwrap());
-        public void InitializeIPO() { LLVM.InitializeIPO(this.Unwrap());
-        public void InitializeInstrumentation() { LLVM.InitializeInstrumentation(this.Unwrap());
-        public void InitializeAnalysis() { LLVM.InitializeAnalysis(this.Unwrap());
-        public void InitializeIPA() { LLVM.InitializeIPA(this.Unwrap());
-        public void InitializeCodeGen() { LLVM.InitializeCodeGen(this.Unwrap());
-        public void InitializeTarget() { LLVM.InitializeTarget(this.Unwrap());
+        public void InitializeCore() 
+		{
+			LLVM.InitializeCore(this.раскрой());
+		}
+
+        public void InitializeTransformUtils()
+		{
+			LLVM.InitializeTransformUtils(this.раскрой());
+		}
+
+        public void InitializeScalarOpts()
+		{
+			LLVM.InitializeScalarOpts(this.раскрой());
+		}
+
+        public void InitializeObjCARCOpts()
+		{ 
+			LLVM.InitializeObjCARCOpts(this.раскрой());
+		}
+
+        public void InitializeVectorization()
+		{ 
+			LLVM.InitializeVectorization(this.раскрой());
+		}
+
+        public void InitializeInstCombine() 
+		{
+			LLVM.InitializeInstCombine(this.раскрой());
+		}
+
+        public void InitializeIPO()
+		{ 
+			LLVM.InitializeIPO(this.раскрой());
+		}
+
+        public void InitializeInstrumentation()
+		{ 
+			LLVM.InitializeInstrumentation(this.раскрой());
+		}
+
+        public void InitializeAnalysis()
+		{ 
+			LLVM.InitializeAnalysis(this.раскрой());
+		}
+
+        public void InitializeIPA() 
+		{
+			LLVM.InitializeIPA(this.раскрой());
+		}
+
+        public void InitializeCodeGen() 
+		{
+			LLVM.InitializeCodeGen(this.раскрой());
+		}
+
+        public void InitializeTarget() 
+		{ 
+			LLVM.InitializeTarget(this.раскрой());
+		}
     }
-}

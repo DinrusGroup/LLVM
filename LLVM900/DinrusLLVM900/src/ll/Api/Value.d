@@ -1,99 +1,149 @@
-﻿module ll.api.Value;
+module ll.api.Value;
 
-    public abstract class Value : IEquatable<Value>, IWrapper!(LLVMValueRef>
+import ll.c.Types;
+import ll.c.Core;
+import ll.api.Type;
+import ll.api.vals.BasicBlock;
+import ll.api.Context;
+import ll.api.vals.consts.GlobalValues.GlobalObjects.Function;
+import ll.api.vals.instructions.BinaryOperator;
+import ll.api.vals.Instruction;
+import ll.api.Use;
+import ll.api.vals.Constant;
+import ll.api.vals.Argument;
+import ll.api.MDStringAsValue;
+import ll.api.OperandList;
+
+import ll.common;
+
+    public abstract class Значение
     {
-        LLVMValueRef IWrapper!(LLVMValueRef>.ToHandleType { this._instance;
-
-        static Value Create(LLVMValueRef v)
+        static Значение создай()
         {
-            if (v.Pointer == IntPtr.Zero)
+            if (this.экземпл == null)
             {
                 return null;
             }
             
-            if (LLVM.ValueIsBasicBlock(v))
+            if (ЛЛЗначение_БазБлок_ли(this.экземпл))
             {
-                return new BasicBlock(LLVM.ValueAsBasicBlock(v));
+                return new БазБлок(ЛЛЗначениеКакБазБлок(this.экземпл));
             }
 
-            if (LLVM.IsAFunction(v).ToBool())
+            if (cast(бул) ЛЛФункция_ли(this.экземпл))
             {
-                return new Function(v);
+                return new Функция(this.экземпл);
             }
 
-            if (LLVM.IsABinaryOperator(v).ToBool())
+            if (cast(бул) ЛЛБинарныйОператор_ли(this.экземпл))
             {
-                return BinaryOperator.Create(v);
+                return new БинОп(this.экземпл).создай();
             }
 
-            if (LLVM.IsAInstruction(v).ToBool())
+            if (cast(бул) ЛЛИнструкция_ли(this.экземпл))
             {
-                return Instruction.Create(v);
+                return new Инструкция(this.экземпл).создай();
             }
 
-            if (LLVM.IsConstant(v))
+            if (cast(бул) ЛЛКонстанта_ли(this.экземпл))
             {
-                return Constant.Create(v);
+                return Константа(this.экземпл).создай();
             }
 
-            if (LLVM.IsAArgument(v).ToBool())
+            if (cast(бул)  ЛЛАргумент_ли(this.экземпл))
             {
-                return new Argument(v);
+                return new Аргумент(this.экземпл);
             }
 
-            if (LLVM.IsAMDString(v).ToBool())
+            if (cast(бул) ЛЛМДТкст_ли(this.экземпл))
             {
-                return new MDStringAsValue(v);
+                return new МДТекстКакЗначение(this.экземпл);
             }
 
             throw new NotImplementedException();
         }
         
-        private readonly LLVMValueRef _instance;
+        private ЛЛЗначение экземпл;
 
-        internal Value(LLVMValueRef instance)
+        this(ЛЛЗначение экземпл)
         {
-            this._instance = instance;
-            this.Operands = new OperandList(this);
+            this.экземпл = экземпл;
+            this.операнды = new СписокОперандов(this);
         }
 
-        public Type Type { LLVM.TypeOf(this.Unwrap()).Wrap();
+        public Тип тип(){ return new Тип(ЛЛТипУ(this.раскрой()));}
 
-        public string Name
+        public ткст имя()
         {
-            get { Marshal.PtrToStringAnsi(LLVM.GetValueNameAsPtr(this.Unwrap()));
-            set { LLVM.SetValueName(this.Unwrap(), value);
-        }
+            return вТкст(ЛЛДайИмяЗначения(this.раскрой()));
+         }
 
-        public Context Context { this.Type.Context;
+        public проц имя(ткст знач)
+		{
+            ЛЛУстИмяЗначения(this.раскрой(), вТкст0(знач));
+		}
+
+        public Контекст контекст()
+		{ 
+			return this.тип.Context;
+		}
                 
-        public void Dump() { LLVM.DumpValue(this.Unwrap());
+        public проц дамп()
+		{ 
+			ЛЛЗначениеДампа(this.раскрой());
+		}
         
-        public IReadOnlyList<Use> Uses
+        public Использование[] использования()
         {
-            get
-            {
-                var list = new List<Use>();
-                var use = LLVM.GetFirstUse(this.Unwrap()).Wrap();
-                while(use != null)
+           // get
+            
+                Использование[] список;
+                auto исп = new Использование(ЛЛДайПервоеИспользование(this.раскрой()));
+                while(исп != null)
                 {
-                    list.Add(use);
-                    use = use.Next;
+                    список += исп;
+                    исп = исп.следщ;
                 }
-                return list;
-            }
+                return список;            
         }
-        public void ReplaceAllUsesWith(Value v) { LLVM.ReplaceAllUsesWith(this.Unwrap(), v.Unwrap());
 
-        public Use GetOperandUse(uint index) { LLVM.GetOperandUse(this.Unwrap(), index).Wrap();
+        public проц замениВсеИспользованияНа(Значение v)
+		{ 
+			ЛЛЗамениВсеИспользованияНа(this.раскрой(), v.раскрой());
+		}
 
-        public OperandList Operands { get; } 
+        public Использование дайИспользованиеОперанда(бцел индекс) 
+		{
+			return new Использование(ЛЛДайИспользованиеОперанда(this.раскрой(), индекс));
+		}
 
-        public override string ToString() { this.Unwrap().ValueRefToString();
+        public СписокОперандов операнды;// {return  get; } 
 
-        public override int GetHashCode() { this._instance.GetHashCode();
-        public override bool Equals(object obj) { this.Equals(obj as Value);
-        public bool Equals(Value other) { ReferenceEquals(other, null) ? false : this._instance == other._instance;
-        public static bool operator ==(Value op1, Value op2) { ReferenceEquals(op1, null) ? ReferenceEquals(op2, null) : op1.Equals(op2);
-        public static bool operator !=(Value op1, Value op2) { !(op1 == op2);
+        public override ткст вТкст()
+		{
+			return вТкст(cast(ткст0) this.раскрой());
+		}
+/+
+        public override int GetHashCode()
+		{
+			return this.экземпл.GetHashCode();
+		}
+
+        public override bool Equals(object obj)
+		{
+			return this.Equals(obj as Значение);
+		}
+
+        public bool Equals(Значение other) 
+		{ 
+			return ReferenceEquals(other, null) ? false : this.экземпл == other.экземпл;
+		}
+
+        public static bool operator ==(Значение op1, Значение op2) 
+		{
+			return ReferenceEquals(op1, null) ? ReferenceEquals(op2, null) : op1.Equals(op2);
+		}
+
+        public static bool operator !=(Значение op1, Значение op2) {return !(op1 == op2);}
++/
     }

@@ -1050,8 +1050,8 @@ LLEXPORT ЛЛМетаданные
  * \param Scope       Variable scope.
  * \param Name        Name of the variable.
  * \param NameLen     The length of the C string passed to \c Name.
- * \param Linkage     Mangled  name of the variable.
- * \param LinkLen     The length of the C string passed to \c Linkage.
+ * \param ЛЛКомпоновка     Mangled  name of the variable.
+ * \param LinkLen     The length of the C string passed to \c ЛЛКомпоновка.
  * \param File        File where this variable is defined.
  * \param LineNo      Line number.
  * \param Ty          Variable Type.
@@ -1066,11 +1066,11 @@ LLEXPORT ЛЛМетаданные
  */
 LLEXPORT ЛЛМетаданные ЛЛПостроительОИ_СоздайВыражениеГлобПеременной(
     ЛЛПостроительОИ Builder, ЛЛМетаданные Scope, const char *Name,
-    size_t NameLen, const char *Linkage, size_t LinkLen, ЛЛМетаданные File,
+    size_t NameLen, const char *ЛЛКомпоновка, size_t LinkLen, ЛЛМетаданные File,
     unsigned LineNo, ЛЛМетаданные Ty, ЛЛБул LocalToUnit,
     ЛЛМетаданные Expr, ЛЛМетаданные Decl, uint32_t AlignInBits){
   return LLVMDIBuilderCreateGlobalVariableExpression(Builder,  Scope, Name,
-     NameLen, Linkage,  LinkLen,  File, LineNo,  Ty,  LocalToUnit,
+     NameLen, ЛЛКомпоновка,  LinkLen,  File, LineNo,  Ty,  LocalToUnit,
      Expr,  Decl,  AlignInBits);
 }
 /**
@@ -1157,8 +1157,8 @@ LLEXPORT void ЛЛМетаданные_ЗамениВсеИспользован�
  * \param Scope       Variable scope.
  * \param Name        Name of the variable.
  * \param NameLen     The length of the C string passed to \c Name.
- * \param Linkage     Mangled  name of the variable.
- * \param LnkLen      The length of the C string passed to \c Linkage.
+ * \param ЛЛКомпоновка     Mangled  name of the variable.
+ * \param LnkLen      The length of the C string passed to \c ЛЛКомпоновка.
  * \param File        File where this variable is defined.
  * \param LineNo      Line number.
  * \param Ty          Variable Type.
@@ -1170,11 +1170,11 @@ LLEXPORT void ЛЛМетаданные_ЗамениВсеИспользован�
  */
 LLEXPORT ЛЛМетаданные ЛЛПостроительОИ_СоздайВремФорвардДеклГлобПерем(
     ЛЛПостроительОИ Builder, ЛЛМетаданные Scope, const char *Name,
-    size_t NameLen, const char *Linkage, size_t LnkLen, ЛЛМетаданные File,
+    size_t NameLen, const char *ЛЛКомпоновка, size_t LnkLen, ЛЛМетаданные File,
     unsigned LineNo, ЛЛМетаданные Ty, ЛЛБул LocalToUnit,
     ЛЛМетаданные Decl, uint32_t AlignInBits){
   return LLVMDIBuilderCreateTempGlobalVariableFwdDecl(Builder,  Scope, Name,
-     NameLen, Linkage,  LnkLen,  File,LineNo,  Ty,  LocalToUnit, Decl,  AlignInBits);
+     NameLen, ЛЛКомпоновка,  LnkLen,  File,LineNo,  Ty,  LocalToUnit, Decl,  AlignInBits);
 }
 /**
  * Insert a new llvm.dbg.declare intrinsic call before the given instruction.

@@ -25,6 +25,7 @@ LLEXPORT void ЛЛДобавьПроходкуРаскладкаИзАссумп
   LLVMAddAlignmentFromAssumptionsPass(PM);
 }
 
+
 /** See llvm::createCFGSimplificationPass function. */
 LLEXPORT void ЛЛДобавьПроходкуКФГУпрощения(ЛЛМенеджерПроходок PM){
   LLVMAddCFGSimplificationPass(PM);

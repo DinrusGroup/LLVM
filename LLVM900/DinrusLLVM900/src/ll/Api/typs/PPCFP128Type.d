@@ -1,14 +1,31 @@
-﻿namespace LLVMSharp.API.Types
-{
-    public sealed class PPCFP128Type : FPType
+module ll.api.typs.PPCFP128Type;
+
+import ll.api.typs.FPType;
+import ll.c.Types;
+
+    public  class ТипППЦПЗ128 : ТипПЗ
     {
-        internal PPCFP128Type(LLVMTypeRef typeRef)
-            : base(typeRef)
-        {
+		private ЛЛТип экзэмпл;
+
+        this(ЛЛТип экзэмпл)
+		{
+            super(экзэмпл);
+			this.экзэмпл = экзэмпл;
+			
         }
 
-        public override string Name => "ppc_fp128";
-        public override uint PrimitiveSizeInBits => 80;
-        public override int MantissaWidth => -1;
+        public override ЛЛТип раскрой()
+		{
+            return this.экзэмпл;
+		}
+
+        public override ткст имя()
+		{
+			return "ппц_пз128";
+		}
+
+        public override бцел примитивнРазмерВБитах() { return 80;}
+
+        public override цел ширинаМантиссы() {return -1;}
     }
-}
+

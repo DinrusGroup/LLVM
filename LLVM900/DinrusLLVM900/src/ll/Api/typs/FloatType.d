@@ -1,14 +1,26 @@
-﻿namespace LLVMSharp.API.Types
-{
-    public sealed class FloatType : FPType
+module ll.api.typs.FloatType;
+
+import ll.c.Types;
+import ll.api.typs.FPType;
+
+    public  class ТипПлав : ТипПЗ
     {
-        internal FloatType(LLVMTypeRef typeRef)
-            : base(typeRef)
-        {
+		private ЛЛТип экзэмпл;
+
+        this(ЛЛТип экзэмпл)
+		{
+            super(экзэмпл);
+			this.экзэмпл = экзэмпл;
+			
         }
 
-        public override string Name => "float";
-        public override uint PrimitiveSizeInBits => 32;
-        public override int MantissaWidth => 24;
+        public override ЛЛТип раскрой()
+		{
+            return this.экзэмпл;
+		}
+
+        public override ткст имя() {return "float";}
+        public override бцел примитивнРазмерВБитах() {return  32;}
+        public override цел ширинаМантиссы() {return  24;}
     }
-}
+

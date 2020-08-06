@@ -78,9 +78,9 @@ struct LLVMOptRemarkEntry {
   LLVMOptRemarkStringRef RemarkType;
   // "Pass": Required
   LLVMOptRemarkStringRef PassName;
-  // "Name": Required
+  // "имя": Required
   LLVMOptRemarkStringRef RemarkName;
-  // "Function": Required
+  // "Функция": Required
   LLVMOptRemarkStringRef FunctionName;
 
   // "DebugLoc": Optional

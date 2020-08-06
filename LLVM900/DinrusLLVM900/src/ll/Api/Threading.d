@@ -1,7 +1,9 @@
-﻿module ll.api.Threading;
+module ll.api.Threading;
 
-    public static class Threading
+import ll.c.Core, ll.c.Types;
+
+    public static class Поточность
     {
-        public static bool IsMultithreaded() {return LLVM.IsMultithreaded();}
+        public static проц мультинить_ли() {return ЛЛМультинить_ли();}
     }
 

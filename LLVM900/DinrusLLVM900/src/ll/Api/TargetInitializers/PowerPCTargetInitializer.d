@@ -1,4 +1,4 @@
-﻿module ll.c.api.TargetInitializers.MipsTargetInitializer;
+module ll.c.api.TargetInitializers.MipsTargetInitializer;
 
 import ll.c.api.TargetInitializers.TargetInitializer;
 
@@ -8,11 +8,11 @@ import ll.c.api.TargetInitializers.TargetInitializer;
     {
         this(){}
 
-        public void Target() { LLVM.InitializePowerPCTarget();}
-        public void TargetInfo() { LLVM.InitializePowerPCTargetInfo();}
-        public void TargetMC() { LLVM.InitializePowerPCTargetMC();}
-        public void AsmPrinter() { LLVM.InitializePowerPCAsmPrinter();}
-        public void AsmParser() { LLVM.InitializePowerPCAsmParser();}
-        public void Disassembler() { LLVM.InitializePowerPCDisassembler();}
+        public void Target() { LLInitializePowerPCTarget();}
+        public void TargetInfo() { LLInitializePowerPCTargetInfo();}
+        public void TargetMC() { LLInitializePowerPCTargetMC();}
+        public void AsmPrinter() { LLInitializePowerPCAsmPrinter();}
+        public void AsmParser() { LLInitializePowerPCAsmParser();}
+        public void Disassembler() { LLInitializePowerPCDisassembler();}
     }
 

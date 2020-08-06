@@ -1,57 +1,50 @@
-﻿module ll.api.
-{
-    using System;
-    using Utilities;
+module ll.api.ObjectFile;
 
-    public sealed class ObjectFile : IDisposableWrapper<LLVMObjectFileRef>, IDisposable
+import ll.api.SymbolIterator;
+import ll.api.SectionIterator;
+import ll.c.Types, ll.c.Core, ll.c.Object;
+
+    public class ОбъФайл
     {
-        LLVMObjectFileRef IWrapper!(LLVMObjectFileRef>.ToHandleType { this._instance;
-        void IDisposableWrapper<LLVMObjectFileRef>.MakeHandleOwner() { this._owner = true;
-
-        public static ObjectFile Create(MemoryBuffer memBuf)
+		private ЛЛФайлОбъекта экземпл;
+		
+        public this(БуфПам буфПам)
         {
-            return LLVM.CreateObjectFile(memBuf.Unwrap()).Wrap().MakeHandleOwner<ObjectFile, LLVMObjectFileRef>();
+            return this(ЛЛСоздайФайлОбъекта(буфПам.раскрой()));
+        }        
+
+        this(ЛЛФайлОбъекта экзэмпл)
+        {
+            this.экземпл = экзэмпл;
         }
 
-        private readonly LLVMObjectFileRef _instance;
-        private bool _disposed;
-        private bool _owner;
+        ~this()
+		{
+		 ЛЛВыместиФайлОбъекта(this.раскрой());
+		}
+		
+		public ЛЛФайлОбъекта раскрой()
+		{
+            return this.экзэмпл;
+		}
 
-        internal ObjectFile(LLVMObjectFileRef instance)
-        {
-            this._instance = instance;
-        }
+        public ИтераторСекций секции()
+		{
+			return ЛЛДайСекции(this.раскрой());
+		}
 
-        ~ObjectFile()
-        {
-            this.Dispose(false);
-        }
+        public бул вКонцеСекцИтер_ли(ИтераторСекций si)
+		{ 
+			return ЛЛИтераторСекцииВКонце_ли(this.раскрой(), si.раскрой());
+         }
 
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        private void Dispose(bool disposing)
-        {
-            if (this._disposed)
-            {
-                return;
-            }
-
-            if (this._owner)
-            {
-                LLVM.DisposeObjectFile(this.Unwrap());
-            }
-
-            this._disposed = true;
-        }
-
-        public SectionIterator Sections { LLVM.GetSections(this.Unwrap()).Wrap();
-        public bool IsSectionIteratorAtEnd(SectionIterator si) { LLVM.IsSectionIteratorAtEnd(this.Unwrap(), si.Unwrap());
-
-        public SymbolIterator Symbols { LLVM.GetSymbols(this.Unwrap()).Wrap();
-        public bool IsSymbolIteratorAtEnd(SymbolIterator si) { LLVM.IsSymbolIteratorAtEnd(this.Unwrap(), si.Unwrap());
+        public СимвИтератор символы()
+		{ 
+			return new СимвИтератор(ЛЛДайСимволы(this.раскрой()));
+		}
+        public проц вКонцеСимИтер_ли(СимвИтератор si) 
+		{ 
+			return ЛЛОбъФайл_СимвИтераторВКонце_ли(this.раскрой(), si.раскрой());
+         }
     }
-}
+

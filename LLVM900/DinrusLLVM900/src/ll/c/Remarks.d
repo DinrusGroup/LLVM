@@ -137,7 +137,7 @@ alias LLVMRemarkOpaqueEntry *ЛЛЗаписьРемарки;
  LLVMRemarkType ЛЛЗаписьРемарки_ДайТип(ЛЛЗаписьРемарки Remark);
 
 /**
- * Get the имя of the pass that emitted this remark.
+ * дай the имя of the pass that emitted this remark.
  *
  * \since REMARKS_API_VERSION=0
  */
@@ -145,7 +145,7 @@ alias LLVMRemarkOpaqueEntry *ЛЛЗаписьРемарки;
 ЛЛЗаписьРемарки_ДайИмяПроходки(ЛЛЗаписьРемарки Remark);
 
 /**
- * Get an идентификатор of the remark.
+ * дай an идентификатор of the remark.
  *
  * \since REMARKS_API_VERSION=0
  */
@@ -153,7 +153,7 @@ alias LLVMRemarkOpaqueEntry *ЛЛЗаписьРемарки;
 ЛЛЗаписьРемарки_ДайИмяРемарки(ЛЛЗаписьРемарки Remark);
 
 /**
- * Get the имя of the function being processed when the remark was emitted.
+ * дай the имя of the function being processed when the remark was emitted.
  *
  * \since REMARKS_API_VERSION=0
  */
@@ -187,7 +187,7 @@ alias LLVMRemarkOpaqueEntry *ЛЛЗаписьРемарки;
  uint32_t ЛЛЗаписьРемарки_ДайЧлоАргов(ЛЛЗаписьРемарки Remark);
 
 /**
- * Get a new iterator to iterate over a remark's argument.
+ * дай a new iterator to iterate over a remark's argument.
  *
  * If there are Нет аргументы in \п Remark, the return знач will be `NULL`.
  *
@@ -198,7 +198,7 @@ alias LLVMRemarkOpaqueEntry *ЛЛЗаписьРемарки;
  ЛЛАргРемарки ЛЛЗаписьРемарки_ДайПервАрг(ЛЛЗаписьРемарки Remark);
 
 /**
- * Get the следщ argument in \п Remark from the position of \п It.
+ * дай the следщ argument in \п Remark from the position of \п It.
  *
  * Возвращает `NULL` if there are Нет more аргументы доступно.
  *
@@ -229,7 +229,7 @@ alias LLVMRemarkOpaqueпарсер *ЛЛПарсерРемарок;
 /**
  * Возвращает the следщ remark in the файл.
  *
- * The знач pointed to by the return знач needs to be disposed using a вызов to
+ * The знач pointed to by the return знач needs to be disposed import a вызов to
  * LLVMRemarkEntryDispose().
  *
  * All the entries in the returned знач that are of ЛЛТкстРемарки тип

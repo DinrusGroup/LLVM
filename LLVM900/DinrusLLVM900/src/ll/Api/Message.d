@@ -1,18 +1,21 @@
-﻿module ll.api.
-{
-    using System;
+module ll.api.Message;
 
-    public sealed class Message : IDisposable
+    import ll.c.Core, ll.common;
+
+    public class Сообщение
     {
-        public static Message Create(string message) { new Message(LLVM.CreateMessage(message));
+        private ук экземпл;
 
-        private readonly IntPtr _ptr;
+        public this(ткст сооб)
+		{ 
+			this(ЛЛCоздайCообщение(вТкст0(сооб)));
+		}
 
-        internal Message(IntPtr ptr)
-        {
-            this._ptr = ptr;
-        }
+        this(ук сооб)
+		{
+			this.экземпл = сооб;
+		}
 
-        public void Dispose() { LLVM.DisposeMessage(this._ptr);
+        ~this() { ЛЛВыместиСообщение(cast(ткст0) this.экземпл);}
     }
-}
+

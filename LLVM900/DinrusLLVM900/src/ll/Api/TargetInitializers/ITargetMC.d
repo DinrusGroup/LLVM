@@ -1,4 +1,4 @@
-﻿module ll.c.api.TargetInitializers.ITargetMC;
+module ll.c.api.TargetInitializers.ITargetMC;
 
     public interface ITargetMC
     {

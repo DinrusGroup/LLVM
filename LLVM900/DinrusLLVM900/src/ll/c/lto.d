@@ -147,11 +147,11 @@ alias LLVMOpaqueThinLTOCodeGenerator *ЛЛОВККодГен2;
  ЛЛОВКМодуль ЛЛОВКМодуль_СоздайИзПамятиСПутём(ук пам, т_мера длина, ткст0 путь);
 
 /**
- * Loads an объект файл in its own context.
+ * Loads an объект файл in its own контекст.
  *
  * Loads an объект файл in its own LLVMContext.  Сам function вызов is
  * thread-сейф.  However, модules created this way should не be merged into an
- * ЛЛОВККодГен using \a lto_codegen_add_модule().
+ * ЛЛОВККодГен import \a lto_codegen_add_модule().
  *
  * Возвращает NULL on ошибка (проверь lto_get_error_message() for details).
  *
@@ -160,10 +160,10 @@ alias LLVMOpaqueThinLTOCodeGenerator *ЛЛОВККодГен2;
  ЛЛОВКМодуль ЛЛОВКМодуль_СоздайВЛокКонтексте(ук пам, т_мера длина, ткст0 путь);
 
 /**
- * Loads an объект файл in the codegen context.
+ * Loads an объект файл in the codegen контекст.
  *
- * Loads an объект файл into the same context as \конст кг.  The модule is сейф to
- * прибавь using \a lto_codegen_add_модule().
+ * Loads an объект файл into the same контекст as \конст кг.  The модule is сейф to
+ * прибавь import \a lto_codegen_add_модule().
  *
  * Возвращает NULL on ошибка (проверь lto_get_error_message() for details).
  *
@@ -234,7 +234,7 @@ alias LLVMOpaqueThinLTOCodeGenerator *ЛЛОВККодГен2;
  * Возвращает the модule's linker опции.
  *
  * The linker опции may consist of multiple флаги. It is the linker's
- * responsibility to разбей the флаги using a platform-specific mechanism.
+ * responsibility to разбей the флаги import a platform-specific mechanism.
  *
  * \since LTO_API_VERSION=16
  */
@@ -257,7 +257,7 @@ enum ЛЛОВККодГенДиагностичСтрогость {
  * \п severity defines the severity.
  * \п diag is the actual diagnostic.
  * The diagnostic is не prefixed by any of severity keyword, e.g., 'ошибка: '.
- * \п ctxt is используется to pass the context set with the diagnostic handler.
+ * \п ctxt is используется to pass the контекст set with the diagnostic handler.
  *
  * \since LTO_API_VERSION=7
  */
@@ -265,7 +265,7 @@ alias проц function(ЛЛОВККодГенДиагностичСтрогос
 	lto_diagnostic_handler_t;
 
 /**
- * Set a diagnostic handler и the related context (ук ).
+ * Set a diagnostic handler и the related контекст (ук ).
  * Сам is more general than lto_get_error_message, as the diagnostic handler
  * can be called эт anytime within lto.
  *
@@ -279,19 +279,19 @@ alias проц function(ЛЛОВККодГенДиагностичСтрогос
  * Instantiates a код generator.
  * Возвращает NULL on ошибка (проверь lto_get_error_message() for details).
  *
- * All модules added using \a lto_codegen_add_модule() must have been created
- * in the same context as the codegen.
+ * All модules added import \a lto_codegen_add_модule() must have been created
+ * in the same контекст as the codegen.
  *
  * \since prior to LTO_API_VERSION=3
  */
  ЛЛОВККодГен ЛЛОВККодГен_Создай();
 
 /**
- * Instantiate a код generator in its own context.
+ * Instantiate a код generator in its own контекст.
  *
- * Instantiates a код generator in its own context.  Модули added via \a
- * lto_codegen_add_модule() must have все been created in the same context,
- * using \a lto_модule_create_in_codegen_context().
+ * Instantiates a код generator in its own контекст.  Модули added via \a
+ * lto_codegen_add_модule() must have все been created in the same контекст,
+ * import \a lto_модule_create_in_codegen_context().
  *
  * \since LTO_API_VERSION=11
  */
@@ -309,7 +309,7 @@ alias проц function(ЛЛОВККодГенДиагностичСтрогос
  * Сложи an объект модule to the set of модules for which код will be generated.
  * Возвращает да on ошибка (проверь lto_get_error_message() for details).
  *
- * \конст кг и \конст мод must both be in the same context.  See \a
+ * \конст кг и \конст мод must both be in the same контекст.  See \a
  * lto_codegen_create_in_local_context() и \a
  * lto_модule_create_in_codegen_context().
  *
@@ -321,7 +321,7 @@ alias проц function(ЛЛОВККодГенДиагностичСтрогос
  * Sets the объект модule for код generation. Сам will transfer the ownership
  * of the модule to the код generator.
  *
- * \конст кг и \конст мод must both be in the same context.
+ * \конст кг и \конст мод must both be in the same контекст.
  *
  * \since LTO_API_VERSION=13
  */
@@ -524,8 +524,8 @@ struct БуферОбъектовОВК {
                                        ткст0 идентификатор, ткст0 данные, цел длина);
 
 /**
- * Optimize и codegen все the модules added to the codegenerator using
- * ThinLTO. результирующий объекты are accessible using thinlto_модule_get_object().
+ * Optimize и codegen все the модules added to the codegenerator import
+ * ThinLTO. результирующий объекты are accessible import thinlto_модule_get_object().
  *
  * \since LTO_API_VERSION=18
  */

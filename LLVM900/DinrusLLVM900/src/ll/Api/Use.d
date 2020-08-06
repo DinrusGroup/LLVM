@@ -1,20 +1,41 @@
-﻿module ll.api.Use;
+module ll.api.Use;
 
-    public  class Use : IWrapper!(LLVMUseRef)
+import ll.c.Types;
+import ll.c.Core;
+import ll.api.Value;
+
+    public  class Использование
     {
-        LLVMUseRef IWrapper!(LLVMUseRef).ToHandleType { this._instance;}
+        private ЛЛИспользование экземпл;
 
-        private LLVMUseRef _instance;
-
-        internal Use(LLVMUseRef instance)
+        this(ЛЛИспользование экзэмпл)
         {
-            this._instance = instance;
+            this.экземпл = экзэмпл;
         }
 
-        public Use Next() { LLVM.GetNextUse(this.Unwrap()).Wrap();}
-        public Value User() { LLVM.GetUser(this.Unwrap()).Wrap();}
-        public Value UsedValue() { LLVM.GetUsedValue(this.Unwrap()).Wrap();}
+        public ЛЛИспользование раскрой()
+		{
+			return this.экземпл;
+		}
 
-        public override string ToString() { this.User.ToString();}
+        public Использование следщ() 
+		{
+			return new Использование(ЛЛДайСледщИспользование(this.раскрой()));
+		}
+
+        public Значение пользователь()
+		{
+			return  new Значение(ЛЛДайПользователя(this.раскрой()));
+		}
+
+        public Значение использЗнач() 
+		{
+			return new Значение(ЛЛДайИспользованноеЗначение(this.раскрой()));
+		}
+
+        public override ткст вТкст()
+		{
+			return  this.пользователь.вТкст();
+		}
     }
 

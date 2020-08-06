@@ -1,4 +1,4 @@
-﻿module ll.c.api.TargetInitializers.ITarget;
+module ll.c.api.TargetInitializers.ITarget;
 
     public interface ITarget
     {

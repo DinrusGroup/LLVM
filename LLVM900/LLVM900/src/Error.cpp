@@ -4,8 +4,8 @@ extern "C" {
 
 
 /**
- * Returns the type id for the given error instance, which must be a failure
- * value (i.e. non-null).
+ * Возвращает ид типа для данного экземпляра ошибки, который должен быть
+ * значением неуспеха (напр., non-null).
  */
 LLEXPORT ЛЛИдТипаОшибки ЛЛДайИдТипаОшибки(ЛЛОшибка Err){
 	return LLVMGetErrorTypeId(Err);

@@ -1,23 +1,39 @@
-﻿namespace LLVMSharp.API.Types
-{
-    using Type = LLVMSharp.API.Type;
+module ll.api.typs.X86MMXType;
 
-    public sealed class X86MMXType : Type
+    import ll.api.Type;
+    import ll.c.Types;
+
+    public  class ТипХ86ММХ : Тип
     {
-        internal X86MMXType(LLVMTypeRef typeRef)
-            : base(typeRef)
-        {
+		private ЛЛТип экзэмпл;
+
+        this(ЛЛТип экзэмпл)
+		{
+            super(экзэмпл);
+			this.экзэмпл = экзэмпл;
+			
         }
 
-        public override string Name => "x86_mmx";
-        public override uint PrimitiveSizeInBits => 64;
-        public override bool IsSingleValueType => true;
+        public override ЛЛТип раскрой()
+		{
+            return this.экзэмпл;
+		}
 
-        public override bool CanHaveConstants => false;
-        public override bool CanHaveArrays => false;
-        public override bool CanHaveVectors => false;
+        public override ткст имя() {return "х86_ммх";}
 
-        protected internal override string GetLimitedTypeMessage()
-            => "This type represents a value held in an MMX register of an x86 machine. Thus, there can be no arrays, vectors or constants of this type.";
+        public override бцел примитивнРазмерВБитах() {return 64;}
+
+        public override бул типСОднимЗначением_ли() {return true;}
+
+        public override бул можетИметьКонстанты() {return false;}
+
+        public override бул можетИметьМассивы() {return false;}
+
+        public override бул можетИметьВекторы() {return false;}
+
+        protected override ткст дайСообОбОграниченномТипе()
+            {
+			return	"Этот тип представляет собой значение, содержащееся в регистре MMX машины x86. Массивы, векторы или константы с этим типом невозможны.";
+			}
     }
-}
+

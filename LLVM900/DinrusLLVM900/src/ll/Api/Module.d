@@ -1,80 +1,170 @@
-﻿module ll.api.
-{
-    using ll.api..Types;
-    using System;
-    using System.Collections.Generic;
-    using System.Runtime.InteropServices;
-    using Utilities;
-    using Values.Constants;
-    using Values.Constants.GlobalValues.GlobalObjects;
+module ll.api.Module;
 
-    public sealed class Module : IEquatable<Module>, IDisposable, IDisposableWrapper<LLVMModuleRef>
+import ll.common, ll.c.Core, ll.c.Types, ll.c.Linker;
+import ll.api.Context, ll.api.Type, ll.api.Value;
+import ll.api.vals.consts.GlobalValues.GlobalObjects.GlobalVariable;
+import ll.api.vals.consts.GlobalValues.GlobalObjects.Function;
+import ll.api.vals.consts.GlobalValue;
+
+    public  class Модуль 
     {
-        LLVMModuleRef IWrapper!(LLVMModuleRef>.ToHandleType { this._instance;
-        void IDisposableWrapper<LLVMModuleRef>.MakeHandleOwner() { this._owner = true;
 
-        public static Module Create(string moduleId) { LLVM.ModuleCreateWithName(moduleId).Wrap().MakeHandleOwner<Module, LLVMModuleRef>();
-        public static Module Create(string moduleId, Context context) { LLVM.ModuleCreateWithNameInContext(moduleId, context.Unwrap()).Wrap().MakeHandleOwner<Module, LLVMModuleRef>();
+        public this(ткст идМодуля)
+		{
+			this(ЛЛМодуль_СоздайСИменем(вТкст0(идМодуля)));
+         }
 
-        public static void LinkModules(Module destination, Module source) { LLVM.LinkModules2(destination.Unwrap(), source.Unwrap());
 
-        private readonly LLVMModuleRef _instance;
+        public this(ткст идМодуля, Контекст контекст)
+		{ 
+			this(ЛЛМодуль_СоздайСИменемВКонтексте(вТкст0(идМодуля), контекст.раскрой()));
+        }
+
+        public static проц линкуйМодули(Модуль куда, Модуль исток)
+		{ 
+			ЛЛКомпонуйМодули2(куда.раскрой(), исток.раскрой());
+		}
+
+		public ЛЛМодуль раскрой(){return this.экземпл;}
+
+        private ЛЛМодуль экземпл;
         private bool _disposed;
         private bool _owner;
 
-        internal Module(LLVMModuleRef m) { this._instance = m;
-        ~Module() { this.Dispose(false);
+        this(ЛЛМодуль m) { this.экземпл = m;}
+        ~this() { this.Dispose(false);}
 
-        public string DataLayout
+        public ткст раскладкаДанных()
         {
-            get { Marshal.PtrToStringAnsi(LLVM.GetDataLayoutAsPtr(this.Unwrap()));
-            set { LLVM.SetDataLayout(this.Unwrap(), value);
+            return вТкст(ЛЛДайСтрРаскладкиДанных(this.раскрой()));           
         }
 
-        public Context Context { LLVM.GetModuleContext(this.Unwrap()).Wrap();
+        public проц раскладкаДанных( ткст ткт)
+        {           
+             ЛЛУстРаскладкуДанных(this.раскрой(), вТкст0(ткт));}
+        }
 
-        public Module CloneModule() { LLVM.CloneModule(this.Unwrap()).Wrap();
+        public Контекст контекст()
+		{ 
+			return new Контекст(ЛЛДайКонтекстМодуля(this.раскрой()));
+		}
+/+
+        public Модуль клонируйМодуль()
+		{
+			return LLVM.CloneModule(this.раскрой());
+		}
++/
+        public проц дамп() { ЛЛДампМодуля(this.раскрой());}
 
-        public void Dump() { LLVM.DumpModule(this.Unwrap());
+        public бул выведиВФайл(ткст имяф, out ук ошСооб) 
+		{ 
+			return ЛЛВыведиМодульВФайл(this.раскрой(), вТкст0(имяф), ошСооб);
+		}
 
-        public bool PrintToFile(string filename, out IntPtr errorMessage) { LLVM.PrintModuleToFile(this.Unwrap(), filename, out errorMessage);
-
-        public string PrintModuleToString()
+        public ткст выведиВТкст()
         {
-            var ptr = LLVM.PrintModuleToString(this.Unwrap());
-            var retVal = Marshal.PtrToStringAnsi(ptr);
-            LLVM.DisposeMessage(ptr);
+            auto ptr = ЛЛВыведиМодульВСтроку(this.раскрой());
+            auto retVal = вТкст(ptr);
+            ЛЛВыместиСообщение(ptr);
             return retVal;
         }
 
-        public void SetModuleInlineAsm(string asm) { LLVM.SetModuleInlineAsm(this.Unwrap(), asm);
+        public проц устИнлайнАсм(ткст asm_)
+		{ 
+			ЛЛУстИнлайнАсмМодуля(this.раскрой(), вТкст0(asm_));
+		}
         
-        public GlobalVariable GetNamedGlobal(string name) { LLVM.GetNamedGlobal(this.Unwrap(), name).WrapAs<GlobalVariable>();
-        public Type GetTypeByName(string name) { LLVM.GetTypeByName(this.Unwrap(), name).Wrap();
-        public uint GetNamedMetadataNumOperands(string name) { LLVM.GetNamedMetadataNumOperands(this.Unwrap(), name);
-        public Value[] GetNamedMetadataOperands(string name) { LLVM.GetNamedMetadataOperands(this.Unwrap(), name).Wrap<LLVMValueRef, Value>();
-        public void AddNamedMetadataOperand(string name, Value val) { LLVM.AddNamedMetadataOperand(this.Unwrap(), name, val.Unwrap());
-        public Function AddFunction(string name, Type functionTy) { LLVM.AddFunction(this.Unwrap(), name, functionTy.Unwrap()).WrapAs<Function>();
+        public ГлобПеременная дайИменГлоб(ткст имя)
+		{
+			return new ГлобПеременная(ЛЛДайИменованныйГлоб(this.раскрой(), вТкст0(имя)));
+		}
 
-        public Function GetNamedFunction(string name) { LLVM.GetNamedFunction(this.Unwrap(), name).WrapAs<Function>();
+        public Тип дайТипПоИмени(ткст имя)
+		{ 
+			return new Тип(ЛЛДайТипПоИмени(this.раскрой(), вТкст0(имя)));
+		}
 
-        public Function GetFirstFunction() { LLVM.GetFirstFunction(this.Unwrap()).WrapAs<Function>();
-        public Function GetLastFunction() { LLVM.GetLastFunction(this.Unwrap()).WrapAs<Function>();
+        public бцел дайЧлоОперандовИМД(ткст имя)
+		{
+			return ЛЛДайЧлоОперандовИменованныхМетаданных(this.раскрой(), вТкст0(имя));
+		}
 
-        public GlobalValue AddGlobal(Type ty, string name) { LLVM.AddGlobal(this.Unwrap(), ty.Unwrap(), name).WrapAs<GlobalValue>();
-        public GlobalValue AddGlobalInAddressSpace(Type ty, string name, uint addressSpace) { LLVM.AddGlobalInAddressSpace(this.Unwrap(), ty.Unwrap(), name, addressSpace).WrapAs<GlobalValue>();
+        public Значение[] дайОперандыИМД(тксь имя)
+		{ 
+			ЛЛЗначение приёмник;
+			ЛЛДайОперандыИменованныхМетаданных(this.раскрой(), вТкст0(имя), &приёмник);
+			return cast(Значение[]) приёмник;
+	    }
 
-        public GlobalValue GetNamedValue(string name) { LLVM.GetNamedGlobal(this.Unwrap(), name).WrapAs<GlobalValue>();
+        public проц добавьОперандИМД(ткст имя, Значение val)
+		{ 
+			ЛЛДобавьОперандИменованныхМетаданных(this.раскрой(), вТкст0(имя), val.раскрой());
+        }
 
-        public GlobalValue GetFirstGlobal() { LLVM.GetFirstGlobal(this.Unwrap()).WrapAs<GlobalValue>();
-        public GlobalValue GetLastGlobal() { LLVM.GetLastGlobal(this.Unwrap()).WrapAs<GlobalValue>();
 
-        public GlobalValue AddAlias(Type ty, Value aliasee, string name) { LLVM.AddAlias(this.Unwrap(), ty.Unwrap(), aliasee.Unwrap(), name).WrapAs<GlobalValue>();
+        public Функция добавьФункцию(ткст имя, Тип типФн)
+		{ 
+			return new Функция(ЛЛДобавьФункц(this.раскрой(), вТкст0(имя), типФн.раскрой()));
+		}
 
-        public uint GetMDKindID(string name) { LLVM.GetMDKindIDInContext(this.Context.Unwrap(), name, (uint)name.Length);
+        public Функция дайИменФункцию(ткст имя) 
+		{
+			return new Функция(ЛЛДайИменованФункц(this.раскрой(), имя));
+		}
+
+        public Функция первФункц() 
+		{
+			return new Функция(ЛЛДайПервФункц(this.раскрой()));
+		}
+
+        public Функция последнФункц()
+		{
+			return new Функция(ЛЛДайПоследнФункц(this.раскрой()));
+		}
+
+        public ГлобЗначение добавьГлоб(Тип тип, ткст имя) 
+		{
+			return new ГлобЗначение(ЛЛДобавьГлоб(this.раскрой(), тип.раскрой(), вТкст0(имя)));
+		}
+
+        public ГлобЗначение AddGlobalInAddressSpace(Type ty, string имя, uint адреснПрострво)
+		{
+			return LLVM.AddGlobalInAddressSpace(this.раскрой(), ty.раскрой(), имя, адреснПрострво).WrapAs!(ГлобЗначение)();
+		}
+
+        public ГлобЗначение GetNamedValue(string имя) 
+		{ 
+			return LLVM.GetNamedGlobal(this.раскрой(), имя).WrapAs!(ГлобЗначение)();
+		}
+
+        public ГлобЗначение GetFirstGlobal() 
+		{ 
+			return LLVM.GetFirstGlobal(this.раскрой()).WrapAs!(ГлобЗначение)();
+		}
+
+        public ГлобЗначение GetLastGlobal() 
+		{
+			return LLVM.GetLastGlobal(this.раскрой()).WrapAs!(ГлобЗначение)();
+		}
+
+        public ГлобЗначение AddAlias(Type ty, Значение aliasee, string имя)
+		{
+			return LLVM.AddAlias(this.раскрой(), ty.раскрой(), aliasee.раскрой(), имя).WrapAs!(ГлобЗначение)();
+		}
+
+        public uint GetMDKindID(string имя) 
+		{ 
+			return LLVM.GetMDKindIDInContext(this.Context.раскрой(), имя, (uint)имя.длина);
+		}
         
-        public ModuleProvider CreateModuleProviderForExistingModule() { LLVM.CreateModuleProviderForExistingModule(this.Unwrap()).Wrap();
-        public PassManager CreateFunctionPassManagerForModule() { LLVM.CreateFunctionPassManagerForModule(this.Unwrap()).Wrap();
+        public ModuleProvider CreateModuleProviderForExistingModule() 
+		{ 
+			return LLVM.CreateModuleProviderForExistingModule(this.раскрой()).Wrap();
+		}
+        public PassManager CreateFunctionPassManagerForModule()
+		{
+			return LLVM.CreateFunctionPassManagerForModule(this.раскрой()).Wrap();
+		}
 
         public void Verify()
         {
@@ -85,21 +175,55 @@
         }
         public bool TryVerify(out string message)
         {
-            var success = !LLVM.VerifyModule(this.Unwrap(), LLVMVerifierFailureAction.LLVMPrintMessageAction, out IntPtr messagePtr);
+            auto success = !LLVM.VerifyModule(this.раскрой(), LLVMVerifierFailureAction.LLVMPrintMessageAction, out ук messagePtr);
             message = Marshal.PtrToStringAnsi(messagePtr);
             return success;
         }
 
-        public int WriteBitcodeToFile(string path) { LLVM.WriteBitcodeToFile(this.Unwrap(), path);
-        public int WriteBitcodeToFD(int fd, int shouldClose, int unbuffered) { LLVM.WriteBitcodeToFD(this.Unwrap(), fd, shouldClose, unbuffered);
-        public int WriteBitcodeToFileHandle(int handle) { LLVM.WriteBitcodeToFileHandle(this.Unwrap(), handle);
-        public MemoryBuffer WriteBitcodeToMemoryBuffer() { LLVM.WriteBitcodeToMemoryBuffer(this.Unwrap()).Wrap();
+        public int WriteBitcodeToFile(string path)
+		{
+			return LLVM.WriteBitcodeToFile(this.раскрой(), path);
+		}
 
-        public bool Equals(Module other) { ReferenceEquals(other, null) ? false : this._instance == other._instance;
-        public override bool Equals(object obj) { this.Equals(obj as Module);
-        public static bool operator ==(Module op1, Module op2) { ReferenceEquals(op1, null) ? ReferenceEquals(op2, null) : op1.Equals(op2);
-        public static bool operator !=(Module op1, Module op2) { !(op1 == op2);
-        public override int GetHashCode() { this._instance.GetHashCode();
+        public int WriteBitcodeToFD(int fd, int shouldClose, int unbuffered)
+		{
+			return LLVM.WriteBitcodeToFD(this.раскрой(), fd, shouldClose, unbuffered);
+		}
+
+        public int WriteBitcodeToFileHandle(int handle)
+		{
+			return LLVM.WriteBitcodeToFileHandle(this.раскрой(), handle);
+		}
+
+        public MemoryBuffer WriteBitcodeToMemoryBuffer() 
+		{
+			return LLVM.WriteBitcodeToMemoryBuffer(this.раскрой()).Wrap();
+		}
+
+        public bool Equals(Модуль other)
+		{
+			return ReferenceEquals(other, null) ? false : this.экземпл == other.экземпл;
+		}
+
+        public override bool Equals(object obj)
+		{
+			return this.Equals(obj as Модуль);
+		}
+
+        public static bool operator ==(Модуль op1, Модуль op2)
+		{
+			return ReferenceEquals(op1, null) ? ReferenceEquals(op2, null) : op1.Equals(op2);
+		}
+
+        public static bool operator !=(Модуль op1, Модуль op2) 
+		{ 
+			return !(op1 == op2);
+		}
+
+        public override int GetHashCode() 
+		{ 
+			return this.экземпл.GetHashCode();
+		}
 
         public void Dispose()
         {
@@ -116,16 +240,15 @@
 
             if (this._owner)
             {
-                LLVM.DisposeModule(this.Unwrap());
+                LLVM.DisposeModule(this.раскрой());
             }
 
             this._disposed = true;
         }
 
-        public string Target
+        public string Target()
         {
-            get { Marshal.PtrToStringAnsi(LLVM.GetTargetAsPtr(this.Unwrap()));
-            set { LLVM.SetTarget(this.Unwrap(), value);
+            get { Marshal.PtrToStringAnsi(LLVM.GetTargetAsPtr(this.раскрой()));}
+            set { LLVM.SetTarget(this.раскрой(), значение);}
         }
     }
-}

@@ -1,14 +1,27 @@
-﻿namespace LLVMSharp.API.Types
-{
-    public sealed class HalfType : FPType
+module ll.api.typs.HalfType;
+
+import ll.api.Type;
+import ll.api.typs.FPType;
+import ll.c.Types;
+
+    public class Полутип : ТипПЗ
     {
-        internal HalfType(LLVMTypeRef typeRef)
-            : base(typeRef)
-        {
+		private ЛЛТип экзэмпл;
+
+        this(ЛЛТип экзэмпл)
+		{
+            super(экзэмпл);
+			this.экзэмпл = экзэмпл;
+			
         }
 
-        public override string Name => "half";
-        public override uint PrimitiveSizeInBits => 16;
-        public override int MantissaWidth => 11;
+        public override ЛЛТип раскрой()
+		{
+            return this.экзэмпл;
+		}
+
+        public override ткст имя() {return "пол";}
+        public override бцел примитивнРазмерВБитах() {return 16;}
+        public override цел ширинаМантиссы() {return 11;}
     }
-}
+

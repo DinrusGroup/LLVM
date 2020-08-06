@@ -1,57 +1,52 @@
-﻿module ll.api.
-{
-    using System;
-    using Utilities;
+module ll.api.RelocationIterator;
 
-    public sealed class RelocationIterator : IDisposableWrapper<LLVMRelocationIteratorRef>, IDisposable
+import ll.api.SymbolIterator;
+import ll.c.Types, ll.c.Object, ll.common;
+
+    public class ИтераторРелокаций
     {
-        LLVMRelocationIteratorRef IWrapper!(LLVMRelocationIteratorRef>.ToHandleType { this._instance;
-        void IDisposableWrapper<LLVMRelocationIteratorRef>.MakeHandleOwner() { this._owner = true;
+        private ЛЛИтераторРелокаций экземпл;
 
-        private readonly LLVMRelocationIteratorRef _instance;
-        private bool _disposed;
-        private bool _owner;
-
-        internal RelocationIterator(LLVMRelocationIteratorRef instance)
+        this(ЛЛИтераторРелокаций экзэмпл)
         {
-            this._instance = instance;
+            this.экземпл = экзэмпл;
         }
 
-        ~RelocationIterator()
+        ~this()
         {
-            this.Dispose(false);
+            ЛЛВыместиИтераторРелокаций(this.раскрой());
         }
 
-        public void Dispose()
+        public ЛЛИтераторРелокаций раскрой(){return this.экземпл;}
+
+        public проц перейдиКСледщРелок()
         {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
+            ЛЛПереместисьКСледщРелокации(this.раскрой());
         }
 
-        private void Dispose(bool disposing)
-        {
-            if (this._disposed)
-            {
-                return;
-            }
+        public бдол смещение ()
+		{
+			return ЛЛДайСмещениеРелокации(this.раскрой());
+		}
 
-            if (this._owner)
-            {
-                LLVM.DisposeRelocationIterator(this.Unwrap());
-            }
+        public СимвИтератор символ()
+		{ 
+			return new СимвИтератор(ЛЛДайСимволРелокации(this.раскрой()));
+		}
 
-            this._disposed = true;
-        }
+        public бдол тип()
+		{
+			return ЛЛДайТипРелокации(this.раскрой());
+		}
 
-        public void MoveToNextRelocation()
-        {
-            LLVM.MoveToNextRelocation(this.Unwrap());
-        }
+        public ткст имяТипа()
+		{ 
+			return вТкст(ЛЛДайИмяТипаРелокации(this.раскрой()));
+		}
 
-        public ulong Offset { LLVM.GetRelocationOffset(this.Unwrap());
-        public SymbolIterator Symbol { LLVM.GetRelocationSymbol(this.Unwrap()).Wrap();
-        public ulong Type { LLVM.GetRelocationType(this.Unwrap());
-        public string TypeName { LLVM.GetRelocationTypeName(this.Unwrap());
-        public string ValueString { LLVM.GetRelocationValueString(this.Unwrap());
+        public ткст ткстЗначения ()
+		{
+			return вТкст(ЛЛДайТкстЗначенияРелокации(this.раскрой()));
+		}
     }
-}
+

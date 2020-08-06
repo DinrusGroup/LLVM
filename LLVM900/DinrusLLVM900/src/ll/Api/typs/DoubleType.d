@@ -1,14 +1,25 @@
-﻿namespace LLVMSharp.API.Types
-{
-    public sealed class DoubleType : FPType
+module ll.api.typs.DoubleType;
+
+import ll.c.Types, ll.api.typs.FPType;
+
+    public class ТипДво : ТипПЗ
     {
-        internal DoubleType(LLVMTypeRef typeRef)
-            : base(typeRef)
-        {
+		private ЛЛТип экзэмпл;
+
+        this(ЛЛТип экзэмпл)
+		{
+            super(экзэмпл);
+			this.экзэмпл = экзэмпл;
+			
         }
 
-        public override string Name => "double";
-        public override uint PrimitiveSizeInBits => 64;
-        public override int MantissaWidth => 53;
+        public override ЛЛТип раскрой()
+		{
+            return this.экзэмпл;
+		}
+
+        public override ткст имя() {return "дво";}
+        public override бцел примитивнРазмерВБитах() {return  64;}
+        public override бцел ширинаМантиссы() {return  53;}
     }
-}
+

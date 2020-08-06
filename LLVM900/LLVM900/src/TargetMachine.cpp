@@ -18,7 +18,7 @@ LLEXPORT ЛЛЦель ЛЛДайЦельИзИмени(const char *Name){
 return LLVMGetTargetFromName(Name);
 }
 
-/** Finds the target corresponding to the given triple and stores it in \p T.
+/** Finds the target corresponding to the given триада and stores it in \p T.
   Returns 0 on success. Optionally returns any error in ErrorMessage.
   Use LLVMDisposeMessage to dispose the message. */
 LLEXPORT LLVMBool ЛЛДайЦельИзТриады(const char* Triple, ЛЛЦель *T,
@@ -70,7 +70,7 @@ LLEXPORT ЛЛЦель ЛЛДайЦельЦелМаш(ЛЛЦелеваяМаши�
 return LLVMGetTargetMachineTarget(T);
 }
 
-/** Returns the triple used creating this target machine. See
+/** Returns the триада used creating this target machine. See
   llvm::TargetMachine::getTriple. The результат needs to be disposed with
   LLVMDisposeMessage. */
 LLEXPORT char *ЛЛДайТриадуЦелМаш(ЛЛЦелеваяМашина T){
@@ -117,16 +117,16 @@ return LLVMTargetMachineEmitToMemoryBuffer( T,  M, codegen, ErrorMessage, OutMem
 }
 
 /*===-- Triple ------------------------------------------------------------===*/
-/** Get a triple for the host machine as a string. The результат needs to be
+/** Get a триада for the host machine as a string. The результат needs to be
   disposed with LLVMDisposeMessage. */
 LLEXPORT char* ЛЛДайДефТриадуЦели(void){
 return LLVMGetDefaultTargetTriple();
 }
 
-/** Normalize a target triple. The результат needs to be disposed with
+/** Normalize a target триада. The результат needs to be disposed with
   LLVMDisposeMessage. */
-LLEXPORT char* ЛЛНормализуйТриадуЦели(const char* triple){
-return LLVMNormalizeTargetTriple(triple);
+LLEXPORT char* ЛЛНормализуйТриадуЦели(const char* триада){
+return LLVMNormalizeTargetTriple(триада);
 }
 
 /** Get the host CPU as a string. The результат needs to be disposed with

@@ -1,5 +1,5 @@
-﻿module ll.api.
-{
+module ll.api.Linkage;
+
     public enum Linkage : int
     {
         External = 0,
@@ -20,4 +20,4 @@
         LinkerPrivate = 15,
         LinkerPrivateWeak = 16,
     }
-}
+

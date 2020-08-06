@@ -50,10 +50,10 @@ struct ЛЛОпцииКомпиляцииМЦДжИТ {
 проц ЛЛИнициализуйОпцииМЦДжИТКомпилятора(ЛЛОпцииКомпиляцииМЦДжИТ *опции,т_мера размОпц);
 
 /**
- * Create an MCJIT execution engine for a module, with the given опции. It is
+ * создай an MCJIT execution engine for a module, with the given опции. It is
  * the responsibility of the caller to ensure that все поля in опции up to
  * the given размОпц are initialized. It is correct to pass a smaller
- * знач of размОпц that omits some поля. The canonical way of using
+ * знач of размОпц that omits some поля. The canonical way of import
  * this is:
  *
  * ЛЛОпцииКомпиляцииМЦДжИТ опции;
@@ -126,7 +126,7 @@ struct ЛЛОпцииКомпиляцииМЦДжИТ {
     alias проц function(ук опак) ЛЛОбрвызМенеджерПамРазрушь;
 
 /**
- * Create a simple custom MCJIT memory manager. Сам memory manager can
+ * создай a simple custom MCJIT memory manager. Сам memory manager can
  * intercept allocations in a module-oblivious way. Сам will return NULL
  * if any of the passed functions are NULL.
  *

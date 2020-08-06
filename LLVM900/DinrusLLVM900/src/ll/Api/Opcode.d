@@ -1,5 +1,5 @@
-﻿module ll.api.
-{
+module ll.api.Opcode;
+
     public enum Opcode : int
     {
         Ret = 1,
@@ -67,4 +67,4 @@
         CleanupPad = 64,
         CatchSwitch = 65,
     }
-}
+

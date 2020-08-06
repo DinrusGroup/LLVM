@@ -1,48 +1,76 @@
-module ll.api.
-{
-    using System;
-    using Utilities;
-    using Values;
-    using Values.Constants.GlobalValues.GlobalObjects;
-    using Values.Instructions;
-    using Values.Instructions.Binary;
-    using Values.Instructions.Cmp;
-    using Values.Instructions.Terminator;
-    using Values.Instructions.Unary;
-    using Values.Instructions.Unary.Casts;
+module ll.api.IRBuilder;
 
-    public sealed class IRBuilder : IDisposable, IEquatable<IRBuilder>, IDisposableWrapper<LLVMBuilderRef>
+
+    public class IRBuilder : IDisposable, IEquatable!(IRBuilder), IDisposableWrapper!(LLVMBuilderRef)
     {
-        LLVMBuilderRef IWrapper!(LLVMBuilderRef>.ToHandleType { this._instance;
-        void IDisposableWrapper<LLVMBuilderRef>.MakeHandleOwner() { this._owner = true;
+        LLVMBuilderRef IWrapper!(LLVMBuilderRef).ToHandleType
+		{
+			this.экземпл;
+		}
 
-        public static IRBuilder Create() { LLVM.CreateBuilder().Wrap().MakeHandleOwner<IRBuilder, LLVMBuilderRef>();
-        public static IRBuilder Create(Context context) { LLVM.CreateBuilderInContext(context.Unwrap()).Wrap().MakeHandleOwner<IRBuilder, LLVMBuilderRef>();
+        void IDisposableWrapper!(LLVMBuilderRef).MakeHandleOwner() 
+	     { 
+		    this._owner = true;
+	     }
 
-        private readonly LLVMBuilderRef _instance;
+        public static IRBuilder создай() 
+		{
+			return LLVM.CreateBuilder().Wrap().MakeHandleOwner!(IRBuilder, LLVMBuilderRef)();
+		}
+
+        public static IRBuilder создай(Context контекст)
+		{ 
+			return LLVM.CreateBuilderInContext(контекст.раскрой()).Wrap().MakeHandleOwner!(IRBuilder, LLVMBuilderRef)();
+		}
+
+        private  LLVMBuilderRef экземпл;
         private bool _disposed;
         private bool _owner;
 
-        internal IRBuilder(LLVMBuilderRef builderRef)
+        this(LLVMBuilderRef builderRef)
         {
-            this._instance = builderRef;
+            this.экземпл = builderRef;
         }
 
-        ~IRBuilder()
+        ~this()
         {
             this.Dispose(false);
         }
 
-        public void PositionBuilder(BasicBlock block, Instruction instr) { LLVM.PositionBuilder(this.Unwrap(), block.Unwrap<LLVMBasicBlockRef>(), instr.Unwrap());
-        public void PositionBuilderBefore(Instruction instr) { LLVM.PositionBuilderBefore(this.Unwrap(), instr.Unwrap());
-        public void PositionBuilderAtEnd(BasicBlock block) { LLVM.PositionBuilderAtEnd(this.Unwrap(), block.Unwrap<LLVMBasicBlockRef>());
+        public void PositionBuilder(BasicBlock block, Instruction instr)
+		{ 
+			LLVM.PositionBuilder(this.раскрой(), block.раскрой!(LLVMBasicBlockRef)(), instr.раскрой());
+		}
 
-        public BasicBlock GetInsertBlock() { LLVM.GetInsertBlock(this.Unwrap()).Wrap();
+        public void PositionBuilderBefore(Instruction instr)
+		{
+			LLVM.PositionBuilderBefore(this.раскрой(), instr.раскрой());
+		}
 
-        public void ClearInsertionPosition() { LLVM.ClearInsertionPosition(this.Unwrap());
+        public void PositionBuilderAtEnd(BasicBlock block)
+		{ 
+			LLVM.PositionBuilderAtEnd(this.раскрой(), block.раскрой!(LLVMBasicBlockRef)());
+		}
 
-        public void InsertIntoBuilder(Instruction instr) { LLVM.InsertIntoBuilder(this.Unwrap(), instr.Unwrap());
-        public void InsertIntoBuilder(Instruction instr, string name = "") { LLVM.InsertIntoBuilderWithName(this.Unwrap(), instr.Unwrap(), name);
+        public BasicBlock GetInsertBlock()
+		{
+			return LLVM.GetInsertBlock(this.раскрой()).Wrap();
+         }
+
+        public void ClearInsertionPosition()
+		{ 
+			LLVM.ClearInsertionPosition(this.раскрой());
+		}
+
+        public void InsertIntoBuilder(Instruction instr) 
+		{ 
+			LLVM.InsertIntoBuilder(this.раскрой(), instr.раскрой());
+		}
+
+        public void InsertIntoBuilder(Instruction instr, string имя = "")
+		{
+			LLVM.InsertIntoBuilderWithName(this.раскрой(), instr.раскрой(), имя);
+		}
 
         public void Dispose()
         {
@@ -59,140 +87,622 @@ module ll.api.
 
             if (this._owner)
             {
-                LLVM.DisposeBuilder(this._instance);
+                LLVM.DisposeBuilder(this.экземпл);
             }
 
             this._disposed = true;
         }
 
-        public Value CurrentDebugLocation
+        public Значение CurrentDebugLocation()
         {
-            get { LLVM.GetCurrentDebugLocation(this.Unwrap()).Wrap();
-            set { LLVM.SetCurrentDebugLocation(this.Unwrap(), value.Unwrap());
+            get { LLVM.GetCurrentDebugLocation(this.раскрой()).Wrap();
+            set { LLVM.SetCurrentDebugLocation(this.раскрой(), значение.раскрой());
         }
 
-        public void SetInstDebugLocation(Instruction inst) { LLVM.SetInstDebugLocation(this.Unwrap(), inst.Unwrap());
+        public void SetInstDebugLocation(Instruction inst)
+		{ 
+			LLVM.SetInstDebugLocation(this.раскрой(), inst.раскрой());
+		}
 
-        public ReturnInst CreateRetVoid() { LLVM.BuildRetVoid(this.Unwrap()).WrapAs<ReturnInst>();
-        public ReturnInst CreateRet(Value v) { LLVM.BuildRet(this.Unwrap(), v.Unwrap()).WrapAs<ReturnInst>();
-        public ReturnInst CreateAggregateRet(Value[] retVals) { LLVM.BuildAggregateRet(this.Unwrap(), retVals.Unwrap()).WrapAs<ReturnInst>();
-        public BranchInst CreateBr(BasicBlock dest) { LLVM.BuildBr(this.Unwrap(), dest.Unwrap<LLVMBasicBlockRef>()).WrapAs<BranchInst>();
-        public BranchInst CreateCondBr(Value If, BasicBlock then, BasicBlock Else) { LLVM.BuildCondBr(this.Unwrap(), If.Unwrap(), then.Unwrap<LLVMBasicBlockRef>(), Else.Unwrap<LLVMBasicBlockRef>()).WrapAs<BranchInst>();
-        public SwitchInst CreateSwitch(Value v, BasicBlock Else, uint numCases) { LLVM.BuildSwitch(this.Unwrap(), v.Unwrap(), Else.Unwrap<LLVMBasicBlockRef>(), numCases).WrapAs<SwitchInst>();
-        public IndirectBrInst CreateIndirectBr(Value addr, uint numDests) { LLVM.BuildIndirectBr(this.Unwrap(), addr.Unwrap(), numDests).WrapAs<IndirectBrInst>();
-        public InvokeInst CreateInvoke(Value fn, Value[] args, BasicBlock then, BasicBlock Catch, string name = "") { LLVM.BuildInvoke(this.Unwrap(), fn.Unwrap(), args.Unwrap(), then.Unwrap<LLVMBasicBlockRef>(), Catch.Unwrap<LLVMBasicBlockRef>(), name).WrapAs<InvokeInst>();
-        public LandingPadInst CreateLandingPad(Type ty, Value persFn, uint numClauses, string name = "") { LLVM.BuildLandingPad(this.Unwrap(), ty.Unwrap(), persFn.Unwrap(), numClauses, name).WrapAs<LandingPadInst>();  
-        public ResumeInst CreateResume(Value exn) { LLVM.BuildResume(this.Unwrap(), exn.Unwrap()).WrapAs<ResumeInst>();
-        public UnreachableInst CreateUnreachable() { LLVM.BuildUnreachable(this.Unwrap()).WrapAs<UnreachableInst>();
-        public Value CreateAdd(Value lhs, Value rhs, string name = "") { LLVM.BuildAdd(this.Unwrap(), lhs.Unwrap(), rhs.Unwrap(), name).WrapAs<Value>();
-        public Value CreateNSWAdd(Value lhs, Value rhs, string name = "") { LLVM.BuildNSWAdd(this.Unwrap(), lhs.Unwrap(), rhs.Unwrap(), name).WrapAs<Value>();
-        public Value CreateNUWAdd(Value lhs, Value rhs, string name = "") { LLVM.BuildNUWAdd(this.Unwrap(), lhs.Unwrap(), rhs.Unwrap(), name).WrapAs<Value>();
-        public Value CreateFAdd(Value lhs, Value rhs, string name = "") { LLVM.BuildFAdd(this.Unwrap(), lhs.Unwrap(), rhs.Unwrap(), name).WrapAs<Value>();
-        public Value CreateSub(Value lhs, Value rhs, string name = "") { LLVM.BuildSub(this.Unwrap(), lhs.Unwrap(), rhs.Unwrap(), name).WrapAs<Value>();
-        public Value CreateNSWSub(Value lhs, Value rhs, string name = "") { LLVM.BuildNSWSub(this.Unwrap(), lhs.Unwrap(), rhs.Unwrap(), name).WrapAs<Value>();     
-        public Value CreateNUWSub(Value lhs, Value rhs, string name = "") { LLVM.BuildNUWSub(this.Unwrap(), lhs.Unwrap(), rhs.Unwrap(), name).WrapAs<Value>();
-        public Value CreateFSub(Value lhs, Value rhs, string name = "") { LLVM.BuildFSub(this.Unwrap(), lhs.Unwrap(), rhs.Unwrap(), name).WrapAs<Value>();
-        public Value CreateMul(Value lhs, Value rhs, string name = "") { LLVM.BuildMul(this.Unwrap(), lhs.Unwrap(), rhs.Unwrap(), name).WrapAs<Value>();
-        public Value CreateNSWMul(Value lhs, Value rhs, string name = "") { LLVM.BuildNSWMul(this.Unwrap(), lhs.Unwrap(), rhs.Unwrap(), name).WrapAs<Value>();
-        public Value CreateNUWMul(Value lhs, Value rhs, string name = "") { LLVM.BuildNUWMul(this.Unwrap(), lhs.Unwrap(), rhs.Unwrap(), name).WrapAs<Value>();
-        public Value CreateFMul(Value lhs, Value rhs, string name = "") { LLVM.BuildFMul(this.Unwrap(), lhs.Unwrap(), rhs.Unwrap(), name).WrapAs<Value>();
-        public Value CreateUDiv(Value lhs, Value rhs, string name = "") { LLVM.BuildUDiv(this.Unwrap(), lhs.Unwrap(), rhs.Unwrap(), name).WrapAs<Value>();
-        public Value CreateExactUDiv(Value lhs, Value rhs, string name = "") { LLVM.BuildExactUDiv(this.Unwrap(), lhs.Unwrap(), rhs.Unwrap(), name).WrapAs<Value>();
-        public Value CreateSDiv(Value lhs, Value rhs, string name = "") { LLVM.BuildSDiv(this.Unwrap(), lhs.Unwrap(), rhs.Unwrap(), name).WrapAs<Value>();
-        public Value CreateExactSDiv(Value lhs, Value rhs, string name = "") { LLVM.BuildExactSDiv(this.Unwrap(), lhs.Unwrap(), rhs.Unwrap(), name).WrapAs<Value>();
-        public Value CreateFDiv(Value lhs, Value rhs, string name = "") { LLVM.BuildFDiv(this.Unwrap(), lhs.Unwrap(), rhs.Unwrap(), name).WrapAs<Value>();
-        public Value CreateURem(Value lhs, Value rhs, string name = "") { LLVM.BuildURem(this.Unwrap(), lhs.Unwrap(), rhs.Unwrap(), name).WrapAs<Value>();
-        public Value CreateSRem(Value lhs, Value rhs, string name = "") { LLVM.BuildSRem(this.Unwrap(), lhs.Unwrap(), rhs.Unwrap(), name).WrapAs<Value>();
-        public Value CreateFRem(Value lhs, Value rhs, string name = "") { LLVM.BuildFRem(this.Unwrap(), lhs.Unwrap(), rhs.Unwrap(), name).WrapAs<Value>();
-        public Value CreateShl(Value lhs, Value rhs, string name = "") { LLVM.BuildShl(this.Unwrap(), lhs.Unwrap(), rhs.Unwrap(), name).WrapAs<Value>();
-        public Value CreateLShr(Value lhs, Value rhs, string name = "") { LLVM.BuildLShr(this.Unwrap(), lhs.Unwrap(), rhs.Unwrap(), name).WrapAs<Value>();
-        public Value CreateAShr(Value lhs, Value rhs, string name = "") { LLVM.BuildAShr(this.Unwrap(), lhs.Unwrap(), rhs.Unwrap(), name).WrapAs<Value>();
-        public Value CreateAnd(Value lhs, Value rhs, string name = "") { LLVM.BuildAnd(this.Unwrap(), lhs.Unwrap(), rhs.Unwrap(), name).WrapAs<Value>();
-        public Value CreateOr(Value lhs, Value rhs, string name = "") { LLVM.BuildOr(this.Unwrap(), lhs.Unwrap(), rhs.Unwrap(), name).WrapAs<Value>();
-        public Value CreateXor(Value lhs, Value rhs, string name = "") { LLVM.BuildXor(this.Unwrap(), lhs.Unwrap(), rhs.Unwrap(), name).WrapAs<Value>();
-        public Value CreateBinOp(Opcode op, Value lhs, Value rhs, string name = "") { LLVM.BuildBinOp(this.Unwrap(), op.Unwrap(), lhs.Unwrap(), rhs.Unwrap(), name).WrapAs<Value>();
-        public Value CreateNeg(Value v, string name = "") { LLVM.BuildNeg(this.Unwrap(), v.Unwrap(), name).WrapAs<Value>();
-        public Value CreateNSWNeg(Value v, string name = "") { LLVM.BuildNSWNeg(this.Unwrap(), v.Unwrap(), name).WrapAs<Value>();
-        public Value CreateNUWNeg(Value v, string name = "") { LLVM.BuildNUWNeg(this.Unwrap(), v.Unwrap(), name).WrapAs<Value>();
-        public Value CreateFNeg(Value v, string name = "") { LLVM.BuildFNeg(this.Unwrap(), v.Unwrap(), name).WrapAs<Value>();
-        public Value CreateNot(Value v, string name = "") { LLVM.BuildNot(this.Unwrap(), v.Unwrap(), name).WrapAs<Value>();
-        public CallInst CreateMalloc(Type ty, string name = "") { LLVM.BuildMalloc(this.Unwrap(), ty.Unwrap(), name).WrapAs<CallInst>();
-        public CallInst CreateArrayMalloc(Type ty, Value val, string name = "") { LLVM.BuildArrayMalloc(this.Unwrap(), ty.Unwrap(), val.Unwrap(), name).WrapAs<CallInst>();
-        public AllocaInst CreateAlloca(Type ty, string name = "") { LLVM.BuildAlloca(this.Unwrap(), ty.Unwrap(), name).WrapAs<AllocaInst>();
-        public AllocaInst CreateArrayAlloca(Type ty, Value val, string name = "") { LLVM.BuildArrayAlloca(this.Unwrap(), ty.Unwrap(), val.Unwrap(), name).WrapAs<AllocaInst>();
-        public CallInst CreateFree(Value pointerVal) { LLVM.BuildFree(this.Unwrap(), pointerVal.Unwrap()).WrapAs<CallInst>();
-        public LoadInst CreateLoad(Value pointerVal, string name = "") { LLVM.BuildLoad(this.Unwrap(), pointerVal.Unwrap(), name).WrapAs<LoadInst>();
-        public StoreInst CreateStore(Value val, Value ptr) { LLVM.BuildStore(this.Unwrap(), val.Unwrap(), ptr.Unwrap()).WrapAs<StoreInst>();
-        public Value CreateGEP(Value pointer, Value[] indices, string name = "") { LLVM.BuildGEP(this.Unwrap(), pointer.Unwrap(), indices.Unwrap(), name).WrapAs<Value>();
-        public Value CreateInBoundsGEP(Value pointer, Value[] indices, string name = "") { LLVM.BuildInBoundsGEP(this.Unwrap(), pointer.Unwrap(), indices.Unwrap(), name).WrapAs<Value>();
-        public Value CreateStructGEP(Value pointer, uint idx, string name = "") { LLVM.BuildStructGEP(this.Unwrap(), pointer.Unwrap(), idx, name).WrapAs<Value>();
-        public Value CreateGlobalString(string str, string name = "") { LLVM.BuildGlobalString(this.Unwrap(), str, name).WrapAs<Value>();
-        public Value CreateGlobalStringPtr(string str, string name = "") { LLVM.BuildGlobalStringPtr(this.Unwrap(), str, name).WrapAs<Value>();
-        public Value CreateTrunc(Value val, Type destTy, string name = "") { LLVM.BuildTrunc(this.Unwrap(), val.Unwrap(), destTy.Unwrap(), name).WrapAs<Value>();
-        public Value CreateZExt(Value val, Type destTy, string name = "") { LLVM.BuildZExt(this.Unwrap(), val.Unwrap(), destTy.Unwrap(), name).WrapAs<Value>();
-        public Value CreateSExt(Value val, Type destTy, string name = "") { LLVM.BuildSExt(this.Unwrap(), val.Unwrap(), destTy.Unwrap(), name).WrapAs<Value>();
-        public Value CreateZExtOrBitCast(Value val, Type destTy, string name = "") { LLVM.BuildZExtOrBitCast(this.Unwrap(), val.Unwrap(), destTy.Unwrap(), name).WrapAs<Value>();
-        public Value CreateSExtOrBitCast(Value val, Type destTy, string name = "") { LLVM.BuildSExtOrBitCast(this.Unwrap(), val.Unwrap(), destTy.Unwrap(), name).WrapAs<Value>();
-        public Value CreateFPToUI(Value val, Type destTy, string name = "") { LLVM.BuildFPToUI(this.Unwrap(), val.Unwrap(), destTy.Unwrap(), name).WrapAs<Value>();
-        public Value CreateFPToSI(Value val, Type destTy, string name = "") { LLVM.BuildFPToSI(this.Unwrap(), val.Unwrap(), destTy.Unwrap(), name).WrapAs<Value>();
-        public Value CreateUIToFP(Value val, Type destTy, string name = "") { LLVM.BuildUIToFP(this.Unwrap(), val.Unwrap(), destTy.Unwrap(), name).WrapAs<Value>();
-        public Value CreateSIToFP(Value val, Type destTy, string name = "") { LLVM.BuildSIToFP(this.Unwrap(), val.Unwrap(), destTy.Unwrap(), name).WrapAs<Value>();
-        public Value CreateFPTrunc(Value val, Type destTy, string name = "") { LLVM.BuildFPTrunc(this.Unwrap(), val.Unwrap(), destTy.Unwrap(), name).WrapAs<Value>();
-        public Value CreateFPExt(Value val, Type destTy, string name = "") { LLVM.BuildFPExt(this.Unwrap(), val.Unwrap(), destTy.Unwrap(), name).WrapAs<Value>();
-        public Value CreatePtrToInt(Value val, Type destTy, string name = "") { LLVM.BuildPtrToInt(this.Unwrap(), val.Unwrap(), destTy.Unwrap(), name).WrapAs<Value>();
-        public Value CreateIntToPtr(Value val, Type destTy, string name = "") { LLVM.BuildIntToPtr(this.Unwrap(), val.Unwrap(), destTy.Unwrap(), name).WrapAs<Value>();
-        public Value CreateBitCast(Value val, Type destTy, string name = "") { LLVM.BuildBitCast(this.Unwrap(), val.Unwrap(), destTy.Unwrap(), name).WrapAs<Value>();
-        public Value CreateAddrSpaceCast(Value val, Type destTy, string name = "") { LLVM.BuildAddrSpaceCast(this.Unwrap(), val.Unwrap(), destTy.Unwrap(), name).WrapAs<Value>();
-        public Value CreateTruncOrBitCast(Value val, Type destTy, string name = "") { LLVM.BuildTruncOrBitCast(this.Unwrap(), val.Unwrap(), destTy.Unwrap(), name).WrapAs<Value>();
-        public Value CreateCast(Opcode op, Value val, Type destTy, string name = "") { LLVM.BuildCast(this.Unwrap(), op.Unwrap(), val.Unwrap(), destTy.Unwrap(), name).WrapAs<Value>();
-        public Value CreatePointerCast(Value val, Type destTy, string name = "") { LLVM.BuildPointerCast(this.Unwrap(), val.Unwrap(), destTy.Unwrap(), name).WrapAs<Value>();
-        public Value CreateIntCast(Value val, Type destTy, string name = "") { LLVM.BuildIntCast(this.Unwrap(), val.Unwrap(), destTy.Unwrap(), name).WrapAs<Value>();
-        public Value CreateFPCast(Value val, Type destTy, string name = "") { LLVM.BuildFPCast(this.Unwrap(), val.Unwrap(), destTy.Unwrap(), name).WrapAs<Value>();
-        public Value CreateICmp(IntPredicate op, Value lhs, Value rhs, string name = "") { LLVM.BuildICmp(this.Unwrap(), op.Unwrap(), lhs.Unwrap(), rhs.Unwrap(), name).WrapAs<Value>();
-        public Value CreateICmpEQ(Value lhs, Value rhs, string name = "") { this.CreateICmp(IntPredicate.EQ, lhs, rhs, name);
-        public Value CreateICmpNE(Value lhs, Value rhs, string name = "") { this.CreateICmp(IntPredicate.NE, lhs, rhs, name);
-        public Value CreateICmpUGT(Value lhs, Value rhs, string name = "") { this.CreateICmp(IntPredicate.UGT, lhs, rhs, name);
-        public Value CreateICmpULT(Value lhs, Value rhs, string name = "") { this.CreateICmp(IntPredicate.ULT, lhs, rhs, name);
-        public Value CreateICmpULE(Value lhs, Value rhs, string name = "") { this.CreateICmp(IntPredicate.ULE, lhs, rhs, name);
-        public Value CreateICmpSGT(Value lhs, Value rhs, string name = "") { this.CreateICmp(IntPredicate.SGT, lhs, rhs, name);
-        public Value CreateICmpSGE(Value lhs, Value rhs, string name = "") { this.CreateICmp(IntPredicate.SGE, lhs, rhs, name);
-        public Value CreateICmpSLT(Value lhs, Value rhs, string name = "") { this.CreateICmp(IntPredicate.SLT, lhs, rhs, name);
-        public Value CreateICmpSLE(Value lhs, Value rhs, string name = "") { this.CreateICmp(IntPredicate.SLE, lhs, rhs, name);
-        public Value CreateFCmp(RealPredicate op, Value lhs, Value rhs, string name = "") { LLVM.BuildFCmp(this.Unwrap(), op.Unwrap(), lhs.Unwrap(), rhs.Unwrap(), name).WrapAs<Value>();
-        public Value CreateFCmpOEQ(Value lhs, Value rhs, string name = "") { this.CreateFCmp(RealPredicate.OEQ, lhs, rhs, name);
-        public Value CreateFCmpOGT(Value lhs, Value rhs, string name = "") { this.CreateFCmp(RealPredicate.OGT, lhs, rhs, name);
-        public Value CreateFCmpOGE(Value lhs, Value rhs, string name = "") { this.CreateFCmp(RealPredicate.OGE, lhs, rhs, name);
-        public Value CreateFCmpOLT(Value lhs, Value rhs, string name = "") { this.CreateFCmp(RealPredicate.OLT, lhs, rhs, name);
-        public Value CreateFCmpOLE(Value lhs, Value rhs, string name = "") { this.CreateFCmp(RealPredicate.OLE, lhs, rhs, name);
-        public Value CreateFCmpONE(Value lhs, Value rhs, string name = "") { this.CreateFCmp(RealPredicate.ONE, lhs, rhs, name);
-        public Value CreateFCmpORD(Value lhs, Value rhs, string name = "") { this.CreateFCmp(RealPredicate.ORD, lhs, rhs, name);
-        public Value CreateFCmpUNO(Value lhs, Value rhs, string name = "") { this.CreateFCmp(RealPredicate.UNO, lhs, rhs, name);
-        public Value CreateFCmpUEQ(Value lhs, Value rhs, string name = "") { this.CreateFCmp(RealPredicate.UEQ, lhs, rhs, name);
-        public Value CreateFCmpUGT(Value lhs, Value rhs, string name = "") { this.CreateFCmp(RealPredicate.UGT, lhs, rhs, name);
-        public Value CreateFCmpUGE(Value lhs, Value rhs, string name = "") { this.CreateFCmp(RealPredicate.UGE, lhs, rhs, name);
-        public Value CreateFCmpULT(Value lhs, Value rhs, string name = "") { this.CreateFCmp(RealPredicate.ULT, lhs, rhs, name);
-        public Value CreateFCmpUNE(Value lhs, Value rhs, string name = "") { this.CreateFCmp(RealPredicate.UNE, lhs, rhs, name);
-        public PHINode CreatePhi(Type ty, string name = "") { LLVM.BuildPhi(this.Unwrap(), ty.Unwrap(), name).WrapAs<PHINode>();
-        public CallInst CreateCall(Value fn, Value[] args, string name) { LLVM.BuildCall(this.Unwrap(), fn.Unwrap(), args.Unwrap(), name).WrapAs<CallInst>();
-        public CallInst CreateCall(Value fn, string name, params Value[] args) { this.CreateCall(fn, args, name);
-        public CallInst CreateCall(Value fn, params Value[] args) { this.CreateCall(fn, args, string.Empty);
-        public Value CreateSelect(Value @If, Value then, Value @Else, string name = "") { LLVM.BuildSelect(this.Unwrap(), If.Unwrap(), then.Unwrap(), Else.Unwrap(), name).WrapAs<Value>();
-        public VAArgInst CreateVAArg(Value list, Type ty, string name = "") { LLVM.BuildVAArg(this.Unwrap(), list.Unwrap(), ty.Unwrap(), name).WrapAs<VAArgInst>();
-        public Value CreateExtractElement(Value vecVal, Value index, string name = "") { LLVM.BuildExtractElement(this.Unwrap(), vecVal.Unwrap(), index.Unwrap(), name).WrapAs<Value>();
-        public Value CreateInsertElement(Value vecVal, Value eltVal, Value index, string name = "") { LLVM.BuildInsertElement(this.Unwrap(), vecVal.Unwrap(), eltVal.Unwrap(), index.Unwrap(), name).WrapAs<Value>();
-        public Value CreateShuffleVector(Value v1, Value v2, Value mask, string name = "") { LLVM.BuildShuffleVector(this.Unwrap(), v1.Unwrap(), v2.Unwrap(), mask.Unwrap(), name).WrapAs<Value>();
-        public Value CreateExtractValue(Value aggVal, uint index, string name = "") { LLVM.BuildExtractValue(this.Unwrap(), aggVal.Unwrap(), index, name).WrapAs<Value>();
-        public Value CreateInsertValue(Value aggVal, Value eltVal, uint index, string name = "") { LLVM.BuildInsertValue(this.Unwrap(), aggVal.Unwrap(), eltVal.Unwrap(), index, name).WrapAs<Value>();
-        public Value CreateIsNull(Value val, string name = "") { LLVM.BuildIsNull(this.Unwrap(), val.Unwrap(), name).WrapAs<Value>();
-        public Value CreateIsNotNull(Value val, string name = "") { LLVM.BuildIsNotNull(this.Unwrap(), val.Unwrap(), name).WrapAs<Value>();
-        public Value CreatePtrDiff(Value lhs, Value rhs, string name = "") { LLVM.BuildPtrDiff(this.Unwrap(), lhs.Unwrap(), rhs.Unwrap(), name).WrapAs<Value>();
-        public FenceInst CreateFence(AtomicOrdering ordering, bool singleThread, string name = "") { LLVM.BuildFence(this.Unwrap(), ordering.Unwrap(), singleThread, name).WrapAs<FenceInst>();
-        public AtomicRMWInst CreateAtomicRMW(AtomicRMWBinOp op, Value ptr, Value val, AtomicOrdering ordering, bool singleThread) { LLVM.BuildAtomicRMW(this.Unwrap(), op.Unwrap(), ptr.Unwrap(), val.Unwrap(), ordering.Unwrap(), singleThread).WrapAs<AtomicRMWInst>();
+        public ReturnInst CreateRetVoid() 
+		{ 
+			return LLVM.BuildRetVoid(this.раскрой()).WrapAs!(ReturnInst)();
+		}
 
-        public bool Equals(IRBuilder other) { ReferenceEquals(other, null) ? false : this._instance == other._instance;
-        public override bool Equals(object obj) { this.Equals(obj as IRBuilder);
-        public static bool operator ==(IRBuilder op1, IRBuilder op2) { ReferenceEquals(op1, null) ? ReferenceEquals(op2, null) : op1.Equals(op2);
-        public static bool operator !=(IRBuilder op1, IRBuilder op2) { !(op1 == op2);
-        public override int GetHashCode() { this._instance.GetHashCode();
+        public ReturnInst CreateRet(Значение v)
+		{ 
+			return LLVM.BuildRet(this.раскрой(), v.раскрой()).WrapAs!(ReturnInst)();
+        }
+
+        public ReturnInst CreateAggregateRet(Значение[] retVals)
+		{ 
+			return LLVM.BuildAggregateRet(this.раскрой(), retVals.раскрой()).WrapAs!(ReturnInst)();
+	    }
+
+        public BranchInst CreateBr(BasicBlock dest)
+		{ 
+			return LLVM.BuildBr(this.раскрой(), dest.раскрой!(LLVMBasicBlockRef)()).WrapAs!(BranchInst)();
+		}
+
+        public BranchInst CreateCondBr(Значение If, BasicBlock then, BasicBlock Else)
+		{ 
+			return LLVM.BuildCondBr(this.раскрой(), If.раскрой(), then.раскрой!(LLVMBasicBlockRef)(), Else.раскрой!(LLVMBasicBlockRef)()).WrapAs!(BranchInst)();
+		}
+
+        public SwitchInst CreateSwitch(Значение v, BasicBlock Else, uint numCases)
+		{ 
+			return LLVM.BuildSwitch(this.раскрой(), v.раскрой(), Else.раскрой!(LLVMBasicBlockRef)(), numCases).WrapAs!(SwitchInst)();
+		}
+
+        public IndirectBrInst CreateIndirectBr(Значение addr, uint numDests)
+		{ 
+			return LLVM.BuildIndirectBr(this.раскрой(), addr.раскрой(), numDests).WrapAs!(IndirectBrInst)();
+		}
+
+        public InvokeInst CreateInvoke(Значение fn, Значение[] args, BasicBlock then, BasicBlock Catch, string имя = "")
+		{ 
+			return LLVM.BuildInvoke(this.раскрой(), fn.раскрой(), args.раскрой(), then.раскрой!(LLVMBasicBlockRef)(), Catch.раскрой!(LLVMBasicBlockRef)(), имя).WrapAs!(InvokeInst)();
+		}
+
+        public LandingPadInst CreateLandingPad(Type ty, Значение persFn, uint numClauses, string имя = "")
+		{ 
+			return LLVM.BuildLandingPad(this.раскрой(), ty.раскрой(), persFn.раскрой(), numClauses, имя).WrapAs!(LandingPadInst)();  
+		}
+
+        public ResumeInst CreateResume(Значение exn)
+		{ 
+			return LLVM.BuildResume(this.раскрой(), exn.раскрой()).WrapAs!(ResumeInst)();
+		}
+
+        public НедоступнИнстр CreateUnreachable() 
+		{
+			return LLVM.BuildUnreachable(this.раскрой()).WrapAs!(НедоступнИнстр)();
+		}
+
+        public Значение CreateAdd(Значение lhs, Значение rhs, string имя = "")
+		{
+			return LLVM.BuildAdd(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateNSWAdd(Значение lhs, Значение rhs, string имя = "")
+		{ 
+			return LLVM.BuildNSWAdd(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateNUWAdd(Значение lhs, Значение rhs, string имя = "")
+		{
+			return LLVM.BuildNUWAdd(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateFAdd(Значение lhs, Значение rhs, string имя = "")
+		{
+			return LLVM.BuildFAdd(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateSub(Значение lhs, Значение rhs, string имя = "") 
+		{
+			return LLVM.BuildSub(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateNSWSub(Значение lhs, Значение rhs, string имя = "") 
+		{
+			LLVM.BuildNSWSub(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateNUWSub(Значение lhs, Значение rhs, string имя = "")
+		{
+			return LLVM.BuildNUWSub(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateFSub(Значение lhs, Значение rhs, string имя = "") 
+		{ 
+			return LLVM.BuildFSub(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateMul(Значение lhs, Значение rhs, string имя = "")
+		{
+			return LLVM.BuildMul(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateNSWMul(Значение lhs, Значение rhs, string имя = "")
+		{ 
+			return LLVM.BuildNSWMul(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateNUWMul(Значение lhs, Значение rhs, string имя = "") 
+		{
+			return LLVM.BuildNUWMul(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateFMul(Значение lhs, Значение rhs, string имя = "")
+		{ 
+			return LLVM.BuildFMul(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateUDiv(Значение lhs, Значение rhs, string имя = "") 
+		{
+			return LLVM.BuildUDiv(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateExactUDiv(Значение lhs, Значение rhs, string имя = "") 
+		{
+			return LLVM.BuildExactUDiv(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateSDiv(Значение lhs, Значение rhs, string имя = "")
+		{
+			return LLVM.BuildSDiv(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateExactSDiv(Значение lhs, Значение rhs, string имя = "") 
+		{ 
+			return LLVM.BuildExactSDiv(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateFDiv(Значение lhs, Значение rhs, string имя = "")
+		{ 
+			return LLVM.BuildFDiv(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateURem(Значение lhs, Значение rhs, string имя = "")
+		{ 
+			return LLVM.BuildURem(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+         }
+
+        public Значение CreateSRem(Значение lhs, Значение rhs, string имя = "")
+		{ 
+			return LLVM.BuildSRem(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateFRem(Значение lhs, Значение rhs, string имя = "")
+		{ 
+			return LLVM.BuildFRem(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateShl(Значение lhs, Значение rhs, string имя = "")
+		{
+			return LLVM.BuildShl(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateLShr(Значение lhs, Значение rhs, string имя = "")
+		{ 
+			return LLVM.BuildLShr(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateAShr(Значение lhs, Значение rhs, string имя = "")
+		{ 
+			return LLVM.BuildAShr(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateAnd(Значение lhs, Значение rhs, string имя = "")
+		{
+			return LLVM.BuildAnd(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateOr(Значение lhs, Значение rhs, string имя = "") 
+		{ 
+			return LLVM.BuildOr(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateXor(Значение lhs, Значение rhs, string имя = "")
+		{ 
+			return LLVM.BuildXor(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateBinOp(Opcode op, Значение lhs, Значение rhs, string имя = "")
+		{
+			return LLVM.BuildBinOp(this.раскрой(), op.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateNeg(Значение v, string имя = "") 
+		{
+			return LLVM.BuildNeg(this.раскрой(), v.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateNSWNeg(Значение v, string имя = "")
+		{
+			return LLVM.BuildNSWNeg(this.раскрой(), v.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateNUWNeg(Значение v, string имя = "")
+		{ 
+			return LLVM.BuildNUWNeg(this.раскрой(), v.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateFNeg(Значение v, string имя = "") 
+		{
+			return LLVM.BuildFNeg(this.раскрой(), v.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateNot(Значение v, string имя = "")
+		{
+			return LLVM.BuildNot(this.раскрой(), v.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public CallInst CreateMalloc(Type ty, string имя = "")
+		{ 
+			return LLVM.BuildMalloc(this.раскрой(), ty.раскрой(), имя).WrapAs!(CallInst)();
+		}
+
+        public CallInst CreateArrayMalloc(Type ty, Значение val, string имя = "")
+		{
+			return return LLVM.BuildArrayMalloc(this.раскрой(), ty.раскрой(), val.раскрой(), имя).WrapAs!(CallInst)();
+		}
+
+        public AllocaInst CreateAlloca(Type ty, string имя = "") 
+		{
+			return LLVM.BuildAlloca(this.раскрой(), ty.раскрой(), имя).WrapAs!(AllocaInst)();
+		}
+
+        public AllocaInst CreateArrayAlloca(Type ty, Значение val, string имя = "")
+		{ 
+			return LLVM.BuildArrayAlloca(this.раскрой(), ty.раскрой(), val.раскрой(), имя).WrapAs!(AllocaInst)();
+		}
+
+        public CallInst CreateFree(Значение pointerVal)
+		{ 
+			return LLVM.BuildFree(this.раскрой(), pointerVal.раскрой()).WrapAs!(CallInst)();
+		}
+
+        public LoadInst CreateLoad(Значение pointerVal, string имя = "")
+		{
+			return LLVM.BuildLoad(this.раскрой(), pointerVal.раскрой(), имя).WrapAs!(LoadInst)();
+		}
+
+        public StoreInst CreateStore(Значение val, Значение ptr) 
+		{ 
+			return LLVM.BuildStore(this.раскрой(), val.раскрой(), ptr.раскрой()).WrapAs!(StoreInst)();
+		}
+
+        public Значение CreateGEP(Значение pointer, Значение[] indices, string имя = "") 
+		{ 
+			return LLVM.BuildGEP(this.раскрой(), pointer.раскрой(), indices.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateInBoundsGEP(Значение pointer, Значение[] indices, string имя = "")
+		{
+			return LLVM.BuildInBoundsGEP(this.раскрой(), pointer.раскрой(), indices.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateStructGEP(Значение pointer, uint idx, string имя = "")
+		{ 
+			return LLVM.BuildStructGEP(this.раскрой(), pointer.раскрой(), idx, имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateGlobalString(string str, string имя = "")
+		{
+			return LLVM.BuildGlobalString(this.раскрой(), str, имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateGlobalStringPtr(string str, string имя = "")
+		{
+			return LLVM.BuildGlobalStringPtr(this.раскрой(), str, имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateTrunc(Значение val, Type destTy, string имя = "")
+		{
+			return LLVM.BuildTrunc(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateZExt(Значение val, Type destTy, string имя = "") 
+		{
+			return LLVM.BuildZExt(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateSExt(Значение val, Type destTy, string имя = "")
+		{
+			return LLVM.BuildSExt(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateZExtOrBitCast(Значение val, Type destTy, string имя = "")
+		{ 
+			return LLVM.BuildZExtOrBitCast(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateSExtOrBitCast(Значение val, Type destTy, string имя = "") 
+		{ 
+			return LLVM.BuildSExtOrBitCast(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateFPToUI(Значение val, Type destTy, string имя = "")
+		{
+			return LLVM.BuildFPToUI(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateFPToSI(Значение val, Type destTy, string имя = "") 
+		{
+			return LLVM.BuildFPToSI(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateUIToFP(Значение val, Type destTy, string имя = "") 
+		{
+			return LLVM.BuildUIToFP(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateSIToFP(Значение val, Type destTy, string имя = "")
+		{
+			return LLVM.BuildSIToFP(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateFPTrunc(Значение val, Type destTy, string имя = "")
+		{
+			return LLVM.BuildFPTrunc(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateFPExt(Значение val, Type destTy, string имя = "") 
+		{
+			return LLVM.BuildFPExt(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreatePtrToInt(Значение val, Type destTy, string имя = "")
+		{
+			return LLVM.BuildPtrToInt(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateIntToPtr(Значение val, Type destTy, string имя = "") 
+		{ 
+			return LLVM.BuildIntToPtr(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateBitCast(Значение val, Type destTy, string имя = "")
+		{ 
+			return LLVM.BuildBitCast(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateAddrSpaceCast(Значение val, Type destTy, string имя = "") 
+		{
+			return LLVM.BuildAddrSpaceCast(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateTruncOrBitCast(Значение val, Type destTy, string имя = "")
+		{ 
+			return LLVM.BuildTruncOrBitCast(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateCast(Opcode op, Значение val, Type destTy, string имя = "")
+		{ 
+			return LLVM.BuildCast(this.раскрой(), op.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreatePointerCast(Значение val, Type destTy, string имя = "") 
+		{
+			return LLVM.BuildPointerCast(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateIntCast(Значение val, Type destTy, string имя = "")
+		{
+			LLVM.BuildIntCast(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateFPCast(Значение val, Type destTy, string имя = "")
+		{
+			return LLVM.BuildFPCast(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateICmp(ЛЛЦелПредикат op, Значение lhs, Значение rhs, string имя = "") 
+		{ 
+			return LLVM.BuildICmp(this.раскрой(), op.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateICmpEQ(Значение lhs, Значение rhs, string имя = "")
+		{ 
+			return this.CreateICmp(ЛЛЦелПредикат.EQ, lhs, rhs, имя);
+		}
+
+        public Значение CreateICmpNE(Значение lhs, Значение rhs, string имя = "")
+		{
+			return this.CreateICmp(ЛЛЦелПредикат.NE, lhs, rhs, имя);
+		}
+
+        public Значение CreateICmpUGT(Значение lhs, Значение rhs, string имя = "")
+		{
+			this.CreateICmp(ЛЛЦелПредикат.UGT, lhs, rhs, имя);
+		}
+
+        public Значение CreateICmpULT(Значение lhs, Значение rhs, string имя = "")
+		{
+			return this.CreateICmp(ЛЛЦелПредикат.ULT, lhs, rhs, имя);
+		}
+
+        public Значение CreateICmpULE(Значение lhs, Значение rhs, string имя = "") 
+		{ 
+			return this.CreateICmp(ЛЛЦелПредикат.ULE, lhs, rhs, имя);
+		}
+
+        public Значение CreateICmpSGT(Значение lhs, Значение rhs, string имя = "") 
+		{
+			return this.CreateICmp(ЛЛЦелПредикат.SGT, lhs, rhs, имя);
+		}
+
+        public Значение CreateICmpSGE(Значение lhs, Значение rhs, string имя = "") 
+		{
+			return this.CreateICmp(ЛЛЦелПредикат.SGE, lhs, rhs, имя);
+		}
+
+        public Значение CreateICmpSLT(Значение lhs, Значение rhs, string имя = "")
+		{
+			return this.CreateICmp(ЛЛЦелПредикат.SLT, lhs, rhs, имя);
+		}
+
+        public Значение CreateICmpSLE(Значение lhs, Значение rhs, string имя = "")
+		{
+			return this.CreateICmp(ЛЛЦелПредикат.SLE, lhs, rhs, имя);
+		}
+
+        public Значение CreateFCmp(ЛЛПредикатРеала op, Значение lhs, Значение rhs, string имя = "")
+		{ 
+			return LLVM.BuildFCmp(this.раскрой(), op.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateFCmpOEQ(Значение lhs, Значение rhs, string имя = "") 
+		{ 
+			return this.CreateFCmp(ЛЛПредикатРеала.OEQ, lhs, rhs, имя);
+		}
+
+        public Значение CreateFCmpOGT(Значение lhs, Значение rhs, string имя = "")
+		{
+			return this.CreateFCmp(ЛЛПредикатРеала.OGT, lhs, rhs, имя);
+		}
+
+        public Значение CreateFCmpOGE(Значение lhs, Значение rhs, string имя = "") 
+		{
+			return this.CreateFCmp(ЛЛПредикатРеала.OGE, lhs, rhs, имя);
+		}
+
+        public Значение CreateFCmpOLT(Значение lhs, Значение rhs, string имя = "")
+		{
+			return this.CreateFCmp(ЛЛПредикатРеала.OLT, lhs, rhs, имя);
+		}
+
+        public Значение CreateFCmpOLE(Значение lhs, Значение rhs, string имя = "") 
+		{
+			return this.CreateFCmp(ЛЛПредикатРеала.OLE, lhs, rhs, имя);
+		}
+
+        public Значение CreateFCmpONE(Значение lhs, Значение rhs, string имя = "")
+		{
+			return this.CreateFCmp(ЛЛПредикатРеала.ONE, lhs, rhs, имя);
+		}
+
+        public Значение CreateFCmpORD(Значение lhs, Значение rhs, string имя = "")
+		{
+			this.CreateFCmp(ЛЛПредикатРеала.ORD, lhs, rhs, имя);
+		}
+
+        public Значение CreateFCmpUNO(Значение lhs, Значение rhs, string имя = "")
+		{ 
+			return this.CreateFCmp(ЛЛПредикатРеала.UNO, lhs, rhs, имя);
+		}
+
+        public Значение CreateFCmpUEQ(Значение lhs, Значение rhs, string имя = "") 
+		{
+			return this.CreateFCmp(ЛЛПредикатРеала.UEQ, lhs, rhs, имя);
+		}
+
+        public Значение CreateFCmpUGT(Значение lhs, Значение rhs, string имя = "")
+		{
+			return this.CreateFCmp(ЛЛПредикатРеала.UGT, lhs, rhs, имя);
+		}
+
+        public Значение CreateFCmpUGE(Значение lhs, Значение rhs, string имя = "") 
+		{
+			return this.CreateFCmp(ЛЛПредикатРеала.UGE, lhs, rhs, имя);
+		}
+
+        public Значение CreateFCmpULT(Значение lhs, Значение rhs, string имя = "")
+		{
+			return this.CreateFCmp(ЛЛПредикатРеала.ULT, lhs, rhs, имя);
+		}
+
+        public Значение CreateFCmpUNE(Значение lhs, Значение rhs, string имя = "")
+		{ 
+			return this.CreateFCmp(ЛЛПредикатРеала.UNE, lhs, rhs, имя);
+		}
+
+        public PHINode CreatePhi(Type ty, string имя = "")
+		{
+			return LLVM.BuildPhi(this.раскрой(), ty.раскрой(), имя).WrapAs!(PHINode)();
+		}
+
+        public CallInst CreateCall(Значение fn, Значение[] args, string имя) 
+		{ 
+			return LLVM.BuildCall(this.раскрой(), fn.раскрой(), args.раскрой(), имя).WrapAs!(CallInst)();
+		}
+
+        public CallInst CreateCall(Значение fn, string имя, params Значение[] args)
+		{
+			return this.CreateCall(fn, args, имя);
+		}
+
+        public CallInst CreateCall(Значение fn, params Значение[] args) 
+		{ 
+			return this.CreateCall(fn, args, string.Empty);
+		}
+
+        public Значение CreateSelect(Значение @If, Значение then, Значение @Else, string имя = "")
+		{
+			return LLVM.BuildSelect(this.раскрой(), If.раскрой(), then.раскрой(), Else.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public VAArgInst CreateVAArg(Значение list, Type ty, string имя = "")
+		{
+			return LLVM.BuildVAArg(this.раскрой(), list.раскрой(), ty.раскрой(), имя).WrapAs!(VAArgInst)();
+		}
+
+        public Значение CreateExtractElement(Значение vecVal, Значение индекс, string имя = "")
+		{
+			return LLVM.BuildExtractElement(this.раскрой(), vecVal.раскрой(), индекс.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateInsertElement(Значение vecVal, Значение eltVal, Значение индекс, string имя = "")
+		{ 
+			return LLVM.BuildInsertElement(this.раскрой(), vecVal.раскрой(), eltVal.раскрой(), индекс.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateShuffleVector(Значение v1, Значение v2, Значение mask, string имя = "")
+		{ 
+			return LLVM.BuildShuffleVector(this.раскрой(), v1.раскрой(), v2.раскрой(), mask.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateExtractValue(Значение aggVal, uint индекс, string имя = "") 
+		{ 
+			return LLVM.BuildExtractValue(this.раскрой(), aggVal.раскрой(), индекс, имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateInsertValue(Значение aggVal, Значение eltVal, uint индекс, string имя = "") 
+		{ 
+			return LLVM.BuildInsertValue(this.раскрой(), aggVal.раскрой(), eltVal.раскрой(), индекс, имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateIsNull(Значение val, string имя = "")
+		{ 
+			return LLVM.BuildIsNull(this.раскрой(), val.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreateIsNotNull(Значение val, string имя = "")
+		{
+			return LLVM.BuildIsNotNull(this.раскрой(), val.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public Значение CreatePtrDiff(Значение lhs, Значение rhs, string имя = "") 
+		{
+			return LLVM.BuildPtrDiff(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+		}
+
+        public FenceInst CreateFence(AtomicOrdering ordering, bool singleThread, string имя = "")
+		{ 
+			return LLVM.BuildFence(this.раскрой(), ordering.раскрой(), singleThread, имя).WrapAs!(FenceInst)();
+		}
+
+        public AtomicRMWInst CreateAtomicRMW(AtomicRMWBinOp op, Значение ptr, Значение val, AtomicOrdering ordering, bool singleThread) 
+		{
+			return LLVM.BuildAtomicRMW(this.раскрой(), op.раскрой(), ptr.раскрой(), val.раскрой(), ordering.раскрой(), singleThread).WrapAs!(AtomicRMWInst)();
+		}
+
+        public bool Equals(IRBuilder other) 
+		{
+			return ReferenceEquals(other, null) ? false : this.экземпл == other.экземпл;
+		}
+
+        public override bool Equals(object obj) 
+		{ 
+			return this.Equals(obj as IRBuilder);
+		}
+
+        public static bool operator ==(IRBuilder op1, IRBuilder op2)
+		{ 
+			return ReferenceEquals(op1, null) ? ReferenceEquals(op2, null) : op1.Equals(op2);
+		}
+
+        public static bool operator !=(IRBuilder op1, IRBuilder op2)
+		{
+			return !(op1 == op2);
+		}
+
+        public override int GetHashCode() 
+		{
+			return this.экземпл.GetHashCode();
+		}
     }
+  }
 }

@@ -1,193 +1,191 @@
-﻿namespace LLVMSharp
-{
-    using System;
-    using System.Runtime.InteropServices;
+﻿модуль ll.Module;
 
-    public sealed class Module
+import stdrus: вТкст0, вТкст;
+import ll.c.Types, ll.c.Analysis, ll.c.Core, ll.c.BitWriter;
+
+    public class Модуль
     {
-        internal readonly LLVMModuleRef instance;
+        private ЛЛМодуль экземпляр;
 
-        public Module(string moduleId)
+        public this(ткст идМодуля)
         {
-            this.instance = LLVM.ModuleCreateWithName(moduleId);
+            this.экземпляр = ЛЛМодуль_СоздайСИменем(вТкст0(идМодуля));
         }
 
-        public Module(string moduleId, LLVMContextRef context)
+        public Модуль(ткст идМодуля, ЛЛКонтекст контекст)
         {
-            this.instance = LLVM.ModuleCreateWithNameInContext(moduleId, context);
+            this.экземпляр = ЛЛМодуль_СоздайСИменемВКонтексте(вТкст0(идМодуля), ЛЛКонтекст к);
         }
 
-        internal Module(LLVMModuleRef module)
+        this(ЛЛМодуль модуль)
         {
-            this.instance = LLVM.CloneModule(module);
+            this.экземпляр = модуль;
         }
         
-        public Module Clone()
+        public Модуль клонируй()
         {
-            return new Module(this.instance);
+            return new Модуль(this.экземпляр);
         }
 
-        public void DisposeModule()
+        public проц выместиМодуль()
         {
-            LLVM.DisposeModule(this.instance);
+            ЛЛВыместиМодуль(this.экземпляр);
         }
         
-        public string GetDataLayout()
+        public ткст дайРаскладкуДанных()
         {
-            return LLVM.GetDataLayout(this.instance);
+            auto рез = ЛЛДайСтрРаскладкиДанных(this.экземпляр);
+			return вТкст(рез);
         }
 
-        public void SetDataLayout(string @Triple)
+        public проц устРаскладкуДанных(ткст триада)
         {
-            LLVM.SetDataLayout(this.instance, @Triple);
+           ЛЛУстРаскладкуДанных(this.экземпляр, вТкст0(триада));
         }
 
-        public string GetTarget()
+        public ткст дайЦель()
         {
-            return LLVM.GetTarget(this.instance);
+            return вТкст(ЛЛДайЦель(this.экземпляр));
         }
 
-        public void SetTarget(string @Triple)
+        public проц устЦель(ткст триада)
         {
-            LLVM.SetTarget(this.instance, @Triple);
+            ЛЛУстЦель(this.экземпляр, вТкст0(триада));
         }
 
-        public void Dump()
+        public проц дамп()
         {
-            LLVM.DumpModule(this.instance);
+            ЛЛДампМодуля(this.экземпляр);
         }
 
-        public bool PrintModuleToFile(string @Filename, out IntPtr @ErrorMessage)
+        public бул выведиВФайл(ткст имяФ, out ткст0 *ошСооб)
         {
-            return LLVM.PrintModuleToFile(this.instance, @Filename, out @ErrorMessage);
+            return ЛЛВыведиМодульВФайл(this.экземпляр, вТкст0(имяф), ошСооб);
         }
 
-        public string PrintModuleToString()
+        public override ткст вТкст()
         {
-            IntPtr ptr = LLVM.PrintModuleToString(this.instance);
-            string retval = Marshal.PtrToStringAnsi(ptr) ?? string.Empty;
-            LLVM.DisposeMessage(ptr);
-            return retval;
+            ткст0 ткт = ЛЛВыведиМодульВСтроку(this.экземпляр);
+            ткст рез = вТкст(ткт);
+            ЛЛВыместиСообщение(ткт);
+            return рез;
         }
 
-        public void SetModuleInlineAsm(string @Asm)
+        public проц устИнлайнАсм(ткст асм)
         {
-            LLVM.SetModuleInlineAsm(this.instance, @Asm);
+            ЛЛУстИнлайнАсмМодуля(this.экземпляр, вТкст0(асм));
         }
 
-        public LLVMContextRef GetModuleContext()
+        public ЛЛКонтекст дайКонтекст()
         {
-            return LLVM.GetModuleContext(this.instance);
+            return ЛЛДайКонтекстМодуля(this.экземпляр);
         }
 
-        public LLVMTypeRef GetTypeByName(string @Name)
+        public ЛЛТип дайТипПоИмени(ткст имя)
         {
-            return LLVM.GetTypeByName(this.instance, @Name);
+            return ЛЛДайТипПоИмени(this.экземпляр, вТкст0(имя));
         }
 
-        public uint GetNamedMetadataNumOperands(string @name)
+        public бцел члоОперандовИмМетадан(ткст имя)
         {
-            return LLVM.GetNamedMetadataNumOperands(this.instance, @name);
+            return ЛЛДайЧлоОперандовИменованныхМетаданных(this.экземпляр, вТкст0(имя));
         }
 
-        public LLVMValueRef[] GetNamedMetadataOperands(string @name)
+        public ЛЛЗначение[] операндыИмМетадан(ткст имя)
         {
-            return LLVM.GetNamedMetadataOperands(this.instance, @name);
+		 ЛЛЗначение[] приёмник;
+         ЛЛДайОперандыИменованныхМетаданных(this.экземпляр, вТкст0(имя), &приёмник);
+		 return приёмник;
         }
 
-        public void AddNamedMetadataOperand(string @name, LLVMValueRef @Val)
+        public проц добавьОперандИмМетадан(ткст имя, ЛЛЗначение зн)
         {
-            LLVM.AddNamedMetadataOperand(this.instance, @name, @Val);
+            ЛЛДобавьОперандИменованныхМетаданных(this.экземпляр, вТкст0(имя), зн);
         }
 
-        public LLVMValueRef AddFunction(string @Name, LLVMTypeRef @FunctionTy)
+        public ЛЛЗначение добавьФункц(ткст имя, ЛЛТип типФункц)
         {
-            return LLVM.AddFunction(this.instance, @Name, @FunctionTy);
+            return ЛЛДобавьФункц(this.экземпляр, имя, типФункц);
         }
 
-        public LLVMValueRef GetNamedFunction(string @Name)
+        public ЛЛЗначение дайИмФункц(ткст имя)
         {
-            return LLVM.GetNamedFunction(this.instance, @Name);
+            return ЛЛДайИменованФункц(this.экземпляр, вТкст0(имя));
         }
 
-        public LLVMValueRef GetFirstFunction()
+        public ЛЛЗначение первФункц()
         {
-            return LLVM.GetFirstFunction(this.instance);
+            return ЛЛДайПервФункц(this.экземпляр);
         }
 
-        public LLVMValueRef GetLastFunction()
+        public ЛЛЗначение последнФункц()
         {
-            return LLVM.GetLastFunction(this.instance);
+            return ЛЛДайПоследнФункц(this.экземпляр);
         }
 
-        public LLVMValueRef AddGlobal(LLVMTypeRef @Ty, string @Name)
+        public ЛЛЗначение добавьГлоб(ЛЛТип тип, ткст имя)
         {
-            return LLVM.AddGlobal(this.instance, @Ty, @Name);
+            return ЛЛДобавьГлоб(this.экземпляр, тип, вТкст0(имя));
         }
 
-        public LLVMValueRef AddGlobalInAddressSpace(LLVMTypeRef @Ty, string @Name, uint @AddressSpace)
+        public ЛЛЗначение добавьГлобВАдрПростр(ЛЛТип тип, ткст имя, бцел ап)
         {
-            return LLVM.AddGlobalInAddressSpace(this.instance, @Ty, @Name, @AddressSpace);
+            return ЛЛДобавьГлобВАдрПрострво(this.экземпляр, тип, вТкст0(имя), ап);
         }
 
-        public LLVMValueRef GetNamedGlobal(string @Name)
+        public ЛЛЗначение дайИмГлоб(ткст имя)
         {
-            return LLVM.GetNamedGlobal(this.instance, @Name);
+            return ЛЛДайИменованныйГлоб(this.экземпляр, вТкст0(имя));
         }
 
-        public LLVMValueRef GetFirstGlobal()
+        public ЛЛЗначение дайПервГлоб()
         {
-            return LLVM.GetFirstGlobal(this.instance);
+            return ЛЛДайПервыйГлоб(this.экземпляр);
         }
 
-        public LLVMValueRef GetLastGlobal()
+        public ЛЛЗначение дайПоследнГлоб()
         {
-            return LLVM.GetLastGlobal(this.instance);
+            return ЛЛДайПоследнийГлоб(this.экземпляр);
         }
 
-        public LLVMValueRef AddAlias(LLVMTypeRef @Ty, LLVMValueRef @Aliasee, string @Name)
+        public ЛЛЗначение добавьНик(ЛЛТип тип, ЛЛЗначение ник, ткст имя)
         {
-            return LLVM.AddAlias(this.instance, @Ty, @Aliasee, @Name);
+            return ЛЛДобавьНик(this.экземпляр, тип, ник, вТкст0(имя));
         }
 
-        public LLVMModuleProviderRef CreateModuleProviderForExistingModule()
+        public ЛЛМодульПровайдер создайПровайдерМодуля()
         {
-            return LLVM.CreateModuleProviderForExistingModule(this.instance);
+            return ЛЛСоздайМодульПровайдерДляСущМодуля(this.экземпляр);
         }
 
-        public LLVMPassManagerRef CreateFunctionPassManagerForModule()
+        public ЛЛМенеджерПроходок создайМенеджерПроходокФункций()
         {
-            return LLVM.CreateFunctionPassManagerForModule(this.instance);
+            return ЛЛСоздайМенеджерФукнцПроходокДляМодуля(this.экземпляр);
         }
 
-        public bool VerifyModule(LLVMVerifierFailureAction @Action, out IntPtr @OutMessage)
+        public бул проверьМодуль(ЛЛДействиеВерификатораПриОшибке действ, out ткст0 выхСооб)
         {
-            return LLVM.VerifyModule(this.instance, @Action, out @OutMessage);
+            return ЛЛВерифицируйМодуль(this.экземпляр, действ, &выхСооб);
         }
 
-        public int WriteBitcodeToFile(string @Path)
+        public цел пишиБиткодВФайл(ткст путь)
         {
-            return LLVM.WriteBitcodeToFile(this.instance, @Path);
+            return ЛЛПишиБиткодВФайл(this.экземпляр, вТкст0(путь));
         }
 
-        public int WriteBitcodeToFD(int @FD, int @ShouldClose, int @Unbuffered)
+        public цел пишиБиткод_в_ФД(цел фд, цел закрыть_ли, цел небуферированный)
         {
-            return LLVM.WriteBitcodeToFD(this.instance, @FD, @ShouldClose, @Unbuffered);
+            return ЛЛПишиБиткодВФД(this.экземпляр, фд, @закрыть_ли, небуферированный);
         }
 
-        public int WriteBitcodeToFileHandle(int @Handle)
+        public цел пишиБиткод_в_ФайлУк(цел фукз)
         {
-            return LLVM.WriteBitcodeToFileHandle(this.instance, @Handle);
+            return ЛЛПишиБиткодВФайлУк(this.экземпляр, фукз);
         }
 
-        public LLVMMemoryBufferRef WriteBitcodeToMemoryBuffer()
+        public ЛЛБуферПамяти пишиБиткод_в_БуфПам()
         {
-            return LLVM.WriteBitcodeToMemoryBuffer(this.instance);
+            return ЛЛПишиБиткодВБуфПамяти(this.экземпляр);
         }
 
-        public override string ToString()
-        {
-            return this.PrintModuleToString();
-        }
     }
-}

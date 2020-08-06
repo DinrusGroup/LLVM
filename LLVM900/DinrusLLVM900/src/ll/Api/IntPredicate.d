@@ -1,5 +1,5 @@
-﻿module ll.api.
-{
+module ll.api.IntPredicate;
+
     public enum IntPredicate : int
     {
         EQ = 32,
@@ -13,4 +13,4 @@
         SLT = 40,
         SLE = 41,
     }
-}
+

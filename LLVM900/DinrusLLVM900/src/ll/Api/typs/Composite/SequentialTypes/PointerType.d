@@ -1,21 +1,55 @@
-﻿namespace LLVMSharp.API.Types.Composite.SequentialTypes
-{
-    public sealed class PointerType : Type
+module ll.api.typs.Composite.SequentialTypes.PointerType;
+
+import ll.api.Type;
+import ll.api.typs.VoidType;
+import ll.api.typs.LabelType;
+import ll.api.typs.MetadataType;
+import ll.api.typs.FunctionType;
+import ll.api.typs.TokenType;
+import ll.c.Types;
+import ll.c.Core;
+import ll.common;
+
+    public class ТипУказатель : Тип
     {
-        public static PointerType GetUnqual(Type elementType) => Get(elementType, 0u);
-        public static PointerType Get(Type elementType, uint addressSpace) => LLVM.PointerType(elementType.Unwrap(), addressSpace).WrapAs<PointerType>();
+        public static ТипУказатель дайНеквал(Тип типЭлта)
+		{
+			return дай(типЭлта, cast(бцел) 0);
+		}
 
-        public static bool IsValidElementType(Type type) => !(type is VoidType) && !(type is LabelType) && !(type is MetadataType) && !(type is TokenType);
-        public static bool IsLoadableOrStorableType(Type type) => IsValidElementType(type) && !(type is FunctionType);
+        public static ТипУказатель дай(Тип типЭлта, бцел адреснПрострво)
+		{ 
+			return new ТипУказатель(ЛЛТипУказатель(типЭлта.раскрой(), адреснПрострво));
+		}
 
-        internal PointerType(LLVMTypeRef typeRef)
-            : base(typeRef)
-        {
+        public static бул валиденТипЭлта_ли(Тип тип)
+		{
+			return (!(тип is ТипПроц) && !(тип is ТипЯрлык) && !(тип is ТипМетаданные) && !(тип is ТипСема));
+		}
+        public static бул загружаемИлиСохраняемТип_ли(Тип тип)
+		{ 
+			return (валиденТипЭлта_ли(тип) && !(тип is ТипФункция));
+		}
+
+        this(ЛЛТип типРеф)
+		{
+            super(типРеф);
         }
 
-        public override string Name => $"{this.ElementType.Name} *";
-        public uint AddressSpace => LLVM.GetPointerAddressSpace(this.Unwrap());
-        public Type ElementType => LLVM.GetElementType(this.Unwrap()).Wrap();
-        public override bool IsSingleValueType => true;
+        public override ткст имя()
+		{
+			return фм("{} *", this.типЭлемента.имя);
+		}
+
+        public бцел адрПрострво ()
+		{ 
+			return ЛЛДАйАдрПрострУказателя(this.раскрой());
+		}
+
+        public Тип типЭлемента()
+		{
+			return new Тип(ЛЛДайТипЭлемента(this.раскрой()));
+		}
+
+        public override бул типСОднимЗначением_ли() {return true;}
     }
-}

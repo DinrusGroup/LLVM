@@ -1,4 +1,4 @@
-﻿module ll.c.api.TargetInitializers.IAsmParser;
+module ll.c.api.TargetInitializers.IAsmParser;
 
     public interface IAsmParser
     {

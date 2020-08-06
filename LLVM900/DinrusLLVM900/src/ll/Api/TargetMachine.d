@@ -1,21 +1,19 @@
-п»їmodule ll.api.TargetMachine;
+module ll.api.TargetMachine;
 
 
     public class TargetMachine : IDisposableWrapper!(LLVMTargetMachineRef), IDisposable
     {
-        LLVMTargetMachineRef IWrapper!(LLVMTargetMachineRef).ToHandleType()
-		{ this._instance;}
+        //LLVMTargetMachineRef IWrapper!(LLVMTargetMachineRef).ToHandleType()		{ this.экземпл;}
 
-        void IDisposableWrapper!(LLVMTargetMachineRef).MakeHandleOwner()
-		{ this._owner = true;}
+       // void IDisposableWrapper!(LLVMTargetMachineRef).MakeHandleOwner()		{ this._owner = true;}
 
-        private LLVMTargetMachineRef _instance;
+        private LLVMTargetMachineRef экземпл;
         private bool _disposed;
         private bool _owner;
 
-        this(LLVMTargetMachineRef instance)
+        this(LLVMTargetMachineRef экзэмпл)
         {
-            this._instance = instance;
+            this.экземпл = экзэмпл;
         }
 
         ~this()
@@ -38,7 +36,7 @@
 
             if (this._owner)
             {
-                LLVM.DisposeTargetMachine(this.Unwrap());
+                LLVM.DisposeTargetMachine(this.раскрой());
             }
 
             this._disposed = true;
@@ -46,24 +44,37 @@
 
         public Target Target() 
 		{
-			return LLVM.GetTargetMachineTarget(this.Unwrap()).Wrap();
+			return LLVM.GetTargetMachineTarget(this.раскрой()).Wrap();
 		}
 
         public string Triple()
 		{
-			return LLVM.GetTargetMachineTriple(this.Unwrap()).MessageToString();
+			return LLVM.GetTargetMachineTriple(this.раскрой()).MessageToString();
 		}
-        public string CPU() { LLVM.GetTargetMachineCPU(this.Unwrap()).MessageToString();
 
-        public string FeatureString { LLVM.GetTargetMachineFeatureString(this.Unwrap()).MessageToString();
+        public string CPU()
+		{
+			return LLVM.GetTargetMachineCPU(this.раскрой()).MessageToString();
+		}
 
-        public void SetAsmVerbosity(bool verboseAsm) { LLVM.SetTargetMachineAsmVerbosity(this.Unwrap(), verboseAsm);
+        public string FeatureString
+		{
+			return LLVM.GetTargetMachineFeatureString(this.раскрой()).MessageToString();
+		}
 
-        public bool EmitToFile(Module m, IntPtr filename, LLVMCodeGenFileType codegen, out IntPtr errorMessage) { LLVM.TargetMachineEmitToFile(this.Unwrap(), m.Unwrap(), filename, codegen, out errorMessage);
+        public void SetAsmVerbosity(bool verboseAsm)
+		{
+			return LLVM.SetTargetMachineAsmVerbosity(this.раскрой(), verboseAsm);
+		}
 
-        public MemoryBuffer EmitToMemoryBuffer(Module m, LLVMCodeGenFileType codegen)
+        public bool EmitToFile(Модуль m, ук имяф, LLVMCodeGenFileType codegen, out ук errorMessage)
+		{
+			return LLVM.TargetMachineEmitToFile(this.раскрой(), m.раскрой(), имяф, codegen, out errorMessage);
+		}
+
+        public MemoryBuffer EmitToMemoryBuffer(Модуль m, LLVMCodeGenFileType codegen)
         {
-            if (LLVM.TargetMachineEmitToMemoryBuffer(this.Unwrap(), m.Unwrap(), codegen, out IntPtr error, out LLVMMemoryBufferRef buf).Failed())
+            if (LLVM.TargetMachineEmitToMemoryBuffer(this.раскрой(), m.раскрой(), codegen, out ук error, out LLVMMemoryBufferRef buf).Failed())
             {
                 TextUtilities.Throw(error);
             }
@@ -71,6 +82,9 @@
             return buf.Wrap();
         }
 
-        public void AddAnalysisPasses(PassManager pm) { LLVM.AddAnalysisPasses(this.Unwrap(), pm.Unwrap());
+        public void AddAnalysisPasses(PassManager pm)
+		{
+			LLVM.AddAnalysisPasses(this.раскрой(), pm.раскрой());
+		}
     }
 

@@ -1,11 +1,9 @@
-﻿namespace LLVMSharp
-{
-    using System;
-    using System.Runtime.CompilerServices;
+﻿module ll.ExecutionEngine;
 
-    public sealed class ExecutionEngine : IDisposable
+
+    public class ExecutionEngine : IDisposable
     {
-        private readonly LLVMExecutionEngineRef instance;
+        private LLVMExecutionEngineRef instance;
         
         private bool disposed;
 
@@ -149,4 +147,3 @@
             throw new Exception(error);
         }
     }
-}

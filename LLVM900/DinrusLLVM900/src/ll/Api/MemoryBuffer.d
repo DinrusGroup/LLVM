@@ -1,106 +1,95 @@
-﻿module ll.api.
-{
-    using System;
-    using Utilities;
+module ll.api.MemoryBuffer;
 
-    public sealed class MemoryBuffer : IDisposableWrapper<LLVMMemoryBufferRef>, IDisposable
+import ll.c.Core, ll.c.Types;
+import ll.api.Module;
+import ll.c.BitReader;
+import ll.common;
+
+    public class БуфПам
     {
-        LLVMMemoryBufferRef IWrapper!(LLVMMemoryBufferRef>.ToHandleType { this._instance;
-        void IDisposableWrapper<LLVMMemoryBufferRef>.MakeHandleOwner() { this._owner = true;
-
-        public static MemoryBuffer CreateMemoryBufferWithContentsOfFile(string path)
+        public this(ткст путь)
         {
-            if (LLVM.CreateMemoryBufferWithContentsOfFile(path, out LLVMMemoryBufferRef bufferRef, out IntPtr error).Failed())
+		ЛЛБуферПамяти буф;
+		ткст0 ош;
+		
+            if (!ЛЛСоздайБуфПамССодержимымФайла(путь, &буф, &ош))
             {
-                TextUtilities.Throw(error);
+                throw new Искл(вТкст(ош));
             }
 
-            return bufferRef.Wrap().MakeHandleOwner<MemoryBuffer, LLVMMemoryBufferRef>();
+            this(буф);
         }
 
-        public static MemoryBuffer CreateMemoryBufferWithSTDIN()
+        public this()
         {
-            if (LLVM.CreateMemoryBufferWithSTDIN(out LLVMMemoryBufferRef bufferRef, out IntPtr error).Failed())
+		
+		ЛЛБуферПамяти буф;
+		ткст0 ош;
+		
+            if (!ЛЛСоздайБуфПамСоСТДВХО(&буф, &ош))
             {
-                TextUtilities.Throw(error);
+                throw new Искл(вТкст(ош));
             }
 
-            return bufferRef.Wrap().MakeHandleOwner<MemoryBuffer, LLVMMemoryBufferRef>();
+            this(буф);
         }
 
-        public unsafe static MemoryBuffer CreateMemoryBufferWithMemoryRange(string inputData, string bufferLength, bool requiresNullTerminator)
+        public this(ткст вхоДанные, ткст имяБуф, бул нуженНулТерм_ли)
         {
-            fixed(char* c = inputData)
+            ткст0 дан = вТкст0(вхоДанные);            
+                this(ЛЛСоздайБуфПамСДиапазономПам(&дан, cast(т_мера) вхоДанные.length, вТкст0(имяБуф), нуженНулТерм_ли));
+            
+        }
+
+        public this(ткст вхоДанные, ткст имяБуф)
+        {
+            ткст0 дан = вТкст0(вхоДанные);
             {
-                return LLVM.CreateMemoryBufferWithMemoryRange(new IntPtr(c), new size_t(inputData.Length), bufferLength, requiresNullTerminator).Wrap().MakeHandleOwner<MemoryBuffer, LLVMMemoryBufferRef>();
+                this(ЛЛСоздайБуфПамСКопиейДиапазонаПам(&дан,  cast(т_мера) вхоДанные.length, вТкст0(имяБуф)));
             }
         }
 
-        public unsafe static MemoryBuffer CreateMemoryBufferWithMemoryRangeCopy(string inputData, string bufferName)
+        private ЛЛБуферПамяти экземпл;
+
+        this(ЛЛБуферПамяти экзэмпл)
         {
-            fixed(char* c = inputData)
+            this.экземпл = экзэмпл;
+        }
+
+        public override ЛЛЗначение раскрой()
+		{
+            return this.экзэмпл;
+		}		
+
+        ~this()
+        {
+                ЛЛВыместиБуферПамяти(this.раскрой());
+        }
+
+        public Модуль разбериБиткод()
+        {
+            ЛЛМодуль мод;
+            ткст0 ош;
+
+            if (!ЛЛРазбериБиткод(this.раскрой(), &мод, &ош))
             {
-                return LLVM.CreateMemoryBufferWithMemoryRangeCopy(new IntPtr(c), new size_t(inputData.Length), bufferName).Wrap().MakeHandleOwner<MemoryBuffer, LLVMMemoryBufferRef>();
-            }
-        }
-
-        private readonly LLVMMemoryBufferRef _instance;
-        private bool _disposed;
-        private bool _owner;
-
-        internal MemoryBuffer(LLVMMemoryBufferRef instance)
-        {
-            this._instance = instance;
-        }
-
-        ~MemoryBuffer()
-        {
-            this.Dispose(false);
-        }
-
-        public IntPtr BufferStart { LLVM.GetBufferStart(this.Unwrap());
-        public size_t BufferSize { LLVM.GetBufferSize(this.Unwrap());
-
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        private void Dispose(bool disposing)
-        {
-            if (this._disposed)
-            {
-                return;
+                throw new Искл(вТкст(ош));
             }
 
-            if (this._owner)
-            {
-                LLVM.DisposeMemoryBuffer(this.Unwrap());
-            }
-
-            this._disposed = true;
-
+            return new Модуль(мод);
         }
 
-        public Module ParseBitcode()
+        public Модуль модульБиткода()
         {
-            if (LLVM.ParseBitcode(this.Unwrap(), out LLVMModuleRef m, out IntPtr error).Failed())
+            ЛЛМодуль мод;
+            ткст0 ош;
+
+            if (ЛЛДайБиткодМодуль(this.раскрой(), &мод, &ош))
             {
-                TextUtilities.Throw(error);
+                throw new Искл(вТкст(ош));
             }
 
-            return m.Wrap();
+             return new Модуль(мод);
         }
-
-        public Module GetBitcodeModule()
-        {
-            if (LLVM.GetBitcodeModule(this.Unwrap(), out LLVMModuleRef m, out IntPtr error).Failed())
-            {
-                TextUtilities.Throw(error);
-            }
-
-            return m.Wrap();
-        }
+		
     }
-}

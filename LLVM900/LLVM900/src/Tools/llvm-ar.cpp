@@ -183,7 +183,7 @@ static bool Deterministic = true;    ///< 'D' and 'U' modifiers
 static bool Thin = false;            ///< 'T' modifier
 static bool AddLibrary = false;      ///< 'L' modifier
 
-// Relative Positional Argument (for insert/move). This variable holds
+// Relative Positional Аргумент (for insert/move). This variable holds
 // the name of the archive member to which the 'a', 'b' or 'i' modifier
 // refers. Only one of 'a', 'b' or 'i' can be specified so we only need
 // one variable.

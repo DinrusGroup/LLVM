@@ -26,7 +26,7 @@ extern (C){
 ЛЛБул ЛЛГрузиБибПерманентно(ткст0 имяФ);
 
 /**
- * Сам function parses the given аргументы using the LLVM command строка parser.
+ * Сам function parses the given аргументы import the LLVM command строка parser.
  * Note that the only stable thing about this function is its signature; you
  * cannot rely on any particular set of command строка аргументы being interpreted
  * the same way across LLVM versions.

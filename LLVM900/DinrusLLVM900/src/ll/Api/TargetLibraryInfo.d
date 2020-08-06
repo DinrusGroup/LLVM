@@ -1,21 +1,19 @@
-п»їmodule ll.api.TargetLibraryInfo;
+module ll.api.TargetLibraryInfo;
 
     public class TargetLibraryInfo : IWrapper!(LLVMTargetLibraryInfoRef)
     {
-        LLVMTargetLibraryInfoRef IWrapper!(LLVMTargetLibraryInfoRef).ToHandleType()
-		{ 
-			this._instance;
-		}
+       // LLVMTargetLibraryInfoRef IWrapper!(LLVMTargetLibraryInfoRef).ToHandleType(){ this.экземпл;
+		
 
-        private LLVMTargetLibraryInfoRef _instance;
+        private LLVMTargetLibraryInfoRef экземпл;
 
-		this(LLVMTargetLibraryInfoRef instance)
+		this(LLVMTargetLibraryInfoRef экзэмпл)
         {
-            this._instance = instance;
+            this.экземпл = экзэмпл;
         }
 
         public void AddTargetLibraryInfo(PassManager pm)
 		{
-			LLVM.AddTargetLibraryInfo(this.Unwrap(), pm.Unwrap());
+			LLVM.AddTargetLibraryInfo(this.раскрой(), pm.раскрой());
 		}
     }

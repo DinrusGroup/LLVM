@@ -1,29 +1,27 @@
-﻿module ll.api.DiagnosticInfo;
-import ll.api.DiagnosticSeverity;
+module ll.api.DiagnosticInfo;
 
-    public class DiagnosticInfo : IWrapper!(LLVMDiagnosticInfoRef)
+import ll.c.Types, ll.c.Core;
+import ll.common;
+
+    public class ИнфоДиагностики
     {
-        private LLVMDiagnosticInfoRef _instance;
+        private ЛЛИнфоДиагностики экземпл; 
 
-        this()
-		{
-         this._instance = IWrapper!(LLVMDiagnosticInfoRef).ToHandleType();
-		}
-        
-
-        this(LLVMDiagnosticInfoRef instance)
+        this(ЛЛИнфоДиагностики экзэмпл)
         {
-            this._instance = instance;
+            this.экземпл = экзэмпл;
         }
 
-        public DiagnosticSeverity Severity()
+        public ЛЛИнфоДиагностики раскрой(){return this.экземпл;}
+
+        public ЛЛСтрогостьДиагностики строгость()
 		{ 
-			return LLVM.GetDiagInfoSeverity(this.Unwrap()).Wrap();
+			return ЛЛДайСтрогостьДиагИнфо(this.раскрой());
 		}
 
-        public string Description()
+        public ткст описание()
 		{
-			LLVM.GetDiagInfoDescription(this.Unwrap()).MessageToString();
+			вТкст(ЛЛДайОписаниеДиагИнфо(this.раскрой()));
 		}
     }
 }

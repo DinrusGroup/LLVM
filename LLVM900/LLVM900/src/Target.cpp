@@ -218,7 +218,75 @@ LLEXPORT unsigned long long ЛЛСМещЭлта(ЛЛДанныеОЦели TD,
 /**
  * @}
  */
+LLEXPORT void LLInitializeAArch64Target() { LLVMInitializeAArch64Target(); }
+LLEXPORT void LLInitializeAArch64TargetInfo() { LLVMInitializeAArch64TargetInfo(); }
+LLEXPORT void LLInitializeAArch64TargetMC() { LLVMInitializeAArch64TargetMC(); }
+LLEXPORT void LLInitializeAArch64AsmPrinter() { LLVMInitializeAArch64AsmPrinter(); }
+LLEXPORT void LLInitializeAArch64AsmParser() { LLVMInitializeAArch64AsmParser(); }
+LLEXPORT void LLInitializeAArch64Disassembler() { LLVMInitializeAArch64Disassembler(); }
 
+LLEXPORT void LLInitializeARMTarget() { LLVMInitializeARMTarget(); }
+LLEXPORT void LLInitializeARMTargetInfo() { LLVMInitializeARMTargetInfo(); }
+LLEXPORT void LLInitializeARMTargetMC() { LLVMInitializeARMTargetMC(); }
+LLEXPORT void LLInitializeARMAsmPrinter() { LLVMInitializeARMAsmPrinter(); }
+LLEXPORT void LLInitializeARMAsmParser() { LLVMInitializeARMAsmParser(); }
+LLEXPORT void LLInitializeARMDisassembler() { LLVMInitializeARMDisassembler(); }
+
+LLEXPORT void LLInitializeHexagonTarget() { LLVMInitializeHexagonTarget(); }
+LLEXPORT void LLInitializeHexagonTargetInfo() { LLVMInitializeHexagonTargetInfo(); }
+LLEXPORT void LLInitializeHexagonTargetMC() { LLVMInitializeHexagonTargetMC(); }
+LLEXPORT void LLInitializeHexagonAsmPrinter() { LLVMInitializeHexagonAsmPrinter(); }
+
+LLEXPORT void LLInitializeMipsTarget() { LLVMInitializeMipsTarget(); }
+LLEXPORT void LLInitializeMipsTargetInfo() { LLVMInitializeMipsTargetInfo(); }
+LLEXPORT void LLInitializeMipsTargetMC() { LLVMInitializeMipsTargetMC(); }
+LLEXPORT void LLInitializeMipsAsmPrinter() { LLVMInitializeMipsAsmPrinter(); }
+LLEXPORT void LLInitializeMipsAsmParser() { LLVMInitializeMipsAsmParser(); }
+LLEXPORT void LLInitializeMipsDisassembler() { LLVMInitializeMipsDisassembler(); }
+
+LLEXPORT void LLInitializeMSP430Target() { LLVMInitializeMSP430Target(); }
+LLEXPORT void LLInitializeMSP430TargetInfo() { LLVMInitializeMSP430TargetInfo(); }
+LLEXPORT void LLInitializeMSP430TargetMC() { LLVMInitializeMSP430TargetMC(); }
+LLEXPORT void LLInitializeMSP430AsmPrinter() { LLVMInitializeMSP430AsmPrinter(); }
+
+LLEXPORT void LLInitializeNVPTXTarget() { LLVMInitializeNVPTXTarget(); }
+LLEXPORT void LLInitializeNVPTXTargetInfo() { LLVMInitializeNVPTXTargetInfo(); }
+LLEXPORT void LLInitializeNVPTXTargetMC() { LLVMInitializeNVPTXTargetMC(); }
+LLEXPORT void LLInitializeNVPTXAsmPrinter() { LLVMInitializeNVPTXAsmPrinter(); }
+
+LLEXPORT void LLInitializePowerPCTarget() { LLVMInitializePowerPCTarget(); }
+LLEXPORT void LLInitializePowerPCTargetInfo() { LLVMInitializePowerPCTargetInfo(); }
+LLEXPORT void LLInitializePowerPCTargetMC() { LLVMInitializePowerPCTargetMC(); }
+LLEXPORT void LLInitializePowerPCAsmPrinter() { LLVMInitializePowerPCAsmPrinter(); }
+LLEXPORT void LLInitializePowerPCAsmParser() { LLVMInitializePowerPCAsmParser(); }
+LLEXPORT void LLInitializePowerPCDisassembler() { LLVMInitializePowerPCDisassembler(); }
+
+LLEXPORT void LLInitializeSparcTarget() { LLVMInitializeSparcTarget(); }
+LLEXPORT void LLInitializeSparcTargetInfo() { LLVMInitializeSparcTargetInfo(); }
+LLEXPORT void LLInitializeSparcTargetMC() { LLVMInitializeSparcTargetMC(); }
+LLEXPORT void LLInitializeSparcAsmPrinter() { LLVMInitializeSparcAsmPrinter(); }
+LLEXPORT void LLInitializeSparcAsmParser() { LLVMInitializeSparcAsmParser(); }
+LLEXPORT void LLInitializeSparcDisassembler() { LLVMInitializeSparcDisassembler(); }
+
+LLEXPORT void LLInitializeSystemZTarget() { LLVMInitializeSystemZTarget(); }
+LLEXPORT void LLInitializeSystemZTargetInfo() { LLVMInitializeSystemZTargetInfo(); }
+LLEXPORT void LLInitializeSystemZTargetMC() { LLVMInitializeSystemZTargetMC(); }
+LLEXPORT void LLInitializeSystemZAsmPrinter() { LLVMInitializeSystemZAsmPrinter(); }
+LLEXPORT void LLInitializeSystemZAsmParser() { LLVMInitializeSystemZAsmParser(); }
+LLEXPORT void LLInitializeSystemZDisassembler() { LLVMInitializeSystemZDisassembler(); }
+
+LLEXPORT void LLInitializeX86Target() { LLVMInitializeX86Target(); }
+LLEXPORT void LLInitializeX86TargetInfo() { LLVMInitializeX86TargetInfo(); }
+LLEXPORT void LLInitializeX86TargetMC() { LLVMInitializeX86TargetMC(); }
+LLEXPORT void LLInitializeX86AsmPrinter() {    LLVMInitializeX86AsmPrinter();}
+LLEXPORT void LLInitializeX86AsmParser() {    LLVMInitializeX86AsmParser();}
+LLEXPORT void LLInitializeX86Disassembler() {    LLVMInitializeX86Disassembler();}
+
+LLEXPORT void LLInitializeXCoreTarget() { LLVMInitializeXCoreTarget(); }
+LLEXPORT void LLInitializeXCoreTargetInfo() { LLVMInitializeXCoreTargetInfo(); }
+LLEXPORT void LLInitializeXCoreTargetMC() { LLVMInitializeXCoreTargetMC(); }
+LLEXPORT void LLInitializeXCoreAsmPrinter() { LLVMInitializeXCoreAsmPrinter(); }
+LLEXPORT void LLInitializeXCoreDisassembler() { LLVMInitializeXCoreDisassembler(); }
 
 }
 

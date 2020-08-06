@@ -70,7 +70,7 @@ enum LLVMDWARFSourceLanguage {
   ObjC,
   ObjC_plus_plus,
   UPC,
-  Д,
+  D,
   // нов в DWARF v4:
   Python,
   // нов в DWARF v5:
@@ -194,7 +194,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
 
 /**
  * атр CompileUnit provides an anchor for все debugging
- * information generated during this instance of compilation.
+ * information generated during this экзэмпл of compilation.
  * \param Lang          Source programming language, eg.
  *                      \конст LLVMDWARFSourceLanguageC99
  * \param FileRef       файл info.
@@ -229,7 +229,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
     ЛЛБул DebugInfoForProfiling);
 
 /**
- * Create a файл descriptor to hold debugging information for a файл.
+ * создай a файл descriptor to hold debugging information for a файл.
  * \param построитель      The \конст DIBuilder.
  * \param имяФ     имя файла.
  * \param FilenameLen  The length of the к ткст passed to \конст имяФ.
@@ -278,16 +278,16 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
                              ЛЛБул ExportSymbols);
 
 /**
- * Create a new descriptor for the specified subprogram.
+ * создай a new descriptor for the specified subprogram.
  * \param построитель         The \конст DIBuilder.
- * \param Масштаб2           Function масштаб.
- * \param имя            Function имя.
+ * \param Масштаб2           Функция масштаб.
+ * \param имя            Функция имя.
  * \param длинаИм         длина of enumeration имя.
  * \param LinkageName     Mangled function имя.
  * \param LinkageNameLen  длина of компонаж имя.
  * \param файл            файл where this переменная is defined.
  * \param LineNo          строка number.
- * \param тип              Function тип.
+ * \param тип              Функция тип.
  * \param IsLocalToUnit   True if this function is не externally visible.
  * \param IsDefinition    True if this является function definition.
  * \param ScopeLine       Set to the beginning of the масштаб this starts
@@ -303,9 +303,9 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
     бцел ScopeLine, ЛЛФлагиОИ Flags, ЛЛБул IsOptimized);
 
 /**
- * Create a descriptor for a lexical блок with the specified родитель context.
+ * создай a descriptor for a lexical блок with the specified родитель контекст.
  * \param построитель      The \конст DIBuilder.
- * \param Масштаб2        Parent lexical блок.
+ * \param Масштаб2        родитель lexical блок.
  * \param файл         Source файл.
  * \param строка         The строка in the source файл.
  * \param Column       The column in the source файл.
@@ -315,7 +315,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
     ЛЛМетаданные файл, бцел строка, бцел Column);
 
 /**
- * Create a descriptor for a lexical блок with a new файл attached.
+ * создай a descriptor for a lexical блок with a new файл attached.
  * \param построитель        The \конст DIBuilder.
  * \param Масштаб2          Lexical блок.
  * \param файл           Source файл.
@@ -328,8 +328,8 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
                                     бцел Discriminator);
 
 /**
- * Create a descriptor for an imported простримён. Suitable for e.g. C++
- * using declarations.
+ * создай a descriptor for an imported простримён. Suitable for e.g. C++
+ * import declarations.
  * \param построитель    The \конст DIBuilder.
  * \param Масштаб2      The масштаб this module is imported into
  * \param файл       файл where the декларация is located.
@@ -343,7 +343,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
                                                бцел строка);
 
 /**
- * Create a descriptor for an imported module that ники another
+ * создай a descriptor for an imported module that ники another
  * imported entity descriptor.
  * \param построитель        The \конст DIBuilder.
  * \param Масштаб2          The масштаб this module is imported into
@@ -359,7 +359,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
                                            бцел строка);
 
 /**
- * Create a descriptor for an imported module.
+ * создай a descriptor for an imported module.
  * \param построитель    The \конст DIBuilder.
  * \param Масштаб2      The масштаб this module is imported into
  * \param M          The module being imported here
@@ -374,7 +374,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
                                             бцел строка);
 
 /**
- * Create a descriptor for an imported function, тип, или переменная.  Suitable
+ * создай a descriptor for an imported function, тип, или переменная.  Suitable
  * for e.g. FORTRAN-style USE declarations.
  * \param построитель    The DIBuilder.
  * \param Масштаб2      The масштаб this module is imported into.
@@ -409,7 +409,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
                                  ЛЛМетаданные InlinedAt);
 
 /**
- * Get the строка number of this debug location.
+ * дай the строка number of this debug location.
  * \param Location     The debug location.
  *
  * @see DILocation::getLine()
@@ -417,7 +417,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
 бцел ЛЛЛокацОИ_ДайСтроку(ЛЛМетаданные Location);
 
 /**
- * Get the column number of this debug location.
+ * дай the column number of this debug location.
  * \param Location     The debug location.
  *
  * @see DILocation::getColumn()
@@ -425,7 +425,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
 бцел ЛЛЛокацОИ_ДайСтолбец(ЛЛМетаданные Location);
 
 /**
- * Get the локальн масштаб associated with this debug location.
+ * дай the локальн масштаб associated with this debug location.
  * \param Location     The debug location.
  *
  * @see DILocation::getScope()
@@ -433,7 +433,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
 ЛЛМетаданные ЛЛЛокацОИ_ДайМасштаб(ЛЛМетаданные Location);
 
 /**
- * Get the "inline эт" location associated with this debug location.
+ * дай the "inline эт" location associated with this debug location.
  * \param Location     The debug location.
  *
  * @see DILocation::getInlinedAt()
@@ -441,7 +441,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
 ЛЛМетаданные ЛЛЛокацОИ_ДайИнлайнУ(ЛЛМетаданные Location);
 
 /**
- * Get the metadata of the файл associated with a given масштаб.
+ * дай the metadata of the файл associated with a given масштаб.
  * \param Масштаб2     The масштаб объект.
  *
  * @see DIScope::getFile()
@@ -449,7 +449,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
 ЛЛМетаданные ЛЛМасштабОИ_ДайФайл(ЛЛМетаданные Масштаб2);
 
 /**
- * Get the directory of a given файл.
+ * дай the directory of a given файл.
  * \param файл     The файл объект.
  * \param Len      The length of the returned ткст.
  *
@@ -458,7 +458,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
 ткст0 ЛЛФайлОИ_ДайПапку(ЛЛМетаданные файл, бцел *Len);
 
 /**
- * Get the имя of a given файл.
+ * дай the имя of a given файл.
  * \param файл     The файл объект.
  * \param Len      The length of the returned ткст.
  *
@@ -467,7 +467,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
 ткст0 ЛЛФайлОИ_ДайИмяФ(ЛЛМетаданные файл, бцел *Len);
 
 /**
- * Get the source of a given файл.
+ * дай the source of a given файл.
  * \param файл     The файл объект.
  * \param Len      The length of the returned ткст.
  *
@@ -476,7 +476,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
 ткст0 ЛЛФайлОИ_ДайИсходник(ЛЛМетаданные файл, бцел *Len);
 
 /**
- * Create a тип массив.
+ * создай a тип массив.
  * \param построитель        The DIBuilder.
  * \param Data           The тип элты.
  * \param NumElements    Number of тип элты.
@@ -486,7 +486,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
                                                   т_мера NumElements);
 
 /**
- * Create subroutine тип.
+ * создай subroutine тип.
  * \param построитель        The DIBuilder.
  * \param файл            The файл in which the subroutine resides.
  * \param ParameterTypes  An массив of subroutine параметр типы. Сам
@@ -503,7 +503,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
                                   ЛЛФлагиОИ Flags);
 
 /**
- * Create debugging information entry for an enumerator.
+ * создай debugging information entry for an enumerator.
  * @param построитель        The DIBuilder.
  * @param имя           Enumerator имя.
  * @param длинаИм        длина of enumerator имя.
@@ -516,7 +516,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
                                               ЛЛБул IsUnsigned);
 
 /**
- * Create debugging information entry for an enumeration.
+ * создай debugging information entry for an enumeration.
  * \param построитель        The DIBuilder.
  * \param Масштаб2          Масштаб2 in which this enumeration is defined.
  * \param имя           Enumeration имя.
@@ -536,7 +536,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
     бцел NumElements, ЛЛМетаданные ClassTy);
 
 /**
- * Create debugging information entry for a union.
+ * создай debugging information entry for a union.
  * \param построитель      The DIBuilder.
  * \param Масштаб2        Масштаб2 in which this union is defined.
  * \param имя         Union имя.
@@ -561,7 +561,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
 
 
 /**
- * Create debugging information entry for an массив.
+ * создай debugging information entry for an массив.
  * \param построитель      The DIBuilder.
  * \param разм         МассивДРК размер.
  * \param AlignInBits  Alignment.
@@ -576,7 +576,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
                              бцел NumSubscripts);
 
 /**
- * Create debugging information entry for a вектор тип.
+ * создай debugging information entry for a вектор тип.
  * \param построитель      The DIBuilder.
  * \param разм         Vector размер.
  * \param AlignInBits  Alignment.
@@ -591,7 +591,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
                               бцел NumSubscripts);
 
 /**
- * Create a DWARF unspecified тип.
+ * создай a DWARF unspecified тип.
  * \param построитель   The DIBuilder.
  * \param имя      The unspecified тип's имя.
  * \param длинаИм   длина of тип имя.
@@ -601,7 +601,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
                                    т_мера длинаИм);
 
 /**
- * Create debugging information entry for a basic
+ * создай debugging information entry for a basic
  * тип.
  * \param построитель     The DIBuilder.
  * \param имя        Тип имя.
@@ -617,7 +617,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
                              ЛЛФлагиОИ Flags);
 
 /**
- * Create debugging information entry for a pointer.
+ * создай debugging information entry for a pointer.
  * \param построитель     The DIBuilder.
  * \param PointeeTy         Тип pointed by this pointer.
  * \param SizeInBits        разм.
@@ -632,7 +632,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
     ткст0 имя, т_мера длинаИм);
 
 /**
- * Create debugging information entry for a struct.
+ * создай debugging information entry for a struct.
  * \param построитель     The DIBuilder.
  * \param Масштаб2        Масштаб2 in which this struct is defined.
  * \param имя         Struct имя.
@@ -658,7 +658,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
     ткст0 UniqueId, т_мера UniqueIdLen);
 
 /**
- * Create debugging information entry for a member.
+ * создай debugging information entry for a member.
  * \param построитель      The DIBuilder.
  * \param Масштаб2        Member масштаб.
  * \param имя         Member имя.
@@ -669,7 +669,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
  * \param AlignInBits  Member раскладка.
  * \param OffsetInBits Member смещение.
  * \param Flags        Flags to encode member attribute, e.g. private
- * \param тип           Parent тип.
+ * \param тип           родитель тип.
  */
 ЛЛМетаданные ЛЛПостроительОИ_СоздайТипЧлен(
     ЛЛПостроительОИ построитель, ЛЛМетаданные Масштаб2, ткст0 имя,
@@ -678,7 +678,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
     ЛЛФлагиОИ Flags, ЛЛМетаданные тип);
 
 /**
- * Create debugging information entry for a
+ * создай debugging information entry for a
  * C++ static данные member.
  * \param построитель      The DIBuilder.
  * \param Масштаб2        Member масштаб.
@@ -699,7 +699,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
     uint32_t AlignInBits);
 
 /**
- * Create debugging information entry for a pointer to member.
+ * создай debugging information entry for a pointer to member.
  * \param построитель      The DIBuilder.
  * \param PointeeType  Тип pointed to by this pointer.
  * \param ClassType    Тип for which this pointer points to члены of.
@@ -715,7 +715,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
                                      uint32_t AlignInBits,
                                      ЛЛФлагиОИ Flags);
 /**
- * Create debugging information entry for Objective-к instance переменная.
+ * создай debugging information entry for Objective-к экзэмпл переменная.
  * \param построитель      The DIBuilder.
  * \param имя         Member имя.
  * \param длинаИм      The length of the к ткст passed to \конст имя.
@@ -725,7 +725,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
  * \param AlignInBits  Member раскладка.
  * \param OffsetInBits Member смещение.
  * \param Flags        Flags to encode member attribute, e.g. private
- * \param тип           Parent тип.
+ * \param тип           родитель тип.
  * \param PropertyNode Property associated with this ivar.
  */
 ЛЛМетаданные
@@ -737,7 +737,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
                             ЛЛМетаданные тип, ЛЛМетаданные PropertyNode);
 
 /**
- * Create debugging information entry for Objective-к свойство.
+ * создай debugging information entry for Objective-к свойство.
  * \param построитель            The DIBuilder.
  * \param имя               Property имя.
  * \param длинаИм            The length of the к ткст passed to \конст имя.
@@ -760,7 +760,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
                                 ЛЛМетаданные тип);
 
 /**
- * Create a uniqued DIType* clone with FlagObjectPointer и FlagArtificial set.
+ * создай a uniqued DIType* clone with FlagObjectPointer и FlagArtificial set.
  * \param построитель   The DIBuilder.
  * \param Тип      The underlying тип to which this pointer points.
  */
@@ -769,7 +769,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
                                      ЛЛМетаданные Тип);
 
 /**
- * Create debugging information entry for a qualified
+ * создай debugging information entry for a qualified
  * тип, e.g. 'const цел'.
  * \param построитель     The DIBuilder.
  * \param тэг         тэг identifying тип,
@@ -781,7 +781,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
                                  ЛЛМетаданные Тип);
 
 /**
- * Create debugging information entry for a конст++
+ * создай debugging information entry for a конст++
  * style reference или rvalue reference тип.
  * \param построитель   The DIBuilder.
  * \param тэг       тэг identifying тип,
@@ -792,20 +792,20 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
                                  ЛЛМетаданные Тип);
 
 /**
- * Create C++11 nullptr тип.
+ * создай C++11 nullptr тип.
  * \param построитель   The DIBuilder.
  */
 ЛЛМетаданные
 ЛЛПостроительОИ_СоздайТипНуллУкз(ЛЛПостроительОИ построитель);
 
 /**
- * Create debugging information entry for a alias.
+ * создай debugging information entry for a alias.
  * \param построитель    The DIBuilder.
  * \param Тип       Original тип.
  * \param имя       Typedef имя.
  * \param файл       файл where this тип is defined.
  * \param LineNo     строка number.
- * \param Масштаб2      The surrounding context for the alias.
+ * \param Масштаб2      The surrounding контекст for the alias.
  */
 ЛЛМетаданные
 ЛЛПостроительОИ_СоздайТипдеф(ЛЛПостроительОИ построитель, ЛЛМетаданные Тип,
@@ -814,7 +814,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
                            ЛЛМетаданные Масштаб2);
 
 /**
- * Create debugging information entry to establish inheritance relationship
+ * создай debugging information entry to establish inheritance relationship
  * between two типы.
  * \param построитель       The DIBuilder.
  * \param тип            Original тип.
@@ -830,7 +830,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
                                ЛЛФлагиОИ Flags);
 
 /**
- * Create a permanent forward-declared тип.
+ * создай a permanent forward-declared тип.
  * \param построитель             The DIBuilder.
  * \param тэг                 атр unique tag for this тип.
  * \param имя                Тип имя.
@@ -852,7 +852,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
     ткст0 уникИд, т_мера длнУникИд);
 
 /**
- * Create a temporary forward-declared тип.
+ * создай a temporary forward-declared тип.
  * \param построитель             The DIBuilder.
  * \param тэг                 атр unique tag for this тип.
  * \param имя                Тип имя.
@@ -877,7 +877,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
     т_мера длнУникИд);
 
 /**
- * Create debugging information entry for a bit поле member.
+ * создай debugging information entry for a bit поле member.
  * \param построитель             The DIBuilder.
  * \param Масштаб2               Member масштаб.
  * \param имя                Member имя.
@@ -888,7 +888,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
  * \param OffsetInBits        Member смещение.
  * \param StorageOffsetInBits Member storage смещение.
  * \param Flags               Flags to encode member attribute.
- * \param Тип                Parent тип.
+ * \param Тип                родитель тип.
  */
 ЛЛМетаданные
 ЛЛПостроительОИ_СоздайТипЧленПоля(ЛЛПостроительОИ построитель,
@@ -901,7 +901,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
                                       ЛЛФлагиОИ Flags, ЛЛМетаданные Тип);
 
 /**
- * Create debugging information entry for a class.
+ * создай debugging information entry for a class.
  * \param Масштаб2               Масштаб2 in which this class is defined.
  * \param имя                класс имя.
  * \param длинаИм             The length of the к ткст passed to \конст имя.
@@ -932,7 +932,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
     ткст0 уникИд, т_мера длнУникИд);
 
 /**
- * Create a uniqued DIType* clone with FlagArtificial set.
+ * создай a uniqued DIType* clone with FlagArtificial set.
  * \param построитель     The DIBuilder.
  * \param Тип        The underlying тип.
  */
@@ -941,7 +941,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
                                   ЛЛМетаданные Тип);
 
 /**
- * Get the имя of this DIType.
+ * дай the имя of this DIType.
  * \param DType     The DIType.
  * \param длина    The length of the returned ткст.
  *
@@ -950,7 +950,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
 ткст0 ЛЛТипОИ_ДайИмя(ЛЛМетаданные DType, т_мера *длина);
 
 /**
- * Get the размер of this DIType in bits.
+ * дай the размер of this DIType in bits.
  * \param DType     The DIType.
  *
  * @see DIType::getSizeInBits()
@@ -958,7 +958,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
 дол ЛЛТипОИ_ДайРазмВБитах(ЛЛМетаданные DType);
 
 /**
- * Get the смещение of this DIType in bits.
+ * дай the смещение of this DIType in bits.
  * \param DType     The DIType.
  *
  * @see DIType::getOffsetInBits()
@@ -966,7 +966,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
 дол ЛЛТипОИ_ДайСмещениеВБитах(ЛЛМетаданные DType);
 
 /**
- * Get the раскладка of this DIType in bits.
+ * дай the раскладка of this DIType in bits.
  * \param DType     The DIType.
  *
  * @see DIType::getAlignInBits()
@@ -974,7 +974,7 @@ alias бцел ЛЛКодировкаТипаДВАРФ;
 uint32_t ЛЛТипОИ_ДайРаскладкуВБитах(ЛЛМетаданные DType);
 
 /**
- * Get the source строка where this DIType is declared.
+ * дай the source строка where this DIType is declared.
  * \param DType     The DIType.
  *
  * @see DIType::getLine()
@@ -982,7 +982,7 @@ uint32_t ЛЛТипОИ_ДайРаскладкуВБитах(ЛЛМетадан�
 бцел ЛЛТипОИ_ДайСтроку(ЛЛМетаданные DType);
 
 /**
- * Get the флаги associated with this DIType.
+ * дай the флаги associated with this DIType.
  * \param DType     The DIType.
  *
  * @see DIType::getFlags()
@@ -990,7 +990,7 @@ uint32_t ЛЛТипОИ_ДайРаскладкуВБитах(ЛЛМетадан�
 ЛЛФлагиОИ ЛЛТипОИ_ДайФлаги(ЛЛМетаданные DType);
 
 /**
- * Create a descriptor for a знач range.
+ * создай a descriptor for a знач range.
  * \param построитель    The DIBuilder.
  * \param LowerBound Lower bound of the subrange, e.g. 0 for к, 1 for Fortran.
  * \param чло      чло of элты in the subrange.
@@ -1000,7 +1000,7 @@ uint32_t ЛЛТипОИ_ДайРаскладкуВБитах(ЛЛМетадан�
                                                  int64_t чло);
 
 /**
- * Create an массив of диагИнфо Nodes.
+ * создай an массив of диагИнфо Nodes.
  * \param построитель        The DIBuilder.
  * \param Data           The диагИнфо узел элты.
  * \param NumElements    Number of диагИнфо узел элты.
@@ -1010,7 +1010,7 @@ uint32_t ЛЛТипОИ_ДайРаскладкуВБитах(ЛЛМетадан�
                                               т_мера NumElements);
 
 /**
- * Create a new descriptor for the specified переменная which has a комплекс
+ * создай a new descriptor for the specified переменная which has a комплекс
  * адрес Выражение for its адрес.
  * \param построитель     The DIBuilder.
  * \param Addr        An массив of комплекс адрес operations.
@@ -1020,7 +1020,7 @@ uint32_t ЛЛТипОИ_ДайРаскладкуВБитах(ЛЛМетадан�
                                               int64_t *Addr, т_мера длина);
 
 /**
- * Create a new descriptor for the specified переменная that does не have an
+ * создай a new descriptor for the specified переменная that does не have an
  * адрес, but does have a constant знач.
  * \param построитель     The DIBuilder.
  * \param знач       The constant знач.
@@ -1030,7 +1030,7 @@ uint32_t ЛЛТипОИ_ДайРаскладкуВБитах(ЛЛМетадан�
                                            int64_t знач);
 
 /**
- * Create a new descriptor for the specified переменная.
+ * создай a new descriptor for the specified переменная.
  * \param Масштаб2       Variable масштаб.
  * \param имя        имя of the переменная.
  * \param длинаИм     The length of the к ткст passed to \конст имя.
@@ -1072,7 +1072,7 @@ uint32_t ЛЛТипОИ_ДайРаскладкуВБитах(ЛЛМетадан�
     ЛЛМетаданные GVE);
 
 /**
- * Get the metadata of the файл associated with a given переменная.
+ * дай the metadata of the файл associated with a given переменная.
  * \param Var     The переменная объект.
  *
  * @see DIVariable::getFile()
@@ -1080,7 +1080,7 @@ uint32_t ЛЛТипОИ_ДайРаскладкуВБитах(ЛЛМетадан�
 ЛЛМетаданные ЛЛПеременнаяОИ_ДайФайл(ЛЛМетаданные Var);
 
 /**
- * Get the metadata of the масштаб associated with a given переменная.
+ * дай the metadata of the масштаб associated with a given переменная.
  * \param Var     The переменная объект.
  *
  * @see DIVariable::getScope()
@@ -1088,7 +1088,7 @@ uint32_t ЛЛТипОИ_ДайРаскладкуВБитах(ЛЛМетадан�
 ЛЛМетаданные ЛЛПеременнаяОИ_ДайМасштаб(ЛЛМетаданные Var);
 
 /**
- * Get the source строка where this \конст DIVariable is declared.
+ * дай the source строка where this \конст DIVariable is declared.
  * \param Var     The DIVariable.
  *
  * @see DIVariable::getLine()
@@ -1096,10 +1096,10 @@ uint32_t ЛЛТипОИ_ДайРаскладкуВБитах(ЛЛМетадан�
 бцел ЛЛПеременнаяОИ_ДайСтроку(ЛЛМетаданные Var);
 
 /**
- * Create a new temporary \конст MDNode.  Suitable for use in constructing cyclic
+ * создай a new temporary \конст MDNode.  Suitable for use in constructing cyclic
  * \конст MDNode structures. атр temporary \конст MDNode is не uniqued, may be RAUW'd,
  * и must be manually deleted with \конст LLVMDisposeTemporaryMDNode.
- * \param кткст            The context in which to конструкт the temporary узел.
+ * \param кткст            The контекст in which to конструкт the temporary узел.
  * \param Data           The metadata элты.
  * \param NumElements    Number of metadata элты.
  */
@@ -1124,7 +1124,7 @@ uint32_t ЛЛТипОИ_ДайРаскладкуВБитах(ЛЛМетадан�
                                     ЛЛМетаданные Replacement);
 
 /**
- * Create a new descriptor for the specified глоб2 переменная that is temporary
+ * создай a new descriptor for the specified глоб2 переменная that is temporary
  * и meant to be RAUWed.
  * \param Масштаб2       Variable масштаб.
  * \param имя        имя of the переменная.
@@ -1209,7 +1209,7 @@ uint32_t ЛЛТипОИ_ДайРаскладкуВБитах(ЛЛМетадан�
                                               ЛЛБазовыйБлок блок);
 
 /**
- * Create a new descriptor for a локальн auto переменная.
+ * создай a new descriptor for a локальн auto переменная.
  * \param построитель         The DIBuilder.
  * \param Масштаб2           The локальн масштаб the переменная is declared in.
  * \param имя            Variable имя.
@@ -1227,7 +1227,7 @@ uint32_t ЛЛТипОИ_ДайРаскладкуВБитах(ЛЛМетадан�
     ЛЛБул AlwaysPreserve, ЛЛФлагиОИ Flags, uint32_t AlignInBits);
 
 /**
- * Create a new descriptor for a function параметр переменная.
+ * создай a new descriptor for a function параметр переменная.
  * \param построитель         The DIBuilder.
  * \param Масштаб2           The локальн масштаб the переменная is declared in.
  * \param имя            Variable имя.
@@ -1245,21 +1245,21 @@ uint32_t ЛЛТипОИ_ДайРаскладкуВБитах(ЛЛМетадан�
     ЛЛМетаданные тип, ЛЛБул AlwaysPreserve, ЛЛФлагиОИ Flags);
 
 /**
- * Get the metadata of the subprogram attached to a function.
+ * дай the metadata of the subprogram attached to a function.
  *
- * @see llvm::Function::getSubprogram()
+ * @see llvm::Функция::getSubprogram()
  */
 ЛЛМетаданные ЛЛДайПодпрограмму(ЛЛЗначение функц);
 
 /**
  * Set the subprogram attached to a function.
  *
- * @see llvm::Function::setSubprogram()
+ * @see llvm::Функция::setSubprogram()
  */
 проц ЛЛУстПодпрограмму(ЛЛЗначение функц, ЛЛМетаданные SP);
 
 /**
- * Get the строка associated with a given subprogram.
+ * дай the строка associated with a given subprogram.
  * \param подпрог     The subprogram объект.
  *
  * @see DISubprogram::getLine()
@@ -1267,7 +1267,7 @@ uint32_t ЛЛТипОИ_ДайРаскладкуВБитах(ЛЛМетадан�
 бцел ЛЛПодпрогаОИ_ДайСтроку(ЛЛМетаданные подпрог);
 
 /**
- * Get the debug location for the given instruction.
+ * дай the debug location for the given instruction.
  *
  * @see llvm::Instruction::getDebugLoc()
  */
@@ -1283,7 +1283,7 @@ uint32_t ЛЛТипОИ_ДайРаскладкуВБитах(ЛЛМетадан�
 проц ЛЛИнструкция_УстОтладЛок(ЛЛЗначение инстр, ЛЛМетаданные лок);
 
 /**
- * Obtain the enumerated тип of a Metadata instance.
+ * Obtain the enumerated тип of a Metadata экзэмпл.
  *
  * @see llvm::Metadata::getMetadataID()
  */

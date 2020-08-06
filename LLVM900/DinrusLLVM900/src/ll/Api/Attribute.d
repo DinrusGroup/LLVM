@@ -1,15 +1,16 @@
-﻿module ll.api.Attribute;
+module ll.api.Attribute;
 
+import ll.c.Types;
 
-    public  class Attribute : IWrapper!(LLVMAttributeRef)
+    public  class Атрибут
     {
-       // LLVMAttributeRef IWrapper!(LLVMAttributeRef).ToHandleType { this._instance;
+        private  ЛЛАтрибут экземпл;
 
-        private  LLVMAttributeRef _instance;
-
-        this(LLVMAttributeRef attributeRef)
+        this(ЛЛАтрибут атрибутРеф)
         {
-            this._instance = attributeRef;
+            this.экземпл = атрибутРеф;
         }
+
+        public ЛЛАтрибут раскрой(){return this.экземпл;}
     }
 

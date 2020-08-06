@@ -1,4 +1,4 @@
-﻿module ll.api.AtomicOrdering;
+module ll.api.AtomicOrdering;
 
 public enum AtomicOrdering : int
     {

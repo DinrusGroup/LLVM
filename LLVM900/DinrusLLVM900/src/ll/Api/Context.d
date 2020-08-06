@@ -1,129 +1,268 @@
-﻿module ll.api.Context;
+module ll.api.Context;
 
-    public class Context : IEquatable!(Context), IDisposable, IDisposableWrapper!(LLVMContextRef)
+import ll.c.Core;
+import ll.c.Types;
+import ll.api.typs.Composite.SequentialTypes.ArrayType;
+import ll.api.typs.Composite.SequentialTypes.PointerType;
+import ll.api.typs.Composite.SequentialTypes.VectorType;
+import ll.api.typs.Composite.StructType;
+import ll.api.typs.HalfType;
+import ll.api.typs.DoubleType;
+import ll.api.typs.FloatType;
+import ll.api.typs.IntegerType;
+import ll.api.typs.FunctionType;
+import ll.api.typs.X86FP80Type;
+import ll.api.typs.X86MMXType;
+import ll.api.typs.PPCFP128Type;
+import ll.api.typs.VoidType;
+import ll.api.typs.LabelType;
+import ll.api.typs.FP128Type;
+import ll.api.typs.LabelType;
+
+import ll.api.Value;
+import ll.api.vals.BasicBlock;
+
+import ll.c.BitReader;
+import ll.c.IRReader;
+
+import ll.api.MemoryBuffer;
+import ll.api.Module;
+
+import ll.common;
+
+
+    public class Контекст
     {
-       // LLVMContextRef IWrapper!(LLVMContextRef>.ToHandleType { this._instance;
-       // void IDisposableWrapper<LLVMContextRef>.MakeHandleOwner() { this._owner = true;
 
-        public static Context Create() { LLVM.ContextCreate().Wrap().MakeHandleOwner!(Context, LLVMContextRef)();
-        public static Context Global { LLVM.GetGlobalContext().Wrap();
+		private  ЛЛКонтекст экземпл;
+        private ЛЛОбработчикДиагностики _обрабДиаг;
+        private ЛЛОбрвызовЖни _обрвызЖни;
 
-        public IntegerType Int1Type { LLVM.Int1TypeInContext(this.Unwrap()).WrapAs<IntegerType>();
-        public IntegerType Int8Type { LLVM.Int8TypeInContext(this.Unwrap()).WrapAs<IntegerType>();
-        public IntegerType Int16Type { LLVM.Int16TypeInContext(this.Unwrap()).WrapAs<IntegerType>();
-        public IntegerType Int32Type { LLVM.Int32TypeInContext(this.Unwrap()).WrapAs<IntegerType>();
-        public IntegerType Int64Type { LLVM.Int64TypeInContext(this.Unwrap()).WrapAs<IntegerType>();
-        public IntegerType IntType(uint bitLength) { LLVM.IntType(bitLength).WrapAs<IntegerType>();
-        public X86MMXType X86MMXType { LLVM.X86MMXTypeInContext(this.Unwrap()).WrapAs<X86MMXType>();
-        public HalfType HalfType { LLVM.HalfTypeInContext(this.Unwrap()).WrapAs<HalfType>();
-        public FloatType FloatType { LLVM.FloatTypeInContext(this.Unwrap()).WrapAs<FloatType>();
-        public DoubleType DoubleType { LLVM.DoubleTypeInContext(this.Unwrap()).WrapAs<DoubleType>();
-        public X86FP80Type X86FP80Type { LLVM.X86FP80TypeInContext(this.Unwrap()).WrapAs<X86FP80Type>();
-        public FP128Type FP128Type { LLVM.FP128TypeInContext(this.Unwrap()).WrapAs<FP128Type>();
-        public PPCFP128Type PPCFP128Type { LLVM.PPCFP128TypeInContext(this.Unwrap()).WrapAs<PPCFP128Type>();
-        public VoidType VoidType { LLVM.VoidTypeInContext(this.Unwrap()).WrapAs<VoidType>();
-        public LabelType LabelType { LLVM.LabelTypeInContext(this.Unwrap()).WrapAs<LabelType>();
+		this(ЛЛКонтекст контекстРеф)
+        {
+            this.экземпл = контекстРеф;
+        }
+
+        ~this()
+        {
+			ЛЛКонтекстВымести(this.раскрой()); 
+        }
+
+        public this()
+		{ 
+			this(ЛЛКонтекстСоздай());
+		}
+
+		public ЛЛКонтекст раскрой(){return this.экземпл;}
+
+        public ЛЛКонтекст роскрой()
+		{
+            return this.экземпл;
+		}
+
+        public ТипЦелое типЦел1()
+		{
+			return new ТипЦелое(ЛЛТипЦел1ВКонтексте(this.раскрой()));
+		}
+
+        public ТипЦелое типЦел8()
+		{
+			return new ТипЦелое(ЛЛТипЦел8ВКонтексте(this.раскрой()));		
+		}
+
+        public ТипЦелое типЦел16()
+		{
+			return new ТипЦелое(ЛЛТипЦел16ВКонтексте(this.раскрой()));
+		}
+
+        public ТипЦелое типЦел32()
+		{ 
+            return new ТипЦелое(ЛЛТипЦел32Контексте(this.раскрой()));
+		}
+
+        public ТипЦелое типЦел64()
+		{
+			return new ТипЦелое(ЛЛТипЦел64ВКонтексте(this.раскрой()));
+		}
+
+        public ТипЦелое типЦел(бцел длинаБит)
+		{
+            return new ТипЦелое(ЛЛТипЦел(длинаБит));
+		}
+
+        public ТипХ86ММХ типХ86ММХ()
+		{
+			return new ТипХ86ММХ(ЛЛТипХ86ММХВКонтексте(this.раскрой()));
+		}
+        public Полутип полутип()
+		{
+			return new Полутип(ЛЛПолутипВКонтексте(this.раскрой()));
+		}
+
+        public ТипПлав типПлав()
+		{
+			return new ТипПлав(ЛЛТипПлавВКонтексте(this.раскрой()));
+		}
+
+        public ТипДво типДво()
+		{
+			return new ТипДво(ЛЛТипДвоВКонтексте(this.раскрой()));
+		}
+
+        public ТипХ86ПЗ80 типХ86ПЗ80()
+		{ 
+			return new ТипХ86ПЗ80(ЛЛТипХ86ФП80ВКонтексте(this.раскрой()));
+		}
+
+        public ТипПЗ128 типПЗ128()
+		{ 
+			return new ТипПЗ128(ЛЛТипФП128ВКонтексте(this.раскрой()));
+		}
+
+        public ТипППЦПЗ128 типППЦПЗ128()
+		{ 
+			return new ТипППЦПЗ128(ЛЛТипППЦФП128ВКонтексте(this.раскрой()));
+		}
+
+        public ТипПроц типПроц()
+		{ 
+			return new ТипПроц(ЛЛТипПроцВКонтексте(this.раскрой()));
+		}
+
+        public ТипЯрлык типЯрлык()
+		{ 
+			return new ТипЯрлык(ЛЛТипЯрлыкВКонтексте(this.раскрой()));
+		}
         
-        private readonly LLVMContextRef _instance;
-        private bool _disposed;
-        private bool _owner;
-        private LLVMDiagnosticHandler _diagnosticHandler;
-        private LLVMYieldCallback _yieldCallback;
+        public бцел дайИдТипаМД(ткст имя)
+		{
+			return ЛЛДайИДТипаМДВКонтексте(this.раскрой(), имя, cast(бцел)имя.length);
+		}
 
-        internal Context(LLVMContextRef contextRef)
+        public проц устОбработчикДиагностики(ЛЛОбработчикДиагностики обработчикДиагностики, ук контекстДиаг)
         {
-            this._instance = contextRef;
+            this._обрабДиаг =  обработчикДиагностики;
+            ЛЛКонтекстУстОбработчикДиагностики(this.раскрой(), &this._обрабДиаг, контекстДиаг);
         }
 
-        ~Context()
+        public проц устОбработчикДиагностики(ЛЛОбработчикДиагностики обработчикДиагностики)
         {
-            this.Dispose(false);
+            this.устОбработчикДиагностики(обработчикДиагностики, null);
         }
 
-        public uint GetMDKindID(string name) { LLVM.GetMDKindIDInContext(this.Unwrap(), name, (uint)name.Length);
-
-        public void SetDiagnosticHandler(Action<DiagnosticInfo, IntPtr> diagnosticHandler, IntPtr diagContext)
+        public проц устОбрвызовЖни(ЛЛОбрвызовЖни обрвыз, ук opaqueHande)
         {
-            this._diagnosticHandler = new LLVMDiagnosticHandler((a, b) { diagnosticHandler(a.Wrap(), b));
-            LLVM.ContextSetDiagnosticHandler(this.Unwrap(), this._diagnosticHandler, diagContext);
+            this._обрвызЖни = обрвыз;
+            ЛЛОбрвызовЖни(this.раскрой(), &this._обрвызЖни, opaqueHande);
+        }
+  
+        public ТипСтрукт типСтрукт(Тип[] типыЭлтов, бул упакован)
+		{
+			return new ТипСтрукт(ЛЛТипСтруктВКонтексте(this.раскрой(), типыЭлтов.раскрой(), упакован));
+		}
+
+        public Значение узелМДВКонтексте(Значение[] знач)
+		{ 
+			return new Значение(ЛЛМДУзелВКонтексте(this.раскрой(), знач.раскрой()));
+		}
+
+        public БазБлок приставьБазБлок(Значение фн, ткст имя)
+		{
+			return new БазБлок(ЛЛПриставьБазБлокВКонтексте(this.раскрой(), фн.раскрой(), имя)));
         }
 
-        public void SetDiagnosticHandler(Action<DiagnosticInfo, IntPtr> diagnosticHandler)
-        {
-            this.SetDiagnosticHandler(diagnosticHandler, IntPtr.Zero);
-        }
+        public БазБлок вставьБазБлокВКонтекст(БазБлок bb, ткст имя)
+		{
+			return new БазБлок(ЛЛВставьБазБлокВКонтекст(this.раскрой(), bb.раскрой(), имя));
+		}
 
-        public void SetYieldCallBack(Action<Context, IntPtr> callback, IntPtr opaqueHande)
+        public Модуль разбериБиткодВКонтексте(БуфПам memBuf)
         {
-            this._yieldCallback = new LLVMYieldCallback((a, b) { callback(a.Wrap(), b));
-            LLVM.ContextSetYieldCallback(this.Unwrap(), this._yieldCallback, opaqueHande);
-        }
-
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-        
-        private void Dispose(bool disposing)
-        {
-            if (this._disposed)
+		
+		ЛЛМодуль модуль;
+		ткст0 ош;		
+            if (!ЛЛРазбериБиткодВКонтексте(this.раскрой(), memBuf.раскрой(), &модуль, &ош))
             {
-                return;
+                throw new Искл(вТкст(ош));
             }
 
-            if (this._owner)
-            {
-                LLVM.ContextDispose(this.Unwrap());
-            }
-
-            this._disposed = true;
+            return new Модуль(модуль);
         }
 
-        public StructType StructType(Type[] elementTypes, bool packed) { LLVM.StructTypeInContext(this.Unwrap(), elementTypes.Unwrap(), packed).WrapAs<StructType>();
-
-        public Value MDNodeInContext(Value[] vals) { LLVM.MDNodeInContext(this.Unwrap(), vals.Unwrap()).Wrap();
-
-        public BasicBlock AppendBasicBlock(Value fn, string name) { LLVM.AppendBasicBlockInContext(this.Unwrap(), fn.Unwrap(), name).Wrap();
-        public BasicBlock InsertBasicBlockInContext(BasicBlock bb, string name) { LLVM.InsertBasicBlockInContext(this.Unwrap(), bb.Unwrap<LLVMBasicBlockRef>(), name).Wrap();
-
-        public Module ParseBitcodeInContext(MemoryBuffer memBuf)
+        public Модуль дайБиткодВКонтексте(БуфПам буфПам)
         {
-            if (LLVM.ParseBitcodeInContext(this.Unwrap(), memBuf.Unwrap(), out LLVMModuleRef m, out IntPtr error).Failed())
+		ЛЛМодуль модуль;
+		ткст0 ош;	
+		
+            if (!ЛЛДайБиткодМодульВКонтексте(this.раскрой(), буфПам.раскрой(), &модуль, &ош))
             {
-                TextUtilities.Throw(error);
+                 throw new Искл(вТкст(ош));
             }
 
-            return m.Wrap();
+            return new Модуль(модуль);
         }
+/+
+        public Тип дайТипЦелУк(TargetData targetData)
+		{
+			LLVM.IntPtrTypeInContext(this.раскрой(), targetData.раскрой()).Wrap();
+		}
 
-        public Module GetBitcodeModuleInContext(MemoryBuffer memBuf)
-        {
-            if (LLVM.GetBitcodeModuleInContext(this.Unwrap(), memBuf.Unwrap(), out LLVMModuleRef m, out IntPtr error).Failed())
+        public Type GetIntPtrType(TargetData targetData, uint адреснПрострво)
+		{
+			LLVM.IntPtrTypeForASInContext(this.раскрой(), targetData.раскрой(), адреснПрострво).Wrap();
+		}
++/
+        public Модуль разборПП(БуфПам буфПам)
+        {		
+		ЛЛМодуль модуль;
+		ткст0 ош;	
+		
+            if (!ЛЛПарсируйППВКонтексте(this.раскрой(), буфПам.раскрой(), &модуль, &ош))
             {
-                TextUtilities.Throw(error);
+                 throw new Искл(вТкст(ош));
             }
 
-            return m.Wrap();
+            return new Модуль(модуль);
         }
+/+
+        public override int GetHashCode()
+		{ 
+			this.экземпл.GetHashCode();
+		}
++/
+        public override бул Equals(Объект obj)
+		{
+			this.Equals(cast(Контекст) obj);
+		}
+/+
+        public бул Equals(Контекст other)
+		{
+			ReferenceEquals(other, null) ? false : this.экземпл == other.экземпл;
+		}
+        public static bool operator ==(Context op1, Context op2)
+		{
+			ReferenceEquals(op1, null) ? ReferenceEquals(op2, null) : op1.Equals(op2);
+		}
 
-        public Type GetIntPtrType(TargetData targetData) { LLVM.IntPtrTypeInContext(this.Unwrap(), targetData.Unwrap()).Wrap();
-        public Type GetIntPtrType(TargetData targetData, uint addressSpace) { LLVM.IntPtrTypeForASInContext(this.Unwrap(), targetData.Unwrap(), addressSpace).Wrap();
-
-        public Module ParseIR(MemoryBuffer memBuf)
-        {
-            if (LLVM.ParseIRInContext(this.Unwrap(), memBuf.Unwrap(), out LLVMModuleRef outM, out IntPtr error).Failed())
-            {
-                TextUtilities.Throw(error);
-            }
-
-            return outM.Wrap();
-        }
-
-        public override int GetHashCode() { this._instance.GetHashCode();
-        public override bool Equals(object obj) { this.Equals(obj as Context);
-        public bool Equals(Context other) { ReferenceEquals(other, null) ? false : this._instance == other._instance;
-        public static bool operator ==(Context op1, Context op2) { ReferenceEquals(op1, null) ? ReferenceEquals(op2, null) : op1.Equals(op2);
-        public static bool operator !=(Context op1, Context op2) { !(op1 == op2);
+        public static bool operator !=(Context op1, Context op2)
+		{
+			!(op1 == op2);
+		}
+		+/
     }
+
+
+	public Контекст глобальныйКонтекст()
+	{
+		return new Контекст(ЛЛДайГлобКонтекст());
+	}
+
+	//Создаём статический глобальный контекст (ГлобКонтекст) в автоматическом режиме.
+	//Правда, возможно, следует вначале выполнить инициализацию LLVM!
+public static Контекст ГлобКонтекст;
+
+static this()
+{
+	ГлобКонтекст = глобальныйКонтекст();
+
 }

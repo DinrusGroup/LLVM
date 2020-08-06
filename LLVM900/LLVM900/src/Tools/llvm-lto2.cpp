@@ -83,13 +83,13 @@ static cl::list<std::string> SymbolResolutions(
     cl::ZeroOrMore);
 
 static cl::opt<std::string> OverrideTriple(
-    "override-triple",
-    cl::desc("Replace target triples in input files with this triple"));
+    "override-триада",
+    cl::desc("Replace target triples in input files with this триада"));
 
 static cl::opt<std::string> DefaultTriple(
-    "default-triple",
+    "default-триада",
     cl::desc(
-        "Replace unspecified target triples in input files with this triple"));
+        "Replace unspecified target triples in input files with this триада"));
 
 static cl::opt<bool> RemarksWithHotness(
     "pass-remarks-with-hotness",
@@ -359,7 +359,7 @@ static int dumpSymtab(int argc, char **argv) {
     std::unique_ptr<InputFile> Input =
         check(InputFile::create(MB->getMemBufferRef()), F);
 
-    outs() << "target triple: " << Input->getTargetTriple() << '\n';
+    outs() << "target триада: " << Input->getTargetTriple() << '\n';
     Triple TT(Input->getTargetTriple());
 
     outs() << "source filename: " << Input->getSourceFileName() << '\n';

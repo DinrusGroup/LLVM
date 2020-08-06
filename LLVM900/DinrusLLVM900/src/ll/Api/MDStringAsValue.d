@@ -1,10 +1,13 @@
-﻿module ll.api.
-{
-    public sealed class MDStringAsValue : MetadataAsValue
+module ll.api.MDStringAsValue;
+
+import ll.api.MetadataAsValue;
+import ll.c.Types;
+
+    public  class МДТекстКакЗначение : МетаданКакЗначение
     {
-        internal MDStringAsValue(LLVMValueRef instance)
-            : base(instance)
-        {
+        this(ЛЛЗначение экзэмпл)
+		{
+            super(экзэмпл);
         }
+        
     }
-}

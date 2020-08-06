@@ -1,17 +1,17 @@
-﻿module ll.api..TargetInitializers
-{
-    public sealed class SystemZTargetInitializer : TargetInitializer,
+module ll.api.TargetInitializers.SystemZTargetInitializer;
+
+import ll.c.api.TargetInitializers.TargetInitializer;
+
+    public class SystemZTargetInitializer : TargetInitializer,
         ITarget, ITargetInfo, ITargetMC, IAsmPrinter, IAsmParser, IDisassembler
     {
-        internal SystemZTargetInitializer()
-        {            
-        }
+        this(){}
 
-        public void Target() { LLVM.InitializeSystemZTarget();
-        public void TargetInfo() { LLVM.InitializeSystemZTargetInfo();
-        public void TargetMC() { LLVM.InitializeSystemZTargetMC();
-        public void AsmPrinter() { LLVM.InitializeSystemZAsmPrinter();
-        public void AsmParser() { LLVM.InitializeSystemZAsmParser();
-        public void Disassembler() { LLVM.InitializeSystemZDisassembler();
+        public void Target() { LLInitializeSystemZTarget();}
+        public void TargetInfo() { LLInitializeSystemZTargetInfo();}
+        public void TargetMC() { LLInitializeSystemZTargetMC();}
+        public void AsmPrinter() { LLInitializeSystemZAsmPrinter();}
+        public void AsmParser() { LLInitializeSystemZAsmParser();}
+        public void Disassembler() { LLInitializeSystemZDisassembler();}
     }
-}
+
