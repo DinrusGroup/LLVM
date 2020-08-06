@@ -2,9 +2,9 @@ module ll.api.typs.IAggregateType;
 
 import ll.api.Type;
 
-     interface ИТипАгрегат
+     interface РРўРёРїРђРіСЂРµРіР°С‚
     {
-      //  Type this[uint индекс] { get; }
-        uint длина();
+      //  Type this[uint РёРЅРґРµРєСЃ] { get; }
+        Р±С†РµР» РґР»РёРЅР°();
     }
 
