@@ -2,9 +2,8 @@ module ll.common;
 
 public import io.Stdout;
 public import text.convert.Layout, text.convert.Format;
-public import stdrus: вТкст, вТкст0;
+public import stdrus: вТкст, вТкст0, инфо;
 public import exception;
-
 alias Стдвыв выдай;
 alias Стдвыв.форматнс выдайфнс;
 alias Формат фм;

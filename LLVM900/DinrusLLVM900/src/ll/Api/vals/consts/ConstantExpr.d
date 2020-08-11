@@ -1,5 +1,5 @@
 module ll.api.vals.consts.ConstantExpr;
-{
+
     import ll.c.Core, ll.c.Types;
     import ll.api.Type;
 	import ll.api.vals.Constant;
@@ -16,213 +16,224 @@ module ll.api.vals.consts.ConstantExpr;
 		return ЛЛДайКонстОпкод(this.раскрой());
 		}
     }
-}
+//////////////////////////////////////
 
-public static КонстВыр дайРаскладУ(Тип тип)
+public  КонстВыр ДайРаскладУ(Тип тип)
 { 
 	if(тип.сРазмером_ли())	return new КонстВыр( ЛЛРаскладУ(тип.раскрой()));
 		else return null;
 }
 
-public static КонстВыр дайРазмерУ(Тип тип)
+public  КонстВыр ДайРазмерУ(Тип тип)
 { 
 	if(тип.сРазмером_ли())	return new КонстВыр(ЛЛРазмерУ(тип.раскрой()));
 	else return null;
 }
 
-public static КонстВыр дайНулл(Тип тип) 
+public КонстВыр ДайНулл(Тип тип) 
 { 
 	if(тип.можетИметьКонстанты())	return new КонстВыр(ЛЛКонстПусто(тип.раскрой()));
 	else return null;
 }
 
-public static КонстВыр дайВсеЕдиницы(Тип тип)
+public КонстВыр ДайВсеЕдиницы(Тип тип)
 {
 	if(тип.можетИметьКонстанты()) return new КонстВыр(ЛЛКонстВсеЕд(тип.раскрой()));
 	else return null;
 }
 
-public static КонстВыр дайОтриц(Константа значение)
+public КонстВыр ДайОтриц(Константа значение)
 {
 	return new КонстВыр(ЛЛКонстОтр(значение.раскрой()));
 }
 
-public static КонстВыр дайОтрицНСВ(Константа значение)
+public КонстВыр ДайОтрицНСВ(Константа значение)
 {
 	return new КонстВыр(ЛЛКонстОтрНСВ(значение.раскрой()));
 }
 
-public static КонстВыр дайОтрицНУВ(Константа значение)
+public КонстВыр ДайОтрицНУВ(Константа значение)
 { 
 	return new КонстВыр(LLConstNUWNeg(значение.раскрой()));
 }
 
-public static КонстВыр дайПОтриц(Константа значение) 
+public КонстВыр ДайПОтриц(Константа значение) 
 {
 	return new КонстВыр(ЛЛКонстПОтриц(значение.раскрой()));
 }
 
-public static КонстВыр дайНе(Константа значение)
+public КонстВыр ДайНе(Константа значение)
 {
 	return new КонстВыр(ЛЛКонстНе(значение.раскрой()));
 }
 
-public static КонстВыр дайДобавь(Константа lhs, Константа rhs)
+public КонстВыр ДайДобавь(Константа lhs, Константа rhs)
 {
 	return new КонстВыр(ЛЛКонстДобавь(lhs.раскрой(), rhs.раскрой()));
 }
 
-public static КонстВыр дайДобавьНСВ(Константа lhs, Константа rhs)
+public КонстВыр ДайДобавьНСВ(Константа lhs, Константа rhs)
 {
 	return new КонстВыр(LLConstNSWAdd(lhs.раскрой(), rhs.раскрой()));
 }
 
-public static КонстВыр дайДобавьНУВ(Константа lhs, Константа rhs)
+public КонстВыр ДайДобавьНУВ(Константа lhs, Константа rhs)
 {
 	return new КонстВыр(LLConstNUWAdd(lhs.раскрой(), rhs.раскрой()));
 }
 
-public static КонстВыр дайПДобавь(Константа lhs, Константа rhs)
+public КонстВыр ДайПДобавь(Константа lhs, Константа rhs)
 { 
 	return new КонстВыр(ЛЛКонстПСложи(lhs.раскрой(), rhs.раскрой()));
 }
 
-public static КонстВыр дайОтними(Константа lhs, Константа rhs)
+public КонстВыр ДайОтними(Константа lhs, Константа rhs)
 {
 	return new КонстВыр(ЛЛКонстОтними(lhs.раскрой(), rhs.раскрой()));
 }
 
-public static КонстВыр дайОтнимиНСВ(Константа lhs, Константа rhs) 
+public КонстВыр ДайОтнимиНСВ(Константа lhs, Константа rhs) 
 { 
 	return new КонстВыр(LLConstNSWSub(lhs.раскрой(), rhs.раскрой()));
 }
 
-public static КонстВыр дайОтнимиНУВ(Константа lhs, Константа rhs)
+public static КонстВыр ДайОтнимиНУВ(Константа lhs, Константа rhs)
 {
 	return new КонстВыр(LLConstNUWSub(lhs.раскрой(), rhs.раскрой()));
 }
 
-public static КонстВыр дайПОтними(Константа lhs, Константа rhs)
+public КонстВыр ДайПОтними(Константа lhs, Константа rhs)
 {
 	return new КонстВыр(ЛЛКонстПОтними(lhs.раскрой(), rhs.раскрой()));
 }
 
-public static КонстВыр дайУмножь(Константа lhs, Константа rhs)
+public КонстВыр ДайУмножь(Константа lhs, Константа rhs)
 {
 	return new КонстВыр(ЛЛКонстУмножь(lhs.раскрой(), rhs.раскрой()));
 }
 
-public static КонстВыр дайУмножьНСВ(Константа lhs, Константа rhs)
+public КонстВыр ДайУмножьНСВ(Константа lhs, Константа rhs)
 {
 	return new КонстВыр(LLConstNSWMul(lhs.раскрой(), rhs.раскрой()));
 }
 
-public static КонстВыр дайУмножьНУВ(Константа lhs, Константа rhs)
+public КонстВыр ДайУмножьНУВ(Константа lhs, Константа rhs)
 {
 	return new КонстВыр(LLConstNUWMul(lhs.раскрой(), rhs.раскрой()));
 }
 
-public static КонстВыр дайПУмножь(Константа lhs, Константа rhs)
+public КонстВыр ДайПУмножь(Константа lhs, Константа rhs)
 { 
 	return new КонстВыр(ЛЛКонстПУмножь(lhs.раскрой(), rhs.раскрой()));
 }
 
-public static КонстВыр дайБДели(Константа lhs, Константа rhs)
+public КонстВыр ДайБДели(Константа lhs, Константа rhs)
 {
 	return new КонстВыр(ЛЛКонстБДели(lhs.раскрой(), rhs.раскрой()));
 }
 
-public static КонстВыр дайЗДели(Константа lhs, Константа rhs)
+public КонстВыр ДайЗДели(Константа lhs, Константа rhs)
 { 
 	return new КонстВыр(ЛЛКонстЗДели(lhs.раскрой(), rhs.раскрой()));
 }
 
-public static КонстВыр GetExactSDiv(Константа lhs, Константа rhs)
+public КонстВыр GetExactSDiv(Константа lhs, Константа rhs)
 {
 	return new КонстВыр(ЛЛКонстТочноЗДели(lhs.раскрой(), rhs.раскрой()));
 }
 
-public static КонстВыр GetFDiv(Константа lhs, Константа rhs)
+public КонстВыр GetFDiv(Константа lhs, Константа rhs)
 {
 	return new КонстВыр(ЛЛКонстПДели(lhs.раскрой(), rhs.раскрой()));
 }
 
-public static КонстВыр GetURem(Константа lhs, Константа rhs)
+public КонстВыр GetURem(Константа lhs, Константа rhs)
 {
 	return new КонстВыр(LLConstURem(lhs.раскрой(), rhs.раскрой()));
 }
 
-public static КонстВыр GetSRem(Константа lhs, Константа rhs)
+public КонстВыр GetSRem(Константа lhs, Константа rhs)
 { 
 	return new КонстВыр(LLConstSRem(lhs.раскрой(), rhs.раскрой()));
 }
 
-public static КонстВыр GetFRem(Константа lhs, Константа rhs)
+public КонстВыр GetFRem(Константа lhs, Константа rhs)
 {
 	return new КонстВыр(LLConstFRem(lhs.раскрой(), rhs.раскрой()));
 }
 
-public static КонстВыр GetAnd(Константа lhs, Константа rhs)
+public КонстВыр GetAnd(Константа lhs, Константа rhs)
 { 
 	return new КонстВыр(ЛЛКонстИ(lhs.раскрой(), rhs.раскрой()));
 }
 
-public static КонстВыр GetOr(Константа lhs, Константа rhs)
+public КонстВыр GetOr(Константа lhs, Константа rhs)
 {
 	return new КонстВыр(ЛЛКонстИли(lhs.раскрой(), rhs.раскрой()));
 }
 
-public static КонстВыр GetXor(Константа lhs, Константа rhs)
+public КонстВыр GetXor(Константа lhs, Константа rhs)
 { 
 	return new КонстВыр(ЛЛКонстИИли(lhs.раскрой(), rhs.раскрой()));
 }
 
-public static КонстВыр GetICmp(ЛЛЦелПредикат predicate, Константа lhs, Константа rhs)
+public КонстВыр GetICmp(ЛЛЦелПредикат predicate, Константа lhs, Константа rhs)
 {
 	return new КонстВыр(ЛЛКонстЦСравн(predicate, lhs.раскрой(), rhs.раскрой()));
 }
 
-public static КонстВыр GetFCmp(ЛЛПредикатРеала predicate, Константа lhs, Константа rhs)
+public КонстВыр GetFCmp(ЛЛПредикатРеала predicate, Константа lhs, Константа rhs)
 {
 	return new КонстВыр(ЛЛКонстПСравн(predicate, lhs.раскрой(), rhs.раскрой()));
 }
 
-public static КонстВыр GetShl(Константа lhs, Константа rhs)
+public КонстВыр GetShl(Константа lhs, Константа rhs)
 { 
 	return new КонстВыр(ЛЛКонстСдвл(lhs.раскрой(), rhs.раскрой()));
 }
 
-public static КонстВыр GetLShr(Константа lhs, Константа rhs)
+public КонстВыр GetLShr(Константа lhs, Константа rhs)
 {
 	return new КонстВыр(ЛЛКонстСдвп(lhs.раскрой(), rhs.раскрой()));
 }
 
-public static КонстВыр GetAShr(Константа lhs, Константа rhs)
+public КонстВыр GetAShr(Константа lhs, Константа rhs)
 { 
 	return new КонстВыр(LLConstAShr(lhs.раскрой(), rhs.раскрой()));
 }
 
-public static КонстВыр GetGEP(Константа констЗнач, Константа[] constantIndices) 
+public КонстВыр GetGEP(Константа констЗнач, Константа[] констИндексы) 
 {
-	return new КонстВыр(ЛЛКонстУкНаЭлт(констЗнач.раскрой(), constantIndices.раскрой()));
+
+	ЛЛЗначение[] индексы;
+	foreach(инд;констИндексы)
+	{
+		индексы ~= инд.раскрой();
+	}
+	return new КонстВыр(ЛЛКонстУкНаЭлт(констЗнач.раскрой(), cast(ЛЛЗначение*) &индексы, индексы.length));
 }
 
-public static КонстВыр GetInBoundsGEP(Константа констЗнач, Константа[] constantIndices)
+public КонстВыр GetInBoundsGEP(Константа констЗнач, Константа[] констИндексы)
 { 
-	return new КонстВыр(LLConstInBoundsGEP(констЗнач.раскрой(), constantIndices.раскрой()));
+	ЛЛЗначение[] индексы;
+	foreach(инд;констИндексы)
+	{
+		индексы ~= инд.раскрой();
+	}
+	return new КонстВыр(LLConstInBoundsGEP(констЗнач.раскрой(), cast(ЛЛЗначение*) &индексы, индексы.length));
 }
-
-public static КонстВыр GetTrunc(Константа констЗнач, Тип вТип)
+/+
+public КонстВыр GetTrunc(Константа констЗнач, Тип вТип)
 {
 	return new КонстВыр(ЛЛКонстОбрежь(констЗнач.раскрой(), вТип.MustHaveConstants().раскрой()));
 }
 
-public static КонстВыр GetSExt(Константа констЗнач, Тип вТип)
+public КонстВыр GetSExt(Константа констЗнач, Тип вТип)
 {
 	return new КонстВыр(ЛЛКонстЗРасш(констЗнач.раскрой(), вТип.MustHaveConstants().раскрой()));
 }
 
-/+
+
 public static КонстВыр GetZExt(Константа констЗнач, Тип вТип) 
 {
 	return new КонстВыр(LLVMConstZExt(констЗнач.раскрой(), вТип.MustHaveConstants().раскрой()));

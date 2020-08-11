@@ -18,4 +18,3 @@ import ll.c.Types;
             return this.экзэмпл;
 		}
     }
-}

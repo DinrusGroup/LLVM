@@ -675,12 +675,9 @@
     <File path="src\ll\api\Initialize.d" />
     <File path="src\ll\api\IRBuilder.d" />
     <File path="src\ll\api\MCJITMemoryManager.d" />
-    <File path="src\ll\api\MDString.d" />
-    <File path="src\ll\api\MDStringAsValue.d" />
     <File path="src\ll\api\MemoryBuffer.d" />
     <File path="src\ll\api\Message.d" />
     <File path="src\ll\api\Metadata.d" />
-    <File path="src\ll\api\MetadataAsValue.d" />
     <File path="src\ll\api\Module.d" />
     <File path="src\ll\api\ModuleProvider.d" />
     <File path="src\ll\api\ObjectFile.d" />
@@ -740,6 +737,7 @@
     <File path="src\ll\c\Support.d" />
     <File path="src\ll\c\Target.d" />
     <File path="src\ll\c\TargetMachine.d" />
+    <File path="src\ll\c\AllTransforms.d" />
     <File path="src\ll\c\Types.d" />
    </Folder>
    <File path="common.d" />

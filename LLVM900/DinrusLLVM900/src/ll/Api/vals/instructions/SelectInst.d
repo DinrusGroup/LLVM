@@ -13,7 +13,7 @@ module ll.api.vals.instructions.SelectInst;
             this.экзэмпл = экзэмпл;
         }
 
-        public override ЛЛЗначение раскрой()
+        public ЛЛЗначение раскрой()
 		{
             return this.экзэмпл;
 		}

@@ -25,7 +25,7 @@ extern (C)
  * @{
  */
 
-alias цел ЛЛБул;
+alias бул ЛЛБул;
 
 /* Opaque типы. */
 
@@ -46,13 +46,13 @@ alias цел ЛЛБул;
  * @see llvm::MemoryBuffer
  */
 struct LLVMOpaqueMemoryBuffer{}
-alias LLVMOpaqueMemoryBuffer *ЛЛБуферПамяти;
+alias LLVMOpaqueMemoryBuffer *ЛЛБуферПамяти, LLVMOpaqueMemoryBufferRef;
 
 /**
  * Верхнеуровневый контейнер для всех глобальных данных LLVM. См. класс LLVMContext.
  */
 struct LLVMOpaqueContext{}
-alias LLVMOpaqueContext *ЛЛКонтекст;
+alias LLVMOpaqueContext *ЛЛКонтекст, LLVMOpaqueContextRef;
 
 /**
  * Верхнеуровневый контейнер для всех иных объектов LLVM Intermediate Representation (IR).
@@ -60,7 +60,7 @@ alias LLVMOpaqueContext *ЛЛКонтекст;
  * @see llvm::Модуль2
  */
 struct LLVMOpaqueModule{}
-alias LLVMOpaqueModule *ЛЛМодуль;
+alias LLVMOpaqueModule *ЛЛМодуль, LLVMOpaqueModuleRef;
 
 /**
  * Каждое значение в LLVM IR имеет тип, некий ЛЛТип.
@@ -68,7 +68,7 @@ alias LLVMOpaqueModule *ЛЛМодуль;
  * @see llvm::Тип
  */
 struct LLVMOpaqueType{}
-alias LLVMOpaqueType *ЛЛТип;
+alias LLVMOpaqueType *ЛЛТип, LLVMOpaqueTypeRef;
 
 /**
  * Представляет индивидуальное значение в LLVM IR.
@@ -76,7 +76,7 @@ alias LLVMOpaqueType *ЛЛТип;
  * Моделирует llvm::знач.
  */
 struct LLVMOpaqueValue{}
-alias LLVMOpaqueValue *ЛЛЗначение;
+alias LLVMOpaqueValue *ЛЛЗначение, LLVMOpaqueValueRef;
 
 /**
  * Педставляет базовый блок инструкций в LLVM IR.
@@ -84,7 +84,7 @@ alias LLVMOpaqueValue *ЛЛЗначение;
  * Моделирует llvm::BasicBlock.
  */
 struct LLVMOpaqueBasicBlock{}
-alias LLVMOpaqueBasicBlock *ЛЛБазовыйБлок;
+alias LLVMOpaqueBasicBlock *ЛЛБазовыйБлок, LLVMOpaqueBasicBlockRef;
 
 /**
  * Представляет Метаданные LLVM.
@@ -92,7 +92,7 @@ alias LLVMOpaqueBasicBlock *ЛЛБазовыйБлок;
  * Моделирует llvm::Metadata.
  */
 struct LLVMOpaqueMetadata{}
-alias LLVMOpaqueMetadata *ЛЛМетаданные;
+alias LLVMOpaqueMetadata *ЛЛМетаданные, LLVMOpaqueMetadataRef;
 
 /**
  * Представляет Именованный Узел Метаданных LLVM.
@@ -100,7 +100,7 @@ alias LLVMOpaqueMetadata *ЛЛМетаданные;
  * Моделирует llvm::имУзелМД.
  */
 struct LLVMOpaqueNamedMDNode{}
-alias LLVMOpaqueNamedMDNode *ЛЛИменованыйУзелМД;
+alias LLVMOpaqueNamedMDNode *ЛЛИменованыйУзелМД, LLVMOpaqueNamedMDNodeRef;
 
 /**
  * Представляет запись в приложениях метаданных Глобального Объекта.
@@ -116,7 +116,7 @@ alias LLVMOpaqueValueMetadataEntry ЛЛЗаписьМетаданныхЗнач�
  * Моделирует llvm::IRBuilder.
  */
 struct LLVMOpaqueBuilder{}
-alias LLVMOpaqueBuilder *ЛЛПостроитель;
+alias LLVMOpaqueBuilder *ЛЛПостроитель, LLVMOpaqueBuilderRef;
 
 /**
  * Представляет построитель отладочной информации LLVM.
@@ -124,7 +124,7 @@ alias LLVMOpaqueBuilder *ЛЛПостроитель;
  * Моделирует llvm::DIBuilder.
  */
 struct LLVMOpaqueDIBuilder{}
-alias LLVMOpaqueDIBuilder *ЛЛПостроительОИ;
+alias LLVMOpaqueDIBuilder *ЛЛПостроительОИ, LLVMOpaqueDIBuilderRef;
 
 /**
  * Интерфейс, используемый для предоставления модуля интерпретатору или JIT-отладчику.
@@ -132,42 +132,42 @@ alias LLVMOpaqueDIBuilder *ЛЛПостроительОИ;
  * чтобы сохранить бинарную совместимость.
  */
 struct LLVMOpaqueModuleProvider{}
-alias LLVMOpaqueModuleProvider *ЛЛМодульПровайдер;
+alias LLVMOpaqueModuleProvider *ЛЛМодульПровайдер, LLVMOpaqueModuleProviderRef;
 
 /** @see llvm::PassManagerBase */
 struct LLVMOpaquePassManager{}
-alias LLVMOpaquePassManager *ЛЛМенеджерПроходок;
+alias LLVMOpaquePassManager *ЛЛМенеджерПроходок, LLVMOpaquePassManagerRef;
 
 
 struct LLVMOpaquePassRegistry{}
-alias LLVMOpaquePassRegistry *ЛЛРеестрПроходок;
+alias LLVMOpaquePassRegistry *ЛЛРеестрПроходок, LLVMOpaquePassRegistryRef;
 
 /**
  * Применяется для получения пользователей и пользуемых Значения.
  *
  * @see llvm::Use */
 struct LLVMOpaqueUse{}
-alias LLVMOpaqueUse *ЛЛИспользование;
+alias LLVMOpaqueUse *ЛЛИспользование, LLVMOpaqueUseRef;
 
 /**
  * Используется для представления атрибутов.
  *
  * @see llvm::Attribute
  */
-struct LLVMOpaqueAttributeRef{}
-alias LLVMOpaqueAttributeRef *ЛЛАтрибут;
+struct LLVMOpaqueAttribute{}
+alias LLVMOpaqueAttribute *ЛЛАтрибут, LLVMOpaqueAttributeRef;
 
 /**
  * @see llvm::DiagnosticInfo
  */
 struct LLVMOpaqueDiagnosticInfo{}
-alias LLVMOpaqueDiagnosticInfo *ЛЛИнфоДиагностики;
+alias LLVMOpaqueDiagnosticInfo *ЛЛИнфоДиагностики, LLVMOpaqueDiagnosticInfoRef;
 
 /**
  * @see llvm::Comdat
  */
 struct LLVMComdat{}
-alias LLVMComdat *ЛЛКомдат;
+alias LLVMComdat *ЛЛКомдат, LLVMComdatRef;
 
 /**
  * @see llvm::Модуль2::ModuleFlagEntry
@@ -179,12 +179,12 @@ alias LLVMOpaqueModuleFlagEntry ЛЛЗаписьФлагаМодуля;
  * @see llvm::JITEventListener
  */
 struct LLVMOpaqueJITEventListener{}
-alias LLVMOpaqueJITEventListener *ЛЛДатчикСобытийДжит;
+alias LLVMOpaqueJITEventListener *ЛЛДатчикСобытийДжит, LLVMOpaqueJITEventListenerRef;
 
 /**
  * @see llvm::объект::Binary
  */
 struct LLVMOpaqueBinary{}
-alias LLVMOpaqueBinary *ЛЛБинарник;
+alias LLVMOpaqueBinary *ЛЛБинарник, LLVMOpaqueBinaryRef;
 
 }

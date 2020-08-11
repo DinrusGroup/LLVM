@@ -4,6 +4,7 @@ import ll.c.Core, ll.c.Types;
 import ll.api.Value, ll.api.Context;
 import ll.api.vals.Constant;
 import ll.api.vals.consts.ConstantDataSequential;
+import ll.common;
 
     public  class КонстМассивДанных : КонстПоследовательностьДанных
     {
@@ -27,55 +28,46 @@ import ll.api.vals.consts.ConstantDataSequential;
 
         private static Константа дайПЗ!(TData)(ТипПЗ тип, TData[] данные)
 			{
-				GetGeneric(тип, (x, y) { КонстантаПЗ.дай(x, y), данные);
+				GetGeneric(тип, (x, y) { new КонстантаПЗ(x, y), данные);
             }
-+/
+
         public this(Контекст контекст, байт[] данные)
 		{
-			this(контекст.типЦел8, данные);
+			this(контекст.типЦел8.раскрой(), данные);
 		}
         public this(Контекст контекст, бкрат[] данные) 
 		{
-			this(контекст.типЦел16, данные);
+			this(контекст.типЦел16.раскрой(), данные);
 		}
 
         public this(Контекст контекст, бцел[] данные) 
 		{
-			this(контекст.типЦел32, данные);
+			this(контекст.типЦел32.раскрой(), данные);
 		}
 
         public this(Контекст контекст, бдол[] данные)
 		{ 
-			this(контекст.типЦел64, данные);
+			this(контекст.типЦел64.раскрой(), данные);
 		}
 
         public this(Контекст контекст, плав[] данные) 
 		{ 
-			this(контекст.типПлав, данные);
+			this(контекст.типПлав.раскрой(), данные);
 		}
 
         public this(Контекст контекст, дво[] данные)
 		{
-			this(контекст.типДво, данные);
+			this(контекст.типДво.раскрой(), данные);
 		}
-
-        public static Константа дайТкст(Контекст контекст, ткст текст, бул nullTerminate)
++/
+        public static Константа дайТкст(Контекст контекст, ткст текст, бул nullTerminate = нет)
 		{ 
-			return new Константа(ЛЛКонстТкстВКонтексте(контекст.раскрой(), текст, cast(бцел)текст.length, nullTerminate));
+			return new Константа(ЛЛКонстТкстВКонтексте(контекст.раскрой(), вТкст0(текст), cast(бцел)текст.length, nullTerminate));
 		}
 
-        public static Константа дайТкст(Контекст контекст, ткст текст)
+        public static Константа дайТкст(ткст ткт, бул nullTerminate = нет)
 		{
-			дайТкст(контекст, текст, true);
-		}
-
-        public static Константа дайТкст(ткст ткт, бул nullTerminate)
-		{
-			return new Константа(ЛЛКонстТкст(ткт, cast(бцел)ткт.length, !nullTerminate));
-		}
-        public static Константа дайТкст(ткст ткт)
-		{
-			дайТкст(ткт, true);
+			return new Константа(ЛЛКонстТкст(вТкст0(ткт), cast(бцел)ткт.length, nullTerminate));
 		}
                    
         this(ЛЛЗначение v){super(v);}

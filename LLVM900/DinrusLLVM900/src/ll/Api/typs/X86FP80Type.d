@@ -19,8 +19,8 @@ import ll.c.Types;
             return this.экзэмпл;
 		}
 
-        public override string имя() {return "х86_пз80";}
+        public override ткст вТкст() {return "х86_пз80";}
         public override uint примитивнРазмерВБитах() {return 80;}
         public override int ширинаМантиссы() {return 64;}
     }
-}
+

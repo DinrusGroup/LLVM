@@ -4,6 +4,7 @@ import ll.c.Types;
 import ll.c.Core;
 import ll.api.vals.Constant;
 import ll.api.Value;
+import ll.common;
 
     public class КонстПоследовательностьДанных : Константа
     {
@@ -19,7 +20,7 @@ import ll.api.Value;
 			т_мера длина;
 
 			if(this.ткст_ли())
-				return ЛЛДайКакТкст(this.раскрой(), &длина);// : throw new InvalidOperationException();
+				return ll.common.вТкст(ЛЛДайКакТкст(this.раскрой(), &длина));// : throw new InvalidOperationException();
 		}
 
         public Значение дайЭлтКакКонст(бцел инд)

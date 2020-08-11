@@ -19,7 +19,7 @@ import ll.c.Types;
             return this.экзэмпл;
 		}
 
-        public override ткст имя() {return "fp128";}
+        public override ткст вТкст() {return "fp128";}
         public override бцел примитивнРазмерВБитах() {return  128;}
         public override цел ширинаМантиссы() {return  113;}
     }

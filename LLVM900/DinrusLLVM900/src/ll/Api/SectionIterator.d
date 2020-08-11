@@ -32,7 +32,7 @@ import ll.api.RelocationIterator;
 
         public ткст имяСекции()
 		{
-			return вТкст(ЛЛДайИмяСекции(this.раскрой()));
+			return ll.common.вТкст(ЛЛДайИмяСекции(this.раскрой()));
 		}
 
         public бдол размерСекции()
@@ -42,7 +42,7 @@ import ll.api.RelocationIterator;
 
         public ткст содержимоеСекции()
 		{ 
-			return вТкст(ЛЛДайСодержимоеСекции(this.раскрой()));
+			return ll.common.вТкст(ЛЛДайСодержимоеСекции(this.раскрой()));
 		}
 
         public бдол адресСекции()

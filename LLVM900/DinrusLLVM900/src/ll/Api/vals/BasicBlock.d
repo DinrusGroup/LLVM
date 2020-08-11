@@ -1,5 +1,5 @@
 module ll.api.vals.BasicBlock;
-{
+
 	import ll.api.Context;
 	import ll.api.Value;
 	import ll.c.Types;
@@ -8,11 +8,13 @@ module ll.api.vals.BasicBlock;
 	import ll.api.vals.Instruction;
 	import ll.api.vals.consts.GlobalValues.GlobalObjects.Function;
 
+	alias БазБлок[] БазБлоки;
+
     public class БазБлок : Значение
     {
         public this(Функция родитель, ткст имя)
 		{
-			this(ЛЛПриставьБазБлок(&родитель, вТкст0(имя)));
+			this(ЛЛПриставьБазБлок(родитель.раскрой(), вТкст0(имя)));
 		}
 
         public this(Функция родитель, ткст имя, Контекст контекст) 
@@ -20,10 +22,11 @@ module ll.api.vals.BasicBlock;
 			this(ЛЛПриставьБазБлокВКонтексте(контекст.раскрой(), родитель.раскрой(), вТкст0(имя)));
 		}
 
-        ЛЛБазовыйБлок раскрой()
+        public ЛЛБазовыйБлок укз()
 		{
 			return ЛЛЗначениеКакБазБлок(super.раскрой());
 		}
+		alias укз раскрой;
 
         this(ЛЛБазовыйБлок блокРеф)
 		{
@@ -36,9 +39,9 @@ module ll.api.vals.BasicBlock;
            
                 Инструкция[] инстрции;
                 auto i = дайПервИнстр();
-                while(i != null)
+                while(i !is пусто)
                 {
-                    инстрции += i;
+                    инстрции ~= i;
                     i = дайСледщИнстр(i);
                 }
                 return инстрции;
@@ -102,12 +105,11 @@ module ll.api.vals.BasicBlock;
 
         public БазБлок вставьПеред(ткст имя)
 		{
-			return new БазБлок(ЛЛВставьБазБлок(this.раскрой(), имя));
+			return new БазБлок(ЛЛВставьБазБлок(this.раскрой(), вТкст0(имя)));
 		}
 
         public БазБлок вставьПеред(ткст имя, Контекст контекст)
 		{
-			return new БазБлок(ЛЛВставьБазБлокВКонтекст(контекст.раскрой(), this.раскрой(), имя));
+			return new БазБлок(ЛЛВставьБазБлокВКонтекст(контекст.раскрой(), this.раскрой(),  вТкст0(имя)));
 		}
     }
-}

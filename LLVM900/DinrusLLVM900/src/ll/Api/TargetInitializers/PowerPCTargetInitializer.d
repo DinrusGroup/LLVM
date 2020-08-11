@@ -1,4 +1,4 @@
-module ll.c.api.TargetInitializers.MipsTargetInitializer;
+module ll.c.api.TargetInitializers.PowerPCTargetInitializer;
 
 import ll.c.api.TargetInitializers.TargetInitializer;
 

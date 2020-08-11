@@ -17,6 +17,6 @@ import ll.api.vals.consts.GlobalValue;
 
 		public override ЛЛЗначение раскрой()
 		{
-            return this.экзэмпл;
+            return this.экземпл;
 		}
     }

@@ -14,7 +14,7 @@ module ll.api.vals.instructions.TerminatorInst;
             this.экзэмпл = экзэмпл;
         }
 
-		public override ЛЛЗначение раскрой()
+		public  ЛЛЗначение раскрой()
 		{
             return this.экзэмпл;
 		}

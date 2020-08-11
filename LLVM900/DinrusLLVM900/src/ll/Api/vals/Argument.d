@@ -1,6 +1,5 @@
 module ll.api.vals.Argument;
 
-    import ll.api.vals.consts.GlobalValues.GlobalObjects;
 	import ll.api.Value;
 	import ll.c.Types;
 	import ll.c.Core;
@@ -15,7 +14,7 @@ module ll.api.vals.Argument;
 			this.экземпл = экземпл;
         }
 
-		public override ЛЛЗначение раскрой(){return this.экземпл;}
+		public ЛЛЗначение раскрой(){return this.экземпл;}
 
         public void устРасклад(бцел раскл)
 		{ 

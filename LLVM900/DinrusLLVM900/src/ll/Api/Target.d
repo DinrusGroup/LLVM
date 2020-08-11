@@ -1,75 +1,100 @@
 module ll.api.Target;
 
+import ll.c.TargetMachine;
+import ll.api.TargetMachine;
+import ll.c.Types, ll.c.Core;
 
-    public class Target : IWrapper!(LLVMTargetRef)
+import ll.common;
+
+    public class Цель
     {
-        //LLVMTargetRef IWrapper!(LLVMTargetRef).ToHandleType { this.�������;
 
-        public static string DefaultTriple()
+        public static ткст дефТриада()
 		{
-			LLVM.GetDefaultTargetTriple().MessageToString();
+			ткст0 триада = ЛЛДайДефТриадуЦели();
+			ткст рез = ll.common.вТкст(триада);
+			ЛЛВыместиСообщение(триада);
+			return рез;
 		}
 
-        public static IReadOnlyList!(Target) Targets()
+        public static Цель[] цели()
         {
             //get
             
-                auto targets = new List!(Target)();
-                auto t = LLVM.GetFirstTarget().Wrap();
-                while (t != null)
+			ЛЛЦель[] таргеты;
+
+                auto ц = ЛЛДайПервЦель();
+                while (ц != пусто)
                 {
-                    targets.Add(t);
-                    t = LLVM.GetNextTarget(t.�������()).Wrap();
+                    таргеты  ~= ц;
+                    ц = ЛЛДайСледщЦель(ц);
                 }
-                return targets;
+
+				Цель[] рез;
+				foreach(т; таргеты)
+				{
+					рез ~= new Цель(т);
+				}
+                return рез;
             
         }
 
-        public static Target FromName(string ���)
+        public static Цель изИмени(ткст имя)
 		{
-			LLVM.GetTargetFromName(���).Wrap();
+			return new Цель(ЛЛДайЦельИзИмени(вТкст0(имя)));
 		}
 
-        public static Target FromTriple(string triple)
+        public static Цель изТриады(ткст триада)
 		{
-			LLVM.GetTargetFromTriple(triple, out LLVMTargetRef tRef, out �� errorMessage) ? tRef.Wrap() : throw new Exception(errorMessage.MessageToString());
+		
+		ЛЛЦель ц;
+		ткст0 ош;
+			if(!ЛЛДайЦельИзТриады(вТкст0(триада), &ц, &ош))
+			{			
+			ткст ош_ = ll.common.вТкст(ош);
+			ЛЛВыместиСообщение(ош);
+            throw new Искл(ош_);
+			}
+			return new Цель(ц);
 		}
 
-        private  LLVMTargetRef �������;
+        private  ЛЛЦель экземпл;
 
-        this(LLVMTargetRef �������)
+        this(ЛЛЦель экзэмпл)
         {
-            this.������� = �������;
+            this.экземпл = экзэмпл;
         }
+		
+		public ЛЛЦель раскрой(){return this.экземпл;}
 
-        public string ��� ()
+        public ткст имя()
 		{
-			return Marshal.PtrToStringAnsi(LLVM.GetTargetNameAsPtr(this.�������()));
+			return ll.common.вТкст(ЛЛДайИмяЦели(this.раскрой()));
 		}
 
-        public string Description()
+        public ткст описание()
 		{ 
-			return Marshal.PtrToStringAnsi(LLVM.GetTargetDescriptionAsPtr(this.�������()));
+			return ll.common.вТкст(ЛЛДайОписаниеЦели(this.раскрой()));
 		}
 
-        public bool HasJIT()
+        public бул естьДжИТ()
 		{
-			return LLVM.TargetHasJIT(this.�������());
+			return ЛЛЦель_ЕстьДжИТ_ли(this.раскрой());
 		}
-        public bool HasTargetMachine
+        public бул естьМашинаЦели()
 		{
-			return LLVM.TargetHasTargetMachine(this.�������());
+			return ЛЛЦель_ЕстьЦелМаш_ли(this.раскрой());
 		}
 
-        public bool HasAsmBackend()
+        public бул естьАсмБэкэнд()
 		{ 
-			return LLVM.TargetHasAsmBackend(this.�������());
+			return ЛЛЦель_ЕстьАсмБэкэнд_ли(this.раскрой());
 		}
 
-        public TargetMachine CreateTargetMachine(string triple, string cpu, string features, LLVMCodeGenOptLevel level, LLVMRelocMode reloc, LLVMCodeModel codeModel) 
+        public МашинаЦели создайЦелМаш(ткст триада, ткст цпб, ткст фичи, ЛЛУровеньОптКодгена уровень, ЛЛРелокРежим релок, ЛЛМодельКода модельКода) 
 		{
-			return LLVM.CreateTargetMachine(this.�������(), triple, cpu, features, level, reloc, codeModel).Wrap();
+			return new МашинаЦели(ЛЛСоздайЦелМаш(this.раскрой(), вТкст0(триада), вТкст0(цпб), вТкст0(фичи), уровень, релок, модельКода));
 		}
 
-        public override string ToString() { this.���;}
+        public override ткст вТкст() {return this.имя;}
     }

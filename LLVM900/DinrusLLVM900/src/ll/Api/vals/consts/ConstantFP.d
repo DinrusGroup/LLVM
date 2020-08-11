@@ -4,6 +4,7 @@ module ll.api.vals.consts.ConstantFP;
 	import ll.c.Types, ll.c.Core;
 	import ll.api.vals.Constant;
 	import ll.api.typs.FPType;
+	import ll.common;
 
     public class КонстПЗ : Константа
     {
@@ -14,7 +15,7 @@ module ll.api.vals.consts.ConstantFP;
 		
         public this(Тип тип, ткст текст)
 		{
-			this(ЛЛКонстРеалИзТкста(тип.раскрой(), текст));
+			this(ЛЛКонстРеалИзТкста(тип.раскрой(), вТкст0(текст)));
 		}
 
         this(ЛЛЗначение экзэмпл)

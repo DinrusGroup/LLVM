@@ -19,7 +19,7 @@ import ll.api.typs.FPType;
             return this.экзэмпл;
 		}
 
-        public override ткст имя() {return "float";}
+        public override ткст вТкст() {return "плав";}
         public override бцел примитивнРазмерВБитах() {return  32;}
         public override цел ширинаМантиссы() {return  24;}
     }

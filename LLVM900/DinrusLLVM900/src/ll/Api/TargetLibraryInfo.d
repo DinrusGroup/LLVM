@@ -1,19 +1,24 @@
 module ll.api.TargetLibraryInfo;
 
-    public class TargetLibraryInfo : IWrapper!(LLVMTargetLibraryInfoRef)
+import ll.c.Target;
+import ll.api.PassManager;
+
+    public class ИнфОБибЦели
     {
-       // LLVMTargetLibraryInfoRef IWrapper!(LLVMTargetLibraryInfoRef).ToHandleType(){ this.�������;
-		
+        private ЛЛИнфоЦелевойБиблиотеки экземпл;
 
-        private LLVMTargetLibraryInfoRef �������;
-
-		this(LLVMTargetLibraryInfoRef �������)
+		this(ЛЛИнфоЦелевойБиблиотеки экзэмпл)
         {
-            this.������� = �������;
+            this.экземпл = экзэмпл;
         }
-
-        public void AddTargetLibraryInfo(PassManager pm)
+		
+		public ЛЛИнфоЦелевойБиблиотеки раскрой()
 		{
-			LLVM.AddTargetLibraryInfo(this.�������(), pm.�������());
+		return this.экземпл;
+		}
+
+        public проц добавьИнфо(МенеджерПроходок pm)
+		{
+			ЛЛДобавьИнфОЦБиб(this.раскрой(), pm.раскрой());
 		}
     }

@@ -15,7 +15,7 @@ import ll.c.Types;
             this.экзэмпл = экзэмпл;
         }
 
-        public override ЛЛЗначение раскрой()
+        public ЛЛЗначение раскрой()
 		{
             return this.экзэмпл;
 		}
@@ -36,4 +36,3 @@ import ll.c.Types;
 			ЛЛДобавьКлоз(this.раскрой(), значКлоз.раскрой());
 		}
     }
-}

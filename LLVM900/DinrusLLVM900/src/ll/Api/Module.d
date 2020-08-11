@@ -5,15 +5,18 @@ import ll.api.Context, ll.api.Type, ll.api.Value;
 import ll.api.vals.consts.GlobalValues.GlobalObjects.GlobalVariable;
 import ll.api.vals.consts.GlobalValues.GlobalObjects.Function;
 import ll.api.vals.consts.GlobalValue;
+import ll.api.MemoryBuffer;
+import ll.api.PassManager, ll.api.ModuleProvider;
+import ll.c.BitWriter;
 
-    public  class Модуль 
+    public class Модуль 
     {
-
+        private ЛЛМодуль экземпл;
+		
         public this(ткст идМодуля)
 		{
 			this(ЛЛМодуль_СоздайСИменем(вТкст0(идМодуля)));
-         }
-
+        }
 
         public this(ткст идМодуля, Контекст контекст)
 		{ 
@@ -25,23 +28,29 @@ import ll.api.vals.consts.GlobalValue;
 			ЛЛКомпонуйМодули2(куда.раскрой(), исток.раскрой());
 		}
 
-		public ЛЛМодуль раскрой(){return this.экземпл;}
+		public ЛЛМодуль раскрой()
+		{
+			return this.экземпл;
+		}
 
-        private ЛЛМодуль экземпл;
-        private bool _disposed;
-        private bool _owner;
-
-        this(ЛЛМодуль m) { this.экземпл = m;}
-        ~this() { this.Dispose(false);}
+        this(ЛЛМодуль m) 
+		{ 
+			this.экземпл = m;
+		}
+		
+        ~this() 
+		{ 
+		ЛЛВыместиМодуль(this.раскрой());
+		}
 
         public ткст раскладкаДанных()
         {
-            return вТкст(ЛЛДайСтрРаскладкиДанных(this.раскрой()));           
+            return ll.common.вТкст(ЛЛДайСтрРаскладкиДанных(this.раскрой()));           
         }
 
         public проц раскладкаДанных( ткст ткт)
         {           
-             ЛЛУстРаскладкуДанных(this.раскрой(), вТкст0(ткт));}
+             ЛЛУстРаскладкуДанных(this.раскрой(), ll.common.вТкст0(ткт));
         }
 
         public Контекст контекст()
@@ -54,17 +63,20 @@ import ll.api.vals.consts.GlobalValue;
 			return LLVM.CloneModule(this.раскрой());
 		}
 +/
-        public проц дамп() { ЛЛДампМодуля(this.раскрой());}
+        public проц дамп()
+		{
+		ЛЛДампМодуля(this.раскрой());
+		}
 
-        public бул выведиВФайл(ткст имяф, out ук ошСооб) 
+        public бул выведиВФайл(ткст имяф, out ткст0 ошСооб) 
 		{ 
-			return ЛЛВыведиМодульВФайл(this.раскрой(), вТкст0(имяф), ошСооб);
+			return ЛЛВыведиМодульВФайл(this.раскрой(), ll.common.вТкст0(имяф), &ошСооб);
 		}
 
         public ткст выведиВТкст()
         {
             auto ptr = ЛЛВыведиМодульВСтроку(this.раскрой());
-            auto retVal = вТкст(ptr);
+            auto retVal = ll.common.вТкст(ptr);
             ЛЛВыместиСообщение(ptr);
             return retVal;
         }
@@ -76,29 +88,35 @@ import ll.api.vals.consts.GlobalValue;
         
         public ГлобПеременная дайИменГлоб(ткст имя)
 		{
-			return new ГлобПеременная(ЛЛДайИменованныйГлоб(this.раскрой(), вТкст0(имя)));
+			return new ГлобПеременная(ЛЛДайИменованныйГлоб(this.раскрой(), ll.common.вТкст0(имя)));
 		}
 
         public Тип дайТипПоИмени(ткст имя)
 		{ 
-			return new Тип(ЛЛДайТипПоИмени(this.раскрой(), вТкст0(имя)));
+			return new Тип(ЛЛДайТипПоИмени(this.раскрой(), ll.common.вТкст0(имя)));
 		}
 
         public бцел дайЧлоОперандовИМД(ткст имя)
 		{
-			return ЛЛДайЧлоОперандовИменованныхМетаданных(this.раскрой(), вТкст0(имя));
+			return ЛЛДайЧлоОперандовИменованныхМетаданных(this.раскрой(), ll.common.вТкст0(имя));
 		}
 
-        public Значение[] дайОперандыИМД(тксь имя)
+        public Значение[] дайОперандыИМД(ткст имя)
 		{ 
-			ЛЛЗначение приёмник;
-			ЛЛДайОперандыИменованныхМетаданных(this.раскрой(), вТкст0(имя), &приёмник);
-			return cast(Значение[]) приёмник;
+			ЛЛЗначение[] приёмник;
+			ЛЛДайОперандыИменованныхМетаданных(this.раскрой(), ll.common.вТкст0(имя), cast(ЛЛЗначение*) &приёмник);
+			Значение[] результат;
+			foreach(зн; приёмник)
+			{
+				результат ~= new Значение(зн);
+			}
+
+			return результат;
 	    }
 
         public проц добавьОперандИМД(ткст имя, Значение val)
 		{ 
-			ЛЛДобавьОперандИменованныхМетаданных(this.раскрой(), вТкст0(имя), val.раскрой());
+			ЛЛДобавьОперандИменованныхМетаданных(this.раскрой(), ll.common.вТкст0(имя), val.раскрой());
         }
 
 
@@ -109,7 +127,7 @@ import ll.api.vals.consts.GlobalValue;
 
         public Функция дайИменФункцию(ткст имя) 
 		{
-			return new Функция(ЛЛДайИменованФункц(this.раскрой(), имя));
+			return new Функция(ЛЛДайИменованФункц(this.раскрой(), вТкст0(имя)));
 		}
 
         public Функция первФункц() 
@@ -127,79 +145,79 @@ import ll.api.vals.consts.GlobalValue;
 			return new ГлобЗначение(ЛЛДобавьГлоб(this.раскрой(), тип.раскрой(), вТкст0(имя)));
 		}
 
-        public ГлобЗначение AddGlobalInAddressSpace(Type ty, string имя, uint адреснПрострво)
+        public ГлобЗначение добавьГлобВАдрПростр(Тип тип, ткст имя, бцел адреснПрострво)
 		{
-			return LLVM.AddGlobalInAddressSpace(this.раскрой(), ty.раскрой(), имя, адреснПрострво).WrapAs!(ГлобЗначение)();
+			return new ГлобЗначение(ЛЛДобавьГлобВАдрПрострво(this.раскрой(), тип.раскрой(), вТкст0(имя), адреснПрострво));
 		}
 
-        public ГлобЗначение GetNamedValue(string имя) 
+        public ГлобЗначение дайИменованЗнач(ткст имя) 
 		{ 
-			return LLVM.GetNamedGlobal(this.раскрой(), имя).WrapAs!(ГлобЗначение)();
+			return new ГлобЗначение(ЛЛДайИменованныйГлоб(this.раскрой(), вТкст0(имя)));
 		}
 
-        public ГлобЗначение GetFirstGlobal() 
+        public ГлобЗначение первГлоб() 
 		{ 
-			return LLVM.GetFirstGlobal(this.раскрой()).WrapAs!(ГлобЗначение)();
+			return new ГлобЗначение(ЛЛДайПервыйГлоб(this.раскрой()));
 		}
 
-        public ГлобЗначение GetLastGlobal() 
+        public ГлобЗначение последнГлоб() 
 		{
-			return LLVM.GetLastGlobal(this.раскрой()).WrapAs!(ГлобЗначение)();
+			return new ГлобЗначение(ЛЛДайПоследнийГлоб(this.раскрой()));
 		}
 
-        public ГлобЗначение AddAlias(Type ty, Значение aliasee, string имя)
+        public ГлобЗначение добавьНик(Тип тип, Значение aliasee, ткст имя)
 		{
-			return LLVM.AddAlias(this.раскрой(), ty.раскрой(), aliasee.раскрой(), имя).WrapAs!(ГлобЗначение)();
+			return new ГлобЗначение(ЛЛДобавьНик(this.раскрой(), тип.раскрой(), aliasee.раскрой(), вТкст0(имя)));
 		}
 
-        public uint GetMDKindID(string имя) 
+        public бцел дайИдТипаМД(ткст имя) 
 		{ 
-			return LLVM.GetMDKindIDInContext(this.Context.раскрой(), имя, (uint)имя.длина);
+			return ЛЛДайИДТипаМДВКонтексте(this.контекст.раскрой(), вТкст0(имя), cast(бцел)имя.length);
 		}
         
-        public ModuleProvider CreateModuleProviderForExistingModule() 
+        public МодульПровайдер создайМПДляМодуля() 
 		{ 
-			return LLVM.CreateModuleProviderForExistingModule(this.раскрой()).Wrap();
+			return new МодульПровайдер(ЛЛСоздайМодульПровайдерДляСущМодуля(this.раскрой()));
 		}
-        public PassManager CreateFunctionPassManagerForModule()
+        public МенеджерПроходок создайМПФДляМодуля()
 		{
-			return LLVM.CreateFunctionPassManagerForModule(this.раскрой()).Wrap();
+			return new МенеджерПроходок(ЛЛСоздайМенеджерФукнцПроходокДляМодуля(this.раскрой()));
 		}
-
+/+
         public void Verify()
         {
-            if(!this.TryVerify(out string message))
+            if(!this.TryVerify(out ткст message))
             {
                 throw new InvalidOperationException(message);
             }
         }
-        public bool TryVerify(out string message)
+        public bool TryVerify(out ткст message)
         {
             auto success = !LLVM.VerifyModule(this.раскрой(), LLVMVerifierFailureAction.LLVMPrintMessageAction, out ук messagePtr);
             message = Marshal.PtrToStringAnsi(messagePtr);
             return success;
         }
-
-        public int WriteBitcodeToFile(string path)
++/
+        public цел пишиВФайл(ткст путь)
 		{
-			return LLVM.WriteBitcodeToFile(this.раскрой(), path);
+			return ЛЛПишиБиткодВФайл(this.раскрой(), вТкст0(путь));
 		}
 
-        public int WriteBitcodeToFD(int fd, int shouldClose, int unbuffered)
+        public цел пишиВФД(цел fd, бул закрыть_ли, бул небуферировать_ли)
 		{
-			return LLVM.WriteBitcodeToFD(this.раскрой(), fd, shouldClose, unbuffered);
+			return ЛЛПишиБиткодВФД(this.раскрой(), fd, закрыть_ли, небуферировать_ли);
 		}
 
-        public int WriteBitcodeToFileHandle(int handle)
+        public цел пишиВФук(цел handle)
 		{
-			return LLVM.WriteBitcodeToFileHandle(this.раскрой(), handle);
+			return ЛЛПишиБиткодВФайлУк(this.раскрой(), handle);
 		}
 
-        public MemoryBuffer WriteBitcodeToMemoryBuffer() 
+        public БуфПам пишиВБуфПам() 
 		{
-			return LLVM.WriteBitcodeToMemoryBuffer(this.раскрой()).Wrap();
+			return new БуфПам(ЛЛПишиБиткодВБуфПамяти(this.раскрой()));
 		}
-
+/+
         public bool Equals(Модуль other)
 		{
 			return ReferenceEquals(other, null) ? false : this.экземпл == other.экземпл;
@@ -220,35 +238,15 @@ import ll.api.vals.consts.GlobalValue;
 			return !(op1 == op2);
 		}
 
-        public override int GetHashCode() 
+        public override цел GetHashCode() 
 		{ 
 			return this.экземпл.GetHashCode();
 		}
 
-        public void Dispose()
+        public ткст цель()
         {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
+           // get { Marshal.PtrToStringAnsi(LLVM.GetTargetAsPtr(this.раскрой()));}
+            //set { LLVM.SetTarget(this.раскрой(), значение);}
         }
-
-        private void Dispose(bool disposing)
-        {
-            if (this._disposed)
-            {
-                return;
-            }
-
-            if (this._owner)
-            {
-                LLVM.DisposeModule(this.раскрой());
-            }
-
-            this._disposed = true;
-        }
-
-        public string Target()
-        {
-            get { Marshal.PtrToStringAnsi(LLVM.GetTargetAsPtr(this.раскрой()));}
-            set { LLVM.SetTarget(this.раскрой(), значение);}
-        }
+		+/
     }

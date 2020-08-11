@@ -1,4 +1,4 @@
-module ll.c.api.TargetInitializers.MipsTargetInitializer;
+module ll.c.api.TargetInitializers.MSP430TargetInitializer;
 
 import ll.c.api.TargetInitializers.TargetInitializer;
 

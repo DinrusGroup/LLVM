@@ -12,18 +12,26 @@ import ll.c.Core;
 import ll.c.Types;
 import ll.common;
 
-    public class ТипМассив : SequentialType, IAggregateType
-    {
-        public static ТипМассив дай(Тип типЭлта, бцел длина)
-		{ 
-			new ТипМассив(ЛЛТипМассив(типЭлта.раскрой(), длина));
-		}
+//alias ll.api.typs.FloatType.ТипПлав ТипПлав;
+//alias ll.api.typs.DoubleType.ТипДво ТипДво;
+alias ll.api.typs.VoidType.ТипПроц ТипПроц;
+//alias ll.api.typs.Composite.StructType.ТипСтрукт ТипСтрукт;
+//alias ll.api.typs.Composite.SequentialTypes.PointerType.ТипУказатель ТипУказатель;
+alias ll.api.typs.FunctionType.ТипФункция ТипФункция;
+//alias ll.api.typs.Composite.SequentialTypes.ArrayType.ТипМассив ТипМассив;
 
+    public class ТипМассив : ТипПоследовательность, ИТипАгрегат
+    {
+        public this(Тип типЭлта, бцел длина)
+		{ 
+			this(ЛЛТипМассив(типЭлта.раскрой(), длина));
+		}
+/+
         public static бул валиденТипЭлта_ли(Тип тип)
 		{
-			!(тип is VoidType) && !(тип is LabelType) && !(тип is MetadataType) && !(тип is FunctionType) && !(тип is TokenType);
+		return	!(тип is ТипПроц) && !(тип is ТипЯрлык) && !(тип is ТипМетаданные) && !(тип is ТипФункция) && !(тип is ТипСема);
 		}
-
++/
 			this(ЛЛТип типРеф)
 			{
             super(типРеф);
@@ -33,9 +41,9 @@ import ll.common;
 		{ 
 			return ЛЛДайДлинуМассива(this.раскрой());
 		}
-        public override ткст имя()
+        public override ткст вТкст()
 		{ 
-			return фм("{}[{}]",типЭлемента.имя, длина);
+			return фм("{}[{}]",типЭлемента.вТкст(), длина);
 		}
         public override бул пуст_ли()
 		{

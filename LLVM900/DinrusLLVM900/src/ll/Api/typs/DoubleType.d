@@ -18,7 +18,7 @@ import ll.c.Types, ll.api.typs.FPType;
             return this.экзэмпл;
 		}
 
-        public override ткст имя() {return "дво";}
+        public override ткст вТкст() {return "дво";}
         public override бцел примитивнРазмерВБитах() {return  64;}
         public override бцел ширинаМантиссы() {return  53;}
     }

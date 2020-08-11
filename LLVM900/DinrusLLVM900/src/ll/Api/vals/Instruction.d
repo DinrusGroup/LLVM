@@ -44,12 +44,14 @@ import ll.api.vals.instructions.terminator.ResumeInst;
 import ll.api.vals.instructions.LandingPadInst;
 import ll.api.vals.BasicBlock;
 
+alias Инструкция[] Инструкции;
+
 class Инструкция : Значение
 {
 
     private ЛЛЗначение экзэмпл;
 
-        static Инструкция создай()
+        Инструкция создай()
         {
             if (this.экзэмпл == null)
             {
@@ -148,8 +150,8 @@ class Инструкция : Значение
                 default:
                     //this(экзэмпл);
             }
-            }
-        }
+		}
+        
 
         this(ЛЛЗначение экзэмпл)
 		{
@@ -206,4 +208,3 @@ class Инструкция : Значение
 			return ЛЛДайОпкодИнстр(this.раскрой());
 		}
     }
-}

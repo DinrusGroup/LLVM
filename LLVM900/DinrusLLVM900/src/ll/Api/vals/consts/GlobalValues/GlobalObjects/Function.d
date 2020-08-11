@@ -13,6 +13,9 @@ module ll.api.vals.consts.GlobalValues.GlobalObjects.Function;
 
     import ll.common;
 
+
+alias  ll.api.typs.FunctionType.ТипФункция ТипФункция;
+
     public  class Функция : ГлобОбъект
     {
         public this(ТипФункция тип, ЛЛКомпоновка линкаж, ткст имя, Модуль модуль)
@@ -47,7 +50,7 @@ module ll.api.vals.consts.GlobalValues.GlobalObjects.Function;
 
         public Значение АдресБлока(БазБлок bb)
 		{ 
-			return ЛЛАдрБлока(this.раскрой(), bb.раскрой());
+			return new Значение(ЛЛАдрБлока(this.раскрой(), bb.раскрой()));
 		}
 
         public бцел интринсикИд()
@@ -57,7 +60,7 @@ module ll.api.vals.consts.GlobalValues.GlobalObjects.Function;
 
         public ткст дайСМ()
         {
-            return вТкст(ЛЛДайСМ(this.раскрой()));
+            return ll.common.вТкст(ЛЛДайСМ(this.раскрой()));
         }
 
         public проц устСМ(ткст имя)
@@ -90,19 +93,19 @@ module ll.api.vals.consts.GlobalValues.GlobalObjects.Function;
 			return new ТипФункция( ЛЛДайТипВозврата(this.тип.раскрой()));
 		}
 +/
-        public bool варАрг_ли()
+        public бул варАрг_ли()
 		{
-			return ЛЛВараргФункц_ли(this.Type.раскрой());
+			return ЛЛВараргФункц_ли(this.тип.раскрой());
 		}
 
         public БазБлок вводный()
 		{ 
-			return ЛЛДайВводнБазБлок(this.раскрой());
+			return new БазБлок(ЛЛДайВводнБазБлок(this.раскрой()));
 		}
 
         public БазБлок приставь(ткст имя) 
 		{
-			return ЛЛПриставьБазБлок(this.раскрой(), имя);
+			return new БазБлок(ЛЛПриставьБазБлок(this.раскрой(),  вТкст0(имя)));
 		}
 
         public БазБлок приставь(ткст имя, Контекст контекст)
@@ -112,12 +115,12 @@ module ll.api.vals.consts.GlobalValues.GlobalObjects.Function;
 
         public Функция следщ()
 		{
-			return ЛЛДайСледщФункц(this.раскрой());
+			return new Функция(ЛЛДайСледщФункц(this.раскрой()));
 		}
 
         public Функция предш ()
 		{
-			return ЛЛДайПредшФункц(this.раскрой());
+			return new Функция(ЛЛДайПредшФункц(this.раскрой()));
 		}
 /+
         public void Verify()
@@ -146,4 +149,3 @@ module ll.api.vals.consts.GlobalValues.GlobalObjects.Function;
 			return ЛЛУдалиФункц(this.раскрой());
 		}
     }
-}

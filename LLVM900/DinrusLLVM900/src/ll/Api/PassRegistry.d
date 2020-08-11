@@ -1,78 +1,91 @@
 module ll.api.PassRegistry;
 
-    public class PassRegistry : IWrapper!(LLVMPassRegistryRef)
+import ll.c.Initialization;
+import ll.c.Types;
+import ll.c.Core;
+
+    public class РеестрПроходок
     {
-       // LLVMPassRegistryRef IWrapper!(LLVMPassRegistryRef).ToHandleType { this.�������;
-
-        public static PassRegistry Global()
+        public this()
 		{
-			return LLVM.GetGlobalPassRegistry().Wrap();
+			this(ЛЛДайГлобРеестрПроходок());
 		}
 
-        private LLVMPassRegistryRef �������;
+        private ЛЛРеестрПроходок экземпл;
 
-        package PassRegistry(LLVMPassRegistryRef �������)
+        this(ЛЛРеестрПроходок экзэмпл)
         {
-            this.������� = �������;
+            this.экземпл = экзэмпл;
         }
-
-        public void InitializeCore() 
+		
+		public ЛЛРеестрПроходок раскрой()
 		{
-			LLVM.InitializeCore(this.�������());
+		return this.экземпл;
 		}
 
-        public void InitializeTransformUtils()
+        public проц иницЯдро() 
 		{
-			LLVM.InitializeTransformUtils(this.�������());
+			ll.c.Core.ЛЛИницЯдро(this.раскрой());
 		}
 
-        public void InitializeScalarOpts()
+        public проц иницТрансформУтилз()
 		{
-			LLVM.InitializeScalarOpts(this.�������());
+			ЛЛИницТрансформУтил(this.раскрой());
 		}
 
-        public void InitializeObjCARCOpts()
-		{ 
-			LLVM.InitializeObjCARCOpts(this.�������());
-		}
-
-        public void InitializeVectorization()
-		{ 
-			LLVM.InitializeVectorization(this.�������());
-		}
-
-        public void InitializeInstCombine() 
+        public проц иницСкалярОпц()
 		{
-			LLVM.InitializeInstCombine(this.�������());
+			ЛЛИницСкалярОпц(this.раскрой());
 		}
 
-        public void InitializeIPO()
+        public проц иницОбджСиАРЦ()
 		{ 
-			LLVM.InitializeIPO(this.�������());
+			ЛЛИницОпцОбджСиАРЦ(this.раскрой());
 		}
 
-        public void InitializeInstrumentation()
+        public проц иницВекторизацию()
 		{ 
-			LLVM.InitializeInstrumentation(this.�������());
+			ЛЛИницВекторизацию(this.раскрой());
 		}
 
-        public void InitializeAnalysis()
-		{ 
-			LLVM.InitializeAnalysis(this.�������());
-		}
-
-        public void InitializeIPA() 
+        public проц иницИнистКомб() 
 		{
-			LLVM.InitializeIPA(this.�������());
+			ЛЛИНицИнстКомбин(this.раскрой());
 		}
-
-        public void InitializeCodeGen() 
+		
+		public проц иницАгрессивнИнстКомб() 
 		{
-			LLVM.InitializeCodeGen(this.�������());
+			ЛЛИницАгрессивнИнстКомбайнер(this.раскрой());
+		}
+		
+
+        public проц иницМПО()
+		{ 
+			ЛЛИницМПО(this.раскрой());
 		}
 
-        public void InitializeTarget() 
+        public проц иницИнстр()
 		{ 
-			LLVM.InitializeTarget(this.�������());
+			ЛЛИницИнструментацию(this.раскрой());
+		}
+
+        public проц иницАнализ()
+		{ 
+			ЛЛИницАнализ(this.раскрой());
+		}
+
+        public проц иницМПА() 
+		{
+			ЛЛИницМПА(this.раскрой());
+		}
+
+        public проц иницКодген() 
+		{
+			ЛЛИницКодГен(this.раскрой());
+		}
+
+        public проц иницЦель() 
+		{ 
+			ЛЛИницЦель(this.раскрой());
 		}
     }

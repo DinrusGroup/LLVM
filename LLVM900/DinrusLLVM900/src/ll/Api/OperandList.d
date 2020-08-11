@@ -22,20 +22,11 @@ import ll.c.Types, ll.c.Core;
             return new Значение(ЛЛДайОперанд(this.значение.раскрой(), индекс));
         }
 
-        public проц устОперанд(Значение зн)
+        public проц устОперанд(Значение зн, бцел индекс )
 		{
             ЛЛУстОперанд(this.значение.раскрой(), индекс, зн.раскрой());
 
 		}
-/+
-        public IEnumerator!(Значение) GetEnumerator()
-        {
-            for(auto i = 0u; i < this.счёт; i++)
-            {
-                yield return this[i];
-            }
-        }
 
-+/
     }
 

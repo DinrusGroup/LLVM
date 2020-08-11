@@ -19,7 +19,7 @@ import ll.api.vals.Constant;
 
 		public override ЛЛЗначение раскрой()
 		{
-            return this.экзэмпл;
+            return this.экземпл;
 		}
 
         public бцел раскладка()
@@ -64,7 +64,7 @@ import ll.api.vals.Constant;
 
         public ткст секция()
         {
-            return вТкст(ЛЛДайСекцию(this.раскрой()));
+            return ll.common.вТкст(ЛЛДайСекцию(this.раскрой()));
         }
 
 		public проц секция(ткст ткт)

@@ -18,8 +18,8 @@ extern (C){
 
 
 /**
- * Сам function permanently loads the dynamic library эт the given путь.
- * It is сейф to вызов this function multiple times for the same library.
+ * Эта функция перманентно загружает динамическую библиотеку по заданному пути.
+ * Многократный вызов этой функции с указанием одной и той же библиотеки безопасен.
  *
  * @see sys::DynamicLibrary::LoadLibraryPermanently()
   */
@@ -34,24 +34,24 @@ extern (C){
  * @see llvm::cl::ParseCommandLineOptions()
  */
 проц ЛЛРазбериОпцКомСтроки(цел argc, ткст0 *argv,
-                                 ткст0 Overview);
+                                 ткст0 обзор);
 
 /**
- * Сам function will ищи through все previously loaded dynamic
- * libraries for the symbol \п symbolName. If it is found, the адрес of
- * that symbol is returned. If не, пусто is returned.
+ * Эта функция находит по всем ранее загруженным динамическим
+ * библиотекам символ \p имяСимвола. Если он найден, возвращается
+ * его адрес. Если нет, то возвращается пусто.
  *
  * @see sys::DynamicLibrary::SearchForAddressOfSymbol()
  */
-ук ЛЛНайдиАдресСимвола(ткст0 symbolName);
+ук ЛЛНайдиАдресСимвола(ткст0 имяСимвола);
 
 /**
- * Сам functions permanently adds the symbol \п symbolName with the
- * знач \п symbolValue.  These symbols are searched before any
- * libraries.
+ * Эта функция перманентно добавляет символ \p имяСимвола со
+ * значением \p значСимвола.  Поиск этих символов осуществляется
+ * до поиска каких бы то ни было библиотек.
  *
  * @see sys::DynamicLibrary::AddSymbol()
  */
-проц ЛЛДобавьСимвол(ткст0 symbolName, ук symbolValue);
+проц ЛЛДобавьСимвол(ткст0 имяСимвола, ук значСимвола);
 
 }

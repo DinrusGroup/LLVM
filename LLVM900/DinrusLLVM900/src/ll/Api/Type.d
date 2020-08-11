@@ -18,9 +18,19 @@ import ll.api.typs.FPType;
 import ll.api.typs.PPCFP128Type;
 import ll.api.typs.FP128Type;
 import ll.api.Context;
+import ll.common;
 
-    public abstract class Тип: Контекст
+alias ll.api.typs.FloatType.ТипПлав ТипПлав;
+alias ll.api.typs.DoubleType.ТипДво ТипДво;
+alias ll.api.typs.VoidType.ТипПроц ТипПроц;
+alias ll.api.typs.Composite.StructType.ТипСтрукт ТипСтрукт;
+alias ll.api.typs.Composite.SequentialTypes.PointerType.ТипУказатель ТипУказатель;
+alias ll.api.typs.FunctionType.ТипФункция ТипФункция;
+alias ll.api.typs.Composite.SequentialTypes.ArrayType.ТипМассив ТипМассив;
+
+    public class Тип//: Контекст
     {     
+		 this(ЛЛТип типРеф) { this.экземпл = типРеф;}
 
         package static Тип создай(ЛЛТип t)
         {
@@ -83,12 +93,12 @@ import ll.api.Context;
             }
         }
 
-        public static ТипПроц проц()
+        public static ТипПроц проц_()
 		{
 			return ГлобКонтекст.типПроц();
 		}
 
-        public static ТипЦелое цел1 ()
+        public static ТипЦелое цел1()
 		{
 			return ГлобКонтекст.типЦел1();
 		}
@@ -108,7 +118,7 @@ import ll.api.Context;
 		{
 			return ГлобКонтекст.типЦел64();
 		}
-        public static ТипЦелое цел(бцел длинаБит)
+        public static ТипЦелое цел_(бцел длинаБит)
 		{
 			return ГлобКонтекст.типЦел(длинаБит);
 		}
@@ -117,11 +127,11 @@ import ll.api.Context;
 		{
 			return ГлобКонтекст.полутип();
 		}
-        public static ТипПлав плав()
+        public static ТипПлав плав_()
 		{ 
 			return ГлобКонтекст.типПлав();
 		}
-        public static ТипДво дво()
+        public static ТипДво дво_()
 		{ 
 			return ГлобКонтекст.типДво();
 		}
@@ -131,7 +141,7 @@ import ll.api.Context;
 		}
         public static ТипПЗ128 пз128 ()
 		{
-			return ГлобКонтекст.FP128Type;
+			return ГлобКонтекст.типПЗ128;
 		}
         public static ТипППЦПЗ128 пПЦПЗ128()
 		{
@@ -140,16 +150,14 @@ import ll.api.Context;
 
         private ЛЛТип экземпл;
 
-        this(ЛЛТип типРеф) { this.экземпл = типРеф;}
-
-		public ЛЛТип раскрой()
+       	public ЛЛТип раскрой()
 		{
 			return this.экземпл;
 		}
         
-        public ткст выведи() 
+        public override ткст вТкст() 
 		{
-			return вТкст(ЛЛВыведиТипВСтроку(this.раскрой()));
+			return ll.common.вТкст(ЛЛВыведиТипВСтроку(this.раскрой()));
 		}
 
         public проц дамп()
@@ -161,7 +169,7 @@ import ll.api.Context;
 		{
 			return new Контекст(ЛЛДайКонтекстТипа(this.раскрой()));
 		}
-
+		/+
         public бул пз_ли()
 		{ 
 			return this is ТипПЗ;
@@ -171,17 +179,17 @@ import ll.api.Context;
 		{ 
 			return this is ТипЦелое;
 		}
-		/+
+
         public бул IsIntegerTypeOfWidth(бцел битШирина)
 		{ 
 			return this is ТипЦелое t && t.битШирина == битШирина;
 		}
-+/
+
         public бул векторИлиТипИз(TType)
 		{ 
 			return this.типСкаляр is cast(Тип) TType;
 		}
-
++/
         public /*virtual*/ бул пуст_ли()		{ return false;}
 
         public /*virtual*/ бул типПервКласса_ли()		{ return true;}
@@ -201,12 +209,12 @@ import ll.api.Context;
 		{
 			return  this.типСкаляр.примитивнРазмерВБитах;
 		}
-
+/+
         public бул целИлиЦелВектор()
 		{
 			return  this.типСкаляр is ТипЦелое;
 		}
-/+
+
         public бул целИлиЦелВектор(бцел битШирина)
 		{
 			return (this.типСкаляр is ТипЦелое t && t.битШирина == битШирина);
@@ -224,21 +232,21 @@ import ll.api.Context;
 			return  new ТипУказатель(this, адреснПрострво);
 		}
 
-        public /*virtual*/ бул можетИметьКонстанты() {return  true;}
+        public /*virtual*/ бул можетИметьКонстанты() {return  да;}
 
-        public /*virtual*/ бул можетИметьВекторы() {return  true;}
+        public /*virtual*/ бул можетИметьВекторы() {return  да;}
 
-        public /*virtual*/ bool можетИметьМассивы() {return  true;}
-
-        protected package /*virtual*/ ткст дайСообОБезразмерномТипе()
+        public /*virtual*/ бул можетИметьМассивы() {return  да;}
+/+
+        protected /*virtual*/ ткст дайСообОБезразмерномТипе()
 		{
 		//	return  $"The тип {this.имя} does not have a size or alignment.";
 		}
 
-        protected package /*virtual*/ ткст дайСообОбОграниченномТипе() { return ткст.init;}
+        protected /*virtual*/ ткст дайСообОбОграниченномТипе() { return ткст.init;}
 
       //  public /*virtual*/ ткст имя() {return  this.дайТип().имя;}
-/+
+
         public override string ToString()
 		{
 			return  !string.IsNullOrEmpty(this.имя) ? this.имя super.ToString();

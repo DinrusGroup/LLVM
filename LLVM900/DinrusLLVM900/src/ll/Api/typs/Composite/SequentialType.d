@@ -5,7 +5,7 @@ import ll.c.Core;
 import ll.c.Types;
 import ll.api.typs.Composite.CompositeType;
 
-    public abstract class SequentialType : ТипКомпозит
+    public abstract class ТипПоследовательность : ТипКомпозит
     {
 		private ЛЛТип экзэмпл;
 

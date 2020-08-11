@@ -1,92 +1,68 @@
 module ll.api.MCJITMemoryManager;
 
-/*
-    import AllocCodeSectionCallback = global::System.Func<global::System.��, global::System.��, uint, uint, string, global::System.��>;
-    import AllocDataSectionCallback = global::System.Func<global::System.��, global::System.��, uint, uint, string, bool, global::System.��>;
-    import FinalizeMemoryCallback = global::System.Func<global::System.��, global::System.Tuple<int, global::System.��>>;
+import ll.c.ExecutionEngine;
+
+/***
+
+extern(C)
+{
+    //LLVMMemoryManagerAllocateCodeSectionCallback
+    alias ббайт* function( ук опак, uintptr_t разм, бцел расклад, бцел идСекц, ткст0 имяСекц) ЛЛОбрвызМенеджерПамРазместиСекциюКода;
+
+    //LLVMMemoryManagerAllocateDataSectionCallback
+    alias ббайт* function( ук опак, uintptr_t разм, бцел расклад, бцел идСекц, ткст0 имяСекц, ЛЛБул толькоЧтен_ли)
+	ЛЛОбрвызМенеджерПамРазместиСекциюДанных;
+
+    //LLVMMemoryManagerFinalizeMemoryCallback
+    alias ЛЛБул function(ук опак, ткст0* ошСооб)
+	ЛЛОбрвызМенеджерПамФинализуйПам;
+
+    //LLVMMemoryManagerDestroyCallback
+    alias проц function(ук опак)
+	ЛЛОбрвызМенеджерПамРазрушь;
+}
+
 */
-    public class MCJITMemoryManager : IDisposableWrapper!(LLVMMCJITMemoryManagerRef), IDisposable
+alias ЛЛОбрвызМенеджерПамРазместиСекциюКода РазместительСекцииКода;
+alias ЛЛОбрвызМенеджерПамРазместиСекциюДанных РазместительСекцииДанных;
+alias ЛЛОбрвызМенеджерПамФинализуйПам ФинализаторПамяти;
+alias ЛЛОбрвызМенеджерПамРазрушь ДеструкторПамяти;
+
+    public class МенеджерПамятиМЦДжИТ
     {
-        this() 
+        public this( Объект клиентОбъ,  РазместительСекцииКода рск, РазместительСекцииДанных рсд, ФинализаторПамяти фп, ДеструкторПамяти дп)
+        {
+			
+            this(ЛЛСоздайПростойМенеджерПамМЦДжИТ(cast(ук) клиентОбъ, рск, рсд, фп, дп));
+			
+            this._рск = рск;
+            this._рсд = рсд;
+            this._фп = фп;
+            this._дп = дп;
+           
+        }
+
+        private РазместительСекцииКода _рск;
+        private РазместительСекцииДанных _рсд;
+        private ФинализаторПамяти _фп;
+        private ДеструкторПамяти _дп;
+		
+		private ЛЛМенеджерПамятиМЦДжИТ экземпл;
+	
+        this(ЛЛМенеджерПамятиМЦДжИТ экземпл) 
 		{
-			this.������� = IWrapper!(LLVMMCJITMemoryManagerRef).ToHandleType();
+			this.экземпл = экземпл;
 		}
-
-        void IDisposableWrapper!(LLVMMCJITMemoryManagerRef).MakeHandleOwner()
+		
+		public ЛЛМенеджерПамятиМЦДжИТ раскрой()
 		{
-			this._owner = true;
+		return this.экземпл;
 		}
-
-        private class MemoryManagerFinalizeMemoryClosure
-        {
-            private FinalizeMemoryCallback _callback;
-
-            public MemoryManagerFinalizeMemoryClosure(FinalizeMemoryCallback callback)
-            {
-                this._callback = callback;
-            }
-
-            public int Invoke(�� opaque, out �� errMsg)
-            {
-                auto r = _callback(opaque);
-                errMsg = r.Item2;
-                return r.Item1;
-            }
-        }
-
-        public static MCJITMemoryManager ������(�� opaque, AllocCodeSectionCallback allocateCodeSection, AllocDataSectionCallback allocateDataSection, FinalizeMemoryCallback finalizeMemory, Action!(��) destroy)
-        {
-            auto allocCodeSectionCallback = new LLVMMemoryManagerAllocateCodeSectionCallback(allocateCodeSection);
-            auto allocDataSectionCallback = new LLVMMemoryManagerAllocateDataSectionCallback((a, b, c, d, e, f) { allocateDataSection(a, b, c, d, e, f));
-            auto finalizeMemoryCallback = new LLVMMemoryManagerFinalizeMemoryCallback(new MemoryManagerFinalizeMemoryClosure(finalizeMemory).Invoke);
-            auto destroyCallback = new LLVMMemoryManagerDestroyCallback(destroy);
-            auto memoryManager = LLVM.CreateSimpleMCJITMemoryManager(opaque, allocCodeSectionCallback, allocDataSectionCallback, finalizeMemoryCallback, destroyCallback)
-                                    .Wrap()
-                                    .MakeHandleOwner!(MCJITMemoryManager, LLVMMCJITMemoryManagerRef)();
-            memoryManager._allocCodeSectionCallback = allocCodeSectionCallback;
-            memoryManager._allocDataSectionCallback = allocDataSectionCallback;
-            memoryManager._finalizeMemoryCallback = finalizeMemoryCallback;
-            memoryManager._destroyCallback = destroyCallback;
-            return memoryManager;
-        }
-
-        private LLVMMCJITMemoryManagerRef �������;
-        private bool _disposed;
-        private bool _owner;
-        private LLVMMemoryManagerAllocateCodeSectionCallback _allocCodeSectionCallback;
-        private LLVMMemoryManagerAllocateDataSectionCallback _allocDataSectionCallback;
-        private LLVMMemoryManagerFinalizeMemoryCallback _finalizeMemoryCallback;
-        private LLVMMemoryManagerDestroyCallback _destroyCallback;
-
-        this(LLVMMCJITMemoryManagerRef �������)
-        {
-            this.������� = �������;
-        }
 
         ~this()
         {
-            this.Dispose(false);
+            ЛЛВыместиМенеджерПамМЦДжИТ(this.раскрой());
         }
 
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        private void Dispose(bool disposing)
-        {
-            if (this._disposed)
-            {
-                return;
-            }
-
-            if (this._owner)
-            {
-                LLVM.DisposeMCJITMemoryManager(this.�������());
-            }
-
-            this._disposed = true;
-        }
     }
 

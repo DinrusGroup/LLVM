@@ -21,11 +21,11 @@ struct LLVMOpaqueExecutionEngine{}
 struct LLVMOpaqueMCJITMemoryManager{}
 alias LLVMOpaqueGenericValue *ЛЛГенерноеЗначение;
 alias LLVMOpaqueExecutionEngine *ЛЛДвижокВыполнения;
-alias LLVMOpaqueMCJITMemoryManager *ЛЛМенеджерПамятиМЦДжИТ;
+alias LLVMOpaqueMCJITMemoryManager *ЛЛМенеджерПамятиМЦДжИТ, LLVMMCJITMemoryManagerRef;
 
 struct ЛЛОпцииКомпиляцииМЦДжИТ {
   бцел урОпц;
-  LLVMCodeModel CodeModel;
+  ЛЛМодельКода модельКода;
   ЛЛБул NoFramePointerElim;
   ЛЛБул EnableFastISel;
   ЛЛМенеджерПамятиМЦДжИТ MCJMM;
@@ -126,9 +126,9 @@ struct ЛЛОпцииКомпиляцииМЦДжИТ {
     alias проц function(ук опак) ЛЛОбрвызМенеджерПамРазрушь;
 
 /**
- * создай a simple custom MCJIT memory manager. Сам memory manager can
- * intercept allocations in a module-oblivious way. Сам will return NULL
- * if any of the passed functions are NULL.
+ * Создаёт простой кастомный менеджер памяти MCJIT. Этот менеджер памяти может
+ * перенимать аллокации, без какой-либо информации о модуле. Вернёт NULL,
+ * если какие-либо переданные функции равны NULL.
  *
  * @param Opaque An opaque client объект to pass back to the callbacks.
  * @param AllocateCodeSection Allocate a блок of memory for executable код.

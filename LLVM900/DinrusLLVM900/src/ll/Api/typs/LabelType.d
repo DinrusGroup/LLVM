@@ -31,7 +31,7 @@ import ll.api.Context;
             return this.экзэмпл;
 		}
 
-        public override ткст имя()
+        public override ткст вТкст()
 		{ 
 			return "ярлык";
 		}

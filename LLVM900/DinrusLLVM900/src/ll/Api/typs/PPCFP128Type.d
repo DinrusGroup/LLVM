@@ -19,7 +19,7 @@ import ll.c.Types;
             return this.экзэмпл;
 		}
 
-        public override ткст имя()
+        public override ткст вТкст()
 		{
 			return "ппц_пз128";
 		}

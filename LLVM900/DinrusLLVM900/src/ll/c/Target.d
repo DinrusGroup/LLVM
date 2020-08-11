@@ -14,7 +14,7 @@ extern (C){
  * @{
  */
 
-enum ЛЛППорядокБайт { LLVMBigEndian, LLVMLittleEndian };
+enum ЛЛППорядокБайт { БигЭндиан, ЛитлЭндиан };
 
 struct LLVMOpaqueTargetData;
 struct LLVMOpaqueTargetLibraryInfotData;
@@ -92,54 +92,45 @@ alias LLVMOpaqueTargetLibraryInfotData *ЛЛИнфоЦелевойБиблиот
  void LLInitializeXCoreAsmPrinter() ;
  void LLInitializeXCoreDisassembler();
 
-/** LLVMInitializeAllTargetInfos - The main program should вызов this function if
-    it wants access to все доступно targets that LLVM is configured to
-    support. */
+/** LLVMInitializeAllTargetInfos - Главная программа должна вызывать эту функцию, если нужен доступ ко всем доступным целям, которые LLVM сконфигурирована
+    поддерживать. */
 проц ЛЛНициализуйВсеИнфОЦели();
 
-/** LLVMInitializeAllTargets - The main program should вызов this function if it
-    wants to link in все доступно targets that LLVM is configured to
-    support. */
+/** LLVMInitializeAllTargets - Главная программа должна вызывать эту функцию, если нужна компоновка во все доступные цели, которые LLVM сконфигурирована
+    поддерживать. */
 проц ЛЛНициализуйВсеЦели();
 
-/** LLVMInitializeAllTargetMCs - The main program should вызов this function if
-    it wants access to все доступно цель MC that LLVM is configured to
+/** LLVMInitializeAllTargetMCs - Главная программа должна вызывать эту функцию, если нужно access to все доступно цель MC that LLVM is configured to
     support. */
 проц ЛЛНициализуйВсеЦелевыеМК();
 
-/** LLVMInitializeAllAsmPrinters - The main program should вызов this function if
-    it wants все asm printers that LLVM is configured to support, to make them
+/** LLVMInitializeAllAsmPrinters - Главная программа должна вызывать эту функцию, если нужно все asm printers that LLVM is configured to support, to make them
     доступно via the TargetRegistry. */
 проц ЛЛНициализуйВсеАсмПринтеры() ;
 
-/** LLVMInitializeAllAsmParsers - The main program should вызов this function if
-    it wants все asm parsers that LLVM is configured to support, to make them
+/** LLVMInitializeAllAsmParsers - Главная программа должна вызывать эту функцию, если нужно все asm parsers that LLVM is configured to support, to make them
     доступно via the TargetRegistry. */
 проц ЛЛНициализуйВсеАсмПарсеры() ;
 
-/** LLVMInitializeAllDisassemblers - The main program should вызов this function
+/** LLVMInitializeAllDisassemblers - Главная программа должна вызывать эту функцию,
     if it wants все disassemblers that LLVM is configured to support, to make
     them доступно via the TargetRegistry. */
 проц ЛЛНициализуйВсеДизассемблеры() ;
 
-/** LLVMInitializeNativeTarget - The main program should вызов this function to
-    иниц the native цель corresponding to the host.  Сам is useful
+/** LLVMInitializeNativeTarget - Главная программа должна вызывать эту функцию для инициализации the native цель corresponding to the host.  Сам is useful
     for JIT applications to ensure that the цель gets linked in correctly. */
 ЛЛБул ЛЛИнициализуйНативныйТаргет();
 
-/** LLVMInitializeNativeTargetAsmParser - The main program should вызов this
-    function to иниц the parser for the native цель corresponding to the
+/** LLVMInitializeNativeTargetAsmParser - Главная программа должна вызывать эту функцию для инициализации the parser for the native цель corresponding to the
     host. */
 ЛЛБул ЛЛИнициализуйНативныйАсмПарсер();
 
 
-/** LLVMInitializeNativeTargetAsmPrinter - The main program should вызов this
-    function to иниц the printer for the native цель corresponding to
+/** LLVMInitializeNativeTargetAsmPrinter - Главная программа должна вызывать эту функцию для инициализации the printer for the native цель corresponding to
     the host. */
 ЛЛБул ЛЛИнициализуйНативныйАсмПринтер() ;
 
-/** LLVMInitializeNativeTargetDisassembler - The main program should вызов this
-    function to иниц the disassembler for the native цель corresponding
+/** LLVMInitializeNativeTargetDisassembler - Главная программа должна вызывать эту функцию для инициализации the disassembler for the native цель corresponding
     to the host. */
 ЛЛБул ЛЛИнициализуйНативныйДизассемблер();
 
@@ -186,7 +177,7 @@ alias LLVMOpaqueTargetLibraryInfotData *ЛЛИнфоЦелевойБиблиот
     Смотри метод llvm::DataLayout::getPointerSize. */
 бцел ЛЛРазмУкз(ЛЛДанныеОЦели доц);
 
-/** Возвращает размер указателя в байтах для цели для заданного апресного пространства (АП).
+/** Возвращает размер указателя в байтах для цели для заданного адресного пространства (АП).
     Смотри метод llvm::DataLayout::getPointerSize. */
 бцел ЛЛРазмУкзДляАП(ЛЛДанныеОЦели доц, бцел AS);
 
@@ -229,7 +220,7 @@ alias LLVMOpaqueTargetLibraryInfotData *ЛЛИнфоЦелевойБиблиот
     Смотри метод llvm::DataLayout::getTypeABISize. */
 бцел ЛЛРаскладкаФреймаВызДляТипа(ЛЛДанныеОЦели доц, ЛЛТип тип);
 
-/** Computes the preferred раскладка of a тип in байты for a цель.
+/** вычисляет предпочитаемую раскладку типа в байтах для цели.
     Смотри метод llvm::DataLayout::getTypeABISize. */
 бцел ЛЛПредпочтРаскладкаТипа(ЛЛДанныеОЦели доц, ЛЛТип тип);
 
@@ -245,6 +236,6 @@ alias LLVMOpaqueTargetLibraryInfotData *ЛЛИнфоЦелевойБиблиот
 
 /** Computes the byte смещение of the indexed struct element for a цель.
     Смотри метод llvm::StructLayout::getElementContainingOffset. */
-бдол ЛЛСМещЭлта(ЛЛДанныеОЦели доц,
+бдол ЛЛСмещЭлта(ЛЛДанныеОЦели доц,
                                        ЛЛТип типСтрукт, бцел элт);
 }

@@ -4,31 +4,32 @@ import ll.c.Disassembler;
 import ll.c.Types;
 import ll.c.DisassemblerTypes;
 /*
-    import OpInfoCallback = System.Func<System.ук, ulong, ulong, ulong, int, System.ук, int>;
-    import SymbolLookupCallback = System.Func<System.ук, ulong, ulong, System.Tuple<System.ук, ulong, System.ук>>;
+    import ЛЛОбрвызОпИнфо = System.Func<System.ук, ulong, ulong, ulong, int, System.ук, int>;
+    import ЛЛОбрвызПоискСимвола = System.Func<System.ук, ulong, ulong, System.Tuple<System.ук, ulong, System.ук>>;
 */
     public class КонтекстДизасма 
     {
+        /+
         private class SymbolLookupClosure
         {
-            private SymbolLookupCallback _callback;
+            private ЛЛОбрвызПоискСимвола _обрвыз;
 
-            public this(SymbolLookupCallback c)
+            public this(ЛЛОбрвызПоискСимвола c)
             {
-                this._callback = c;
+                this._обрвыз = c;
             }
 
-            public ук Invoke(ук инфоДиз, бдол значСсылки, outбдол типСсылки, Бдол ссылПК, out ук имяСсылки)
+            public ук Invoke(ук инфоДиз, бдол значСсылки, out бдол типСсылки, бдол ссылПК, out ук имяСсылки)
             {
-                auto r = this._callback(инфоДиз, значСсылки, ссылПК);
+                auto r = this._обрвыз(инфоДиз, значСсылки, ссылПК);
                 типСсылки = r.Item2;
                 имяСсылки = r.Item3;
                 return r.Item1;
             }
         }
         
-        public static КонтекстДизасма создайДизасм(ткст имяТриады, ук дизИнфо, int типТэга, OpInfoCallback дайОпИнфо,
-                                           SymbolLookupCallback поискСимвола)
+        public static КонтекстДизасма создайДизасм(ткст имяТриады, ук дизИнфо, int типТэга, ЛЛОбрвызОпИнфо дайОпИнфо,
+                                           ЛЛОбрвызПоискСимвола поискСимвола)
         {
             auto opInfoCallback = new ЛЛОбрвызОпИнфо(дайОпИнфо);
             auto symbolCallback = new ЛЛОбрвызПоискСимвола(new SymbolLookupClosure(поискСимвола).Invoke);
@@ -38,8 +39,8 @@ import ll.c.DisassemblerTypes;
             return disasmContext;
         }
 
-        public static КонтекстДизасма создайДизасмЦПБ(ткст триада, ткст цпб, ук дизИнфо, int типТэга, OpInfoCallback дайОпИнфо,
-                                            SymbolLookupCallback поискСимвола)
+        public static КонтекстДизасма создайДизасмЦПБ(ткст триада, ткст цпб, ук дизИнфо, int типТэга, ЛЛОбрвызОпИнфо дайОпИнфо,
+                                            ЛЛОбрвызПоискСимвола поискСимвола)
         {
             auto opInfoCallback = new ЛЛОбрвызОпИнфо(дайОпИнфо);
             auto symbolCallback = new ЛЛОбрвызПоискСимвола(new SymbolLookupClosure(поискСимвола).Invoke);
@@ -51,8 +52,8 @@ import ll.c.DisassemblerTypes;
         }
 
         public static КонтекстДизасма создайФичиДзасмЦПБ(ткст триада, ткст цпб, ткст features, ук дизИнфо,
-                                                     int типТэга, OpInfoCallback дайОпИнфо,
-                                                     SymbolLookupCallback поискСимвола)
+                                                     int типТэга, ЛЛОбрвызОпИнфо дайОпИнфо,
+                                                     ЛЛОбрвызПоискСимвола поискСимвола)
         {
             auto opInfoCallback = new ЛЛОбрвызОпИнфо(дайОпИнфо);
             auto symbolCallback = new ЛЛОбрвызПоискСимвола(new SymbolLookupClosure(поискСимвола).Invoke);
@@ -61,7 +62,7 @@ import ll.c.DisassemblerTypes;
             disasmContext._symbolLookupCallback = symbolCallback;
             return disasmContext;
         }
-
++/
         private ЛЛКонтекстДизасма экземпл;
         private ЛЛОбрвызОпИнфо _opInfoCallback;
         private ЛЛОбрвызПоискСимвола _symbolLookupCallback;
@@ -71,16 +72,21 @@ import ll.c.DisassemblerTypes;
             this.экземпл = экзэмпл;
         }
 
-        ~this()
-        {
-            ЛЛВыместиДизасм(this.раскрой());
-        }
-
-        public int устОпцииДизасма(ulong options)
+        public ЛЛКонтекстДизасма раскрой()
 		{
-			ЛЛУстОпцииДизасм(this.раскрой(), options);
+            return this.экземпл;
 		}
 
+        ~this()
+        {
+            ЛЛВыместиДизасм(this.экземпл);
+        }
+
+        public цел устОпцииДизасма(бдол опции)
+		{
+			return ЛЛУстОпцииДизасм(this.раскрой(), опции);
+		}
+/+
         public Tuple!(ткст, int) инструкцииДизасма(byte[] instructionBytes, ulong programCounter)
         {
             fixed(byte* iptr = &instructionBytes[0])
@@ -94,5 +100,6 @@ import ll.c.DisassemblerTypes;
                 }
             }
         }
+    +/
     }
 

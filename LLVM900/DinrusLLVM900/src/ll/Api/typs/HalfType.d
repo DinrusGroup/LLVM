@@ -20,7 +20,7 @@ import ll.c.Types;
             return this.экзэмпл;
 		}
 
-        public override ткст имя() {return "пол";}
+        public override ткст вТкст() {return "пол";}
         public override бцел примитивнРазмерВБитах() {return 16;}
         public override цел ширинаМантиссы() {return 11;}
     }

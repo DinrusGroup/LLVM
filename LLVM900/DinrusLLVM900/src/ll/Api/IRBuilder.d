@@ -1,687 +1,662 @@
 module ll.api.IRBuilder;
 
+import ll.c.Core, ll.c.Types;
+import ll.api.Context;
 
-    public class IRBuilder : IDisposable, IEquatable!(IRBuilder), IDisposableWrapper!(LLVMBuilderRef)
+    public class РџРѕСЃС‚СЂРѕРёС‚РµР»СЊРџРџ
     {
-        LLVMBuilderRef IWrapper!(LLVMBuilderRef).ToHandleType
+
+        public this() 
 		{
-			this.экземпл;
+			this(Р›Р›РЎРѕР·РґР°Р№РџРѕСЃС‚СЂРѕРёС‚РµР»СЊ());
 		}
 
-        void IDisposableWrapper!(LLVMBuilderRef).MakeHandleOwner() 
-	     { 
-		    this._owner = true;
-	     }
-
-        public static IRBuilder создай() 
-		{
-			return LLVM.CreateBuilder().Wrap().MakeHandleOwner!(IRBuilder, LLVMBuilderRef)();
-		}
-
-        public static IRBuilder создай(Context контекст)
+        public this(РљРѕРЅС‚РµРєСЃС‚ РєРѕРЅС‚РµРєСЃС‚)
 		{ 
-			return LLVM.CreateBuilderInContext(контекст.раскрой()).Wrap().MakeHandleOwner!(IRBuilder, LLVMBuilderRef)();
+			this(Р›Р›РЎРѕР·РґР°Р№РџРѕСЃС‚СЂРѕРёС‚РµР»СЊР’РљРѕРЅС‚РµРєСЃС‚Рµ(РєРѕРЅС‚РµРєСЃС‚.СЂР°СЃРєСЂРѕР№()));
 		}
 
-        private  LLVMBuilderRef экземпл;
-        private bool _disposed;
-        private bool _owner;
+        private  Р›Р›РџРѕСЃС‚СЂРѕРёС‚РµР»СЊ СЌРєР·РµРјРїР»;
 
-        this(LLVMBuilderRef builderRef)
+        this(Р›Р›РџРѕСЃС‚СЂРѕРёС‚РµР»СЊ СѓРєРќР°РџРѕСЃС‚СЂ)
         {
-            this.экземпл = builderRef;
+            this.СЌРєР·РµРјРїР» = СѓРєРќР°РџРѕСЃС‚СЂ;
         }
 
         ~this()
         {
-            this.Dispose(false);
+            Р›Р›Р’С‹РјРµСЃС‚РёРџРѕСЃС‚СЂРѕРёС‚РµР»СЊ(this.СЌРєР·РµРјРїР»);
         }
 
+		public Р›Р›РџРѕСЃС‚СЂРѕРёС‚РµР»СЊ СЂР°СЃРєСЂРѕР№()
+		{
+			return this.СЌРєР·РµРјРїР»;
+		}
+/+
         public void PositionBuilder(BasicBlock block, Instruction instr)
 		{ 
-			LLVM.PositionBuilder(this.раскрой(), block.раскрой!(LLVMBasicBlockRef)(), instr.раскрой());
+			LLVM.PositionBuilder(this.СЂР°СЃРєСЂРѕР№(), block.СЂР°СЃРєСЂРѕР№!(LLVMBasicBlockRef)(), instr.СЂР°СЃРєСЂРѕР№());
 		}
 
         public void PositionBuilderBefore(Instruction instr)
 		{
-			LLVM.PositionBuilderBefore(this.раскрой(), instr.раскрой());
+			LLVM.PositionBuilderBefore(this.СЂР°СЃРєСЂРѕР№(), instr.СЂР°СЃРєСЂРѕР№());
 		}
 
         public void PositionBuilderAtEnd(BasicBlock block)
 		{ 
-			LLVM.PositionBuilderAtEnd(this.раскрой(), block.раскрой!(LLVMBasicBlockRef)());
+			LLVM.PositionBuilderAtEnd(this.СЂР°СЃРєСЂРѕР№(), block.СЂР°СЃРєСЂРѕР№!(LLVMBasicBlockRef)());
 		}
 
         public BasicBlock GetInsertBlock()
 		{
-			return LLVM.GetInsertBlock(this.раскрой()).Wrap();
+			return LLVM.GetInsertBlock(this.СЂР°СЃРєСЂРѕР№()).Wrap();
          }
 
         public void ClearInsertionPosition()
 		{ 
-			LLVM.ClearInsertionPosition(this.раскрой());
+			LLVM.ClearInsertionPosition(this.СЂР°СЃРєСЂРѕР№());
 		}
 
         public void InsertIntoBuilder(Instruction instr) 
 		{ 
-			LLVM.InsertIntoBuilder(this.раскрой(), instr.раскрой());
+			LLVM.InsertIntoBuilder(this.СЂР°СЃРєСЂРѕР№(), instr.СЂР°СЃРєСЂРѕР№());
 		}
 
-        public void InsertIntoBuilder(Instruction instr, string имя = "")
+        public void InsertIntoBuilder(Instruction instr, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			LLVM.InsertIntoBuilderWithName(this.раскрой(), instr.раскрой(), имя);
+			LLVM.InsertIntoBuilderWithName(this.СЂР°СЃРєСЂРѕР№(), instr.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public void Dispose()
+        public Р—РЅР°С‡РµРЅРёРµ CurrentDebugLocation()
         {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        private void Dispose(bool disposing)
-        {
-            if (this._disposed)
-            {
-                return;
-            }
-
-            if (this._owner)
-            {
-                LLVM.DisposeBuilder(this.экземпл);
-            }
-
-            this._disposed = true;
-        }
-
-        public Значение CurrentDebugLocation()
-        {
-            get { LLVM.GetCurrentDebugLocation(this.раскрой()).Wrap();
-            set { LLVM.SetCurrentDebugLocation(this.раскрой(), значение.раскрой());
+            get { LLVM.GetCurrentDebugLocation(this.СЂР°СЃРєСЂРѕР№()).Wrap();
+            set { LLVM.SetCurrentDebugLocation(this.СЂР°СЃРєСЂРѕР№(), Р·РЅР°С‡РµРЅРёРµ.СЂР°СЃРєСЂРѕР№());
         }
 
         public void SetInstDebugLocation(Instruction inst)
 		{ 
-			LLVM.SetInstDebugLocation(this.раскрой(), inst.раскрой());
+			LLVM.SetInstDebugLocation(this.СЂР°СЃРєСЂРѕР№(), inst.СЂР°СЃРєСЂРѕР№());
 		}
 
         public ReturnInst CreateRetVoid() 
 		{ 
-			return LLVM.BuildRetVoid(this.раскрой()).WrapAs!(ReturnInst)();
+			return LLVM.BuildRetVoid(this.СЂР°СЃРєСЂРѕР№()).WrapAs!(ReturnInst)();
 		}
 
-        public ReturnInst CreateRet(Значение v)
+        public ReturnInst CreateRet(Р—РЅР°С‡РµРЅРёРµ v)
 		{ 
-			return LLVM.BuildRet(this.раскрой(), v.раскрой()).WrapAs!(ReturnInst)();
+			return LLVM.BuildRet(this.СЂР°СЃРєСЂРѕР№(), v.СЂР°СЃРєСЂРѕР№()).WrapAs!(ReturnInst)();
         }
 
-        public ReturnInst CreateAggregateRet(Значение[] retVals)
+        public ReturnInst CreateAggregateRet(Р—РЅР°С‡РµРЅРёРµ[] retVals)
 		{ 
-			return LLVM.BuildAggregateRet(this.раскрой(), retVals.раскрой()).WrapAs!(ReturnInst)();
+			return LLVM.BuildAggregateRet(this.СЂР°СЃРєСЂРѕР№(), retVals.СЂР°СЃРєСЂРѕР№()).WrapAs!(ReturnInst)();
 	    }
 
         public BranchInst CreateBr(BasicBlock dest)
 		{ 
-			return LLVM.BuildBr(this.раскрой(), dest.раскрой!(LLVMBasicBlockRef)()).WrapAs!(BranchInst)();
+			return LLVM.BuildBr(this.СЂР°СЃРєСЂРѕР№(), dest.СЂР°СЃРєСЂРѕР№!(LLVMBasicBlockRef)()).WrapAs!(BranchInst)();
 		}
 
-        public BranchInst CreateCondBr(Значение If, BasicBlock then, BasicBlock Else)
+        public BranchInst CreateCondBr(Р—РЅР°С‡РµРЅРёРµ If, BasicBlock then, BasicBlock Else)
 		{ 
-			return LLVM.BuildCondBr(this.раскрой(), If.раскрой(), then.раскрой!(LLVMBasicBlockRef)(), Else.раскрой!(LLVMBasicBlockRef)()).WrapAs!(BranchInst)();
+			return LLVM.BuildCondBr(this.СЂР°СЃРєСЂРѕР№(), If.СЂР°СЃРєСЂРѕР№(), then.СЂР°СЃРєСЂРѕР№!(LLVMBasicBlockRef)(), Else.СЂР°СЃРєСЂРѕР№!(LLVMBasicBlockRef)()).WrapAs!(BranchInst)();
 		}
 
-        public SwitchInst CreateSwitch(Значение v, BasicBlock Else, uint numCases)
+        public SwitchInst CreateSwitch(Р—РЅР°С‡РµРЅРёРµ v, BasicBlock Else, uint numCases)
 		{ 
-			return LLVM.BuildSwitch(this.раскрой(), v.раскрой(), Else.раскрой!(LLVMBasicBlockRef)(), numCases).WrapAs!(SwitchInst)();
+			return LLVM.BuildSwitch(this.СЂР°СЃРєСЂРѕР№(), v.СЂР°СЃРєСЂРѕР№(), Else.СЂР°СЃРєСЂРѕР№!(LLVMBasicBlockRef)(), numCases).WrapAs!(SwitchInst)();
 		}
 
-        public IndirectBrInst CreateIndirectBr(Значение addr, uint numDests)
+        public IndirectBrInst CreateIndirectBr(Р—РЅР°С‡РµРЅРёРµ addr, uint numDests)
 		{ 
-			return LLVM.BuildIndirectBr(this.раскрой(), addr.раскрой(), numDests).WrapAs!(IndirectBrInst)();
+			return LLVM.BuildIndirectBr(this.СЂР°СЃРєСЂРѕР№(), addr.СЂР°СЃРєСЂРѕР№(), numDests).WrapAs!(IndirectBrInst)();
 		}
 
-        public InvokeInst CreateInvoke(Значение fn, Значение[] args, BasicBlock then, BasicBlock Catch, string имя = "")
+        public InvokeInst CreateInvoke(Р—РЅР°С‡РµРЅРёРµ fn, Р—РЅР°С‡РµРЅРёРµ[] args, BasicBlock then, BasicBlock Catch, С‚РєСЃС‚ РёРјСЏ = "")
 		{ 
-			return LLVM.BuildInvoke(this.раскрой(), fn.раскрой(), args.раскрой(), then.раскрой!(LLVMBasicBlockRef)(), Catch.раскрой!(LLVMBasicBlockRef)(), имя).WrapAs!(InvokeInst)();
+			return LLVM.BuildInvoke(this.СЂР°СЃРєСЂРѕР№(), fn.СЂР°СЃРєСЂРѕР№(), args.СЂР°СЃРєСЂРѕР№(), then.СЂР°СЃРєСЂРѕР№!(LLVMBasicBlockRef)(), Catch.СЂР°СЃРєСЂРѕР№!(LLVMBasicBlockRef)(), РёРјСЏ).WrapAs!(InvokeInst)();
 		}
 
-        public LandingPadInst CreateLandingPad(Type ty, Значение persFn, uint numClauses, string имя = "")
+        public LandingPadInst CreateLandingPad(РўРёРї ty, Р—РЅР°С‡РµРЅРёРµ persFn, uint numClauses, С‚РєСЃС‚ РёРјСЏ = "")
 		{ 
-			return LLVM.BuildLandingPad(this.раскрой(), ty.раскрой(), persFn.раскрой(), numClauses, имя).WrapAs!(LandingPadInst)();  
+			return LLVM.BuildLandingPad(this.СЂР°СЃРєСЂРѕР№(), ty.СЂР°СЃРєСЂРѕР№(), persFn.СЂР°СЃРєСЂРѕР№(), numClauses, РёРјСЏ).WrapAs!(LandingPadInst)();  
 		}
 
-        public ResumeInst CreateResume(Значение exn)
+        public ResumeInst CreateResume(Р—РЅР°С‡РµРЅРёРµ exn)
 		{ 
-			return LLVM.BuildResume(this.раскрой(), exn.раскрой()).WrapAs!(ResumeInst)();
+			return LLVM.BuildResume(this.СЂР°СЃРєСЂРѕР№(), exn.СЂР°СЃРєСЂРѕР№()).WrapAs!(ResumeInst)();
 		}
 
-        public НедоступнИнстр CreateUnreachable() 
+        public РќРµРґРѕСЃС‚СѓРїРЅРРЅСЃС‚СЂ CreateUnreachable() 
 		{
-			return LLVM.BuildUnreachable(this.раскрой()).WrapAs!(НедоступнИнстр)();
+			return LLVM.BuildUnreachable(this.СЂР°СЃРєСЂРѕР№()).WrapAs!(РќРµРґРѕСЃС‚СѓРїРЅРРЅСЃС‚СЂ)();
 		}
 
-        public Значение CreateAdd(Значение lhs, Значение rhs, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateAdd(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return LLVM.BuildAdd(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildAdd(this.СЂР°СЃРєСЂРѕР№(), lhs.СЂР°СЃРєСЂРѕР№(), rhs.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateNSWAdd(Значение lhs, Значение rhs, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateNSWAdd(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "")
 		{ 
-			return LLVM.BuildNSWAdd(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildNSWAdd(this.СЂР°СЃРєСЂРѕР№(), lhs.СЂР°СЃРєСЂРѕР№(), rhs.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateNUWAdd(Значение lhs, Значение rhs, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateNUWAdd(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return LLVM.BuildNUWAdd(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildNUWAdd(this.СЂР°СЃРєСЂРѕР№(), lhs.СЂР°СЃРєСЂРѕР№(), rhs.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateFAdd(Значение lhs, Значение rhs, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateFAdd(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return LLVM.BuildFAdd(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildFAdd(this.СЂР°СЃРєСЂРѕР№(), lhs.СЂР°СЃРєСЂРѕР№(), rhs.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateSub(Значение lhs, Значение rhs, string имя = "") 
+        public Р—РЅР°С‡РµРЅРёРµ CreateSub(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "") 
 		{
-			return LLVM.BuildSub(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildSub(this.СЂР°СЃРєСЂРѕР№(), lhs.СЂР°СЃРєСЂРѕР№(), rhs.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateNSWSub(Значение lhs, Значение rhs, string имя = "") 
+        public Р—РЅР°С‡РµРЅРёРµ CreateNSWSub(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "") 
 		{
-			LLVM.BuildNSWSub(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+			LLVM.BuildNSWSub(this.СЂР°СЃРєСЂРѕР№(), lhs.СЂР°СЃРєСЂРѕР№(), rhs.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateNUWSub(Значение lhs, Значение rhs, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateNUWSub(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return LLVM.BuildNUWSub(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildNUWSub(this.СЂР°СЃРєСЂРѕР№(), lhs.СЂР°СЃРєСЂРѕР№(), rhs.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateFSub(Значение lhs, Значение rhs, string имя = "") 
+        public Р—РЅР°С‡РµРЅРёРµ CreateFSub(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "") 
 		{ 
-			return LLVM.BuildFSub(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildFSub(this.СЂР°СЃРєСЂРѕР№(), lhs.СЂР°СЃРєСЂРѕР№(), rhs.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateMul(Значение lhs, Значение rhs, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateMul(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return LLVM.BuildMul(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildMul(this.СЂР°СЃРєСЂРѕР№(), lhs.СЂР°СЃРєСЂРѕР№(), rhs.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateNSWMul(Значение lhs, Значение rhs, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateNSWMul(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "")
 		{ 
-			return LLVM.BuildNSWMul(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildNSWMul(this.СЂР°СЃРєСЂРѕР№(), lhs.СЂР°СЃРєСЂРѕР№(), rhs.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateNUWMul(Значение lhs, Значение rhs, string имя = "") 
+        public Р—РЅР°С‡РµРЅРёРµ CreateNUWMul(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "") 
 		{
-			return LLVM.BuildNUWMul(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildNUWMul(this.СЂР°СЃРєСЂРѕР№(), lhs.СЂР°СЃРєСЂРѕР№(), rhs.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateFMul(Значение lhs, Значение rhs, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateFMul(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "")
 		{ 
-			return LLVM.BuildFMul(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildFMul(this.СЂР°СЃРєСЂРѕР№(), lhs.СЂР°СЃРєСЂРѕР№(), rhs.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateUDiv(Значение lhs, Значение rhs, string имя = "") 
+        public Р—РЅР°С‡РµРЅРёРµ CreateUDiv(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "") 
 		{
-			return LLVM.BuildUDiv(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildUDiv(this.СЂР°СЃРєСЂРѕР№(), lhs.СЂР°СЃРєСЂРѕР№(), rhs.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateExactUDiv(Значение lhs, Значение rhs, string имя = "") 
+        public Р—РЅР°С‡РµРЅРёРµ CreateExactUDiv(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "") 
 		{
-			return LLVM.BuildExactUDiv(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildExactUDiv(this.СЂР°СЃРєСЂРѕР№(), lhs.СЂР°СЃРєСЂРѕР№(), rhs.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateSDiv(Значение lhs, Значение rhs, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateSDiv(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return LLVM.BuildSDiv(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildSDiv(this.СЂР°СЃРєСЂРѕР№(), lhs.СЂР°СЃРєСЂРѕР№(), rhs.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateExactSDiv(Значение lhs, Значение rhs, string имя = "") 
+        public Р—РЅР°С‡РµРЅРёРµ CreateExactSDiv(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "") 
 		{ 
-			return LLVM.BuildExactSDiv(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildExactSDiv(this.СЂР°СЃРєСЂРѕР№(), lhs.СЂР°СЃРєСЂРѕР№(), rhs.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateFDiv(Значение lhs, Значение rhs, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateFDiv(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "")
 		{ 
-			return LLVM.BuildFDiv(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildFDiv(this.СЂР°СЃРєСЂРѕР№(), lhs.СЂР°СЃРєСЂРѕР№(), rhs.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateURem(Значение lhs, Значение rhs, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateURem(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "")
 		{ 
-			return LLVM.BuildURem(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildURem(this.СЂР°СЃРєСЂРѕР№(), lhs.СЂР°СЃРєСЂРѕР№(), rhs.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
          }
 
-        public Значение CreateSRem(Значение lhs, Значение rhs, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateSRem(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "")
 		{ 
-			return LLVM.BuildSRem(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildSRem(this.СЂР°СЃРєСЂРѕР№(), lhs.СЂР°СЃРєСЂРѕР№(), rhs.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateFRem(Значение lhs, Значение rhs, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateFRem(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "")
 		{ 
-			return LLVM.BuildFRem(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildFRem(this.СЂР°СЃРєСЂРѕР№(), lhs.СЂР°СЃРєСЂРѕР№(), rhs.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateShl(Значение lhs, Значение rhs, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateShl(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return LLVM.BuildShl(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildShl(this.СЂР°СЃРєСЂРѕР№(), lhs.СЂР°СЃРєСЂРѕР№(), rhs.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateLShr(Значение lhs, Значение rhs, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateLShr(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "")
 		{ 
-			return LLVM.BuildLShr(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildLShr(this.СЂР°СЃРєСЂРѕР№(), lhs.СЂР°СЃРєСЂРѕР№(), rhs.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateAShr(Значение lhs, Значение rhs, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateAShr(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "")
 		{ 
-			return LLVM.BuildAShr(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildAShr(this.СЂР°СЃРєСЂРѕР№(), lhs.СЂР°СЃРєСЂРѕР№(), rhs.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateAnd(Значение lhs, Значение rhs, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateAnd(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return LLVM.BuildAnd(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildAnd(this.СЂР°СЃРєСЂРѕР№(), lhs.СЂР°СЃРєСЂРѕР№(), rhs.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateOr(Значение lhs, Значение rhs, string имя = "") 
+        public Р—РЅР°С‡РµРЅРёРµ CreateOr(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "") 
 		{ 
-			return LLVM.BuildOr(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildOr(this.СЂР°СЃРєСЂРѕР№(), lhs.СЂР°СЃРєСЂРѕР№(), rhs.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateXor(Значение lhs, Значение rhs, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateXor(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "")
 		{ 
-			return LLVM.BuildXor(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildXor(this.СЂР°СЃРєСЂРѕР№(), lhs.СЂР°СЃРєСЂРѕР№(), rhs.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateBinOp(Opcode op, Значение lhs, Значение rhs, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateBinOp(Opcode op, Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return LLVM.BuildBinOp(this.раскрой(), op.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildBinOp(this.СЂР°СЃРєСЂРѕР№(), op.СЂР°СЃРєСЂРѕР№(), lhs.СЂР°СЃРєСЂРѕР№(), rhs.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateNeg(Значение v, string имя = "") 
+        public Р—РЅР°С‡РµРЅРёРµ CreateNeg(Р—РЅР°С‡РµРЅРёРµ v, С‚РєСЃС‚ РёРјСЏ = "") 
 		{
-			return LLVM.BuildNeg(this.раскрой(), v.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildNeg(this.СЂР°СЃРєСЂРѕР№(), v.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateNSWNeg(Значение v, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateNSWNeg(Р—РЅР°С‡РµРЅРёРµ v, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return LLVM.BuildNSWNeg(this.раскрой(), v.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildNSWNeg(this.СЂР°СЃРєСЂРѕР№(), v.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateNUWNeg(Значение v, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateNUWNeg(Р—РЅР°С‡РµРЅРёРµ v, С‚РєСЃС‚ РёРјСЏ = "")
 		{ 
-			return LLVM.BuildNUWNeg(this.раскрой(), v.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildNUWNeg(this.СЂР°СЃРєСЂРѕР№(), v.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateFNeg(Значение v, string имя = "") 
+        public Р—РЅР°С‡РµРЅРёРµ CreateFNeg(Р—РЅР°С‡РµРЅРёРµ v, С‚РєСЃС‚ РёРјСЏ = "") 
 		{
-			return LLVM.BuildFNeg(this.раскрой(), v.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildFNeg(this.СЂР°СЃРєСЂРѕР№(), v.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateNot(Значение v, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateNot(Р—РЅР°С‡РµРЅРёРµ v, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return LLVM.BuildNot(this.раскрой(), v.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildNot(this.СЂР°СЃРєСЂРѕР№(), v.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public CallInst CreateMalloc(Type ty, string имя = "")
+        public CallInst CreateMalloc(РўРёРї ty, С‚РєСЃС‚ РёРјСЏ = "")
 		{ 
-			return LLVM.BuildMalloc(this.раскрой(), ty.раскрой(), имя).WrapAs!(CallInst)();
+			return LLVM.BuildMalloc(this.СЂР°СЃРєСЂРѕР№(), ty.СЂР°СЃРєСЂРѕР№(), РёРјСЏ).WrapAs!(CallInst)();
 		}
 
-        public CallInst CreateArrayMalloc(Type ty, Значение val, string имя = "")
+        public CallInst CreateArrayMalloc(РўРёРї ty, Р—РЅР°С‡РµРЅРёРµ val, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return return LLVM.BuildArrayMalloc(this.раскрой(), ty.раскрой(), val.раскрой(), имя).WrapAs!(CallInst)();
+			return return LLVM.BuildArrayMalloc(this.СЂР°СЃРєСЂРѕР№(), ty.СЂР°СЃРєСЂРѕР№(), val.СЂР°СЃРєСЂРѕР№(), РёРјСЏ).WrapAs!(CallInst)();
 		}
 
-        public AllocaInst CreateAlloca(Type ty, string имя = "") 
+        public AllocaInst CreateAlloca(РўРёРї ty, С‚РєСЃС‚ РёРјСЏ = "") 
 		{
-			return LLVM.BuildAlloca(this.раскрой(), ty.раскрой(), имя).WrapAs!(AllocaInst)();
+			return LLVM.BuildAlloca(this.СЂР°СЃРєСЂРѕР№(), ty.СЂР°СЃРєСЂРѕР№(), РёРјСЏ).WrapAs!(AllocaInst)();
 		}
 
-        public AllocaInst CreateArrayAlloca(Type ty, Значение val, string имя = "")
+        public AllocaInst CreateArrayAlloca(РўРёРї ty, Р—РЅР°С‡РµРЅРёРµ val, С‚РєСЃС‚ РёРјСЏ = "")
 		{ 
-			return LLVM.BuildArrayAlloca(this.раскрой(), ty.раскрой(), val.раскрой(), имя).WrapAs!(AllocaInst)();
+			return LLVM.BuildArrayAlloca(this.СЂР°СЃРєСЂРѕР№(), ty.СЂР°СЃРєСЂРѕР№(), val.СЂР°СЃРєСЂРѕР№(), РёРјСЏ).WrapAs!(AllocaInst)();
 		}
 
-        public CallInst CreateFree(Значение pointerVal)
+        public CallInst CreateFree(Р—РЅР°С‡РµРЅРёРµ pointerVal)
 		{ 
-			return LLVM.BuildFree(this.раскрой(), pointerVal.раскрой()).WrapAs!(CallInst)();
+			return LLVM.BuildFree(this.СЂР°СЃРєСЂРѕР№(), pointerVal.СЂР°СЃРєСЂРѕР№()).WrapAs!(CallInst)();
 		}
 
-        public LoadInst CreateLoad(Значение pointerVal, string имя = "")
+        public LoadInst CreateLoad(Р—РЅР°С‡РµРЅРёРµ pointerVal, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return LLVM.BuildLoad(this.раскрой(), pointerVal.раскрой(), имя).WrapAs!(LoadInst)();
+			return LLVM.BuildLoad(this.СЂР°СЃРєСЂРѕР№(), pointerVal.СЂР°СЃРєСЂРѕР№(), РёРјСЏ).WrapAs!(LoadInst)();
 		}
 
-        public StoreInst CreateStore(Значение val, Значение ptr) 
+        public StoreInst CreateStore(Р—РЅР°С‡РµРЅРёРµ val, Р—РЅР°С‡РµРЅРёРµ ptr) 
 		{ 
-			return LLVM.BuildStore(this.раскрой(), val.раскрой(), ptr.раскрой()).WrapAs!(StoreInst)();
+			return LLVM.BuildStore(this.СЂР°СЃРєСЂРѕР№(), val.СЂР°СЃРєСЂРѕР№(), ptr.СЂР°СЃРєСЂРѕР№()).WrapAs!(StoreInst)();
 		}
 
-        public Значение CreateGEP(Значение pointer, Значение[] indices, string имя = "") 
+        public Р—РЅР°С‡РµРЅРёРµ CreateGEP(Р—РЅР°С‡РµРЅРёРµ pointer, Р—РЅР°С‡РµРЅРёРµ[] indices, С‚РєСЃС‚ РёРјСЏ = "") 
 		{ 
-			return LLVM.BuildGEP(this.раскрой(), pointer.раскрой(), indices.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildGEP(this.СЂР°СЃРєСЂРѕР№(), pointer.СЂР°СЃРєСЂРѕР№(), indices.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateInBoundsGEP(Значение pointer, Значение[] indices, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateInBoundsGEP(Р—РЅР°С‡РµРЅРёРµ pointer, Р—РЅР°С‡РµРЅРёРµ[] indices, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return LLVM.BuildInBoundsGEP(this.раскрой(), pointer.раскрой(), indices.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildInBoundsGEP(this.СЂР°СЃРєСЂРѕР№(), pointer.СЂР°СЃРєСЂРѕР№(), indices.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateStructGEP(Значение pointer, uint idx, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateStructGEP(Р—РЅР°С‡РµРЅРёРµ pointer, uint idx, С‚РєСЃС‚ РёРјСЏ = "")
 		{ 
-			return LLVM.BuildStructGEP(this.раскрой(), pointer.раскрой(), idx, имя).WrapAs!(Значение)();
+			return LLVM.BuildStructGEP(this.СЂР°СЃРєСЂРѕР№(), pointer.СЂР°СЃРєСЂРѕР№(), idx, РёРјСЏ);
 		}
 
-        public Значение CreateGlobalString(string str, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateGlobalString(С‚РєСЃС‚ str, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return LLVM.BuildGlobalString(this.раскрой(), str, имя).WrapAs!(Значение)();
+			return LLVM.BuildGlobalString(this.СЂР°СЃРєСЂРѕР№(), str, РёРјСЏ);
 		}
 
-        public Значение CreateGlobalStringPtr(string str, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateGlobalStringPtr(С‚РєСЃС‚ str, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return LLVM.BuildGlobalStringPtr(this.раскрой(), str, имя).WrapAs!(Значение)();
+			return LLVM.BuildGlobalStringPtr(this.СЂР°СЃРєСЂРѕР№(), str, РёРјСЏ);
 		}
 
-        public Значение CreateTrunc(Значение val, Type destTy, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateTrunc(Р—РЅР°С‡РµРЅРёРµ val, РўРёРї destTy, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return LLVM.BuildTrunc(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildTrunc(this.СЂР°СЃРєСЂРѕР№(), val.СЂР°СЃРєСЂРѕР№(), destTy.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateZExt(Значение val, Type destTy, string имя = "") 
+        public Р—РЅР°С‡РµРЅРёРµ CreateZExt(Р—РЅР°С‡РµРЅРёРµ val, РўРёРї destTy, С‚РєСЃС‚ РёРјСЏ = "") 
 		{
-			return LLVM.BuildZExt(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildZExt(this.СЂР°СЃРєСЂРѕР№(), val.СЂР°СЃРєСЂРѕР№(), destTy.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateSExt(Значение val, Type destTy, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateSExt(Р—РЅР°С‡РµРЅРёРµ val, РўРёРї destTy, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return LLVM.BuildSExt(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildSExt(this.СЂР°СЃРєСЂРѕР№(), val.СЂР°СЃРєСЂРѕР№(), destTy.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateZExtOrBitCast(Значение val, Type destTy, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateZExtOrBitCast(Р—РЅР°С‡РµРЅРёРµ val, РўРёРї destTy, С‚РєСЃС‚ РёРјСЏ = "")
 		{ 
-			return LLVM.BuildZExtOrBitCast(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildZExtOrBitCast(this.СЂР°СЃРєСЂРѕР№(), val.СЂР°СЃРєСЂРѕР№(), destTy.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateSExtOrBitCast(Значение val, Type destTy, string имя = "") 
+        public Р—РЅР°С‡РµРЅРёРµ CreateSExtOrBitCast(Р—РЅР°С‡РµРЅРёРµ val, РўРёРї destTy, С‚РєСЃС‚ РёРјСЏ = "") 
 		{ 
-			return LLVM.BuildSExtOrBitCast(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildSExtOrBitCast(this.СЂР°СЃРєСЂРѕР№(), val.СЂР°СЃРєСЂРѕР№(), destTy.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateFPToUI(Значение val, Type destTy, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateFPToUI(Р—РЅР°С‡РµРЅРёРµ val, РўРёРї destTy, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return LLVM.BuildFPToUI(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildFPToUI(this.СЂР°СЃРєСЂРѕР№(), val.СЂР°СЃРєСЂРѕР№(), destTy.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateFPToSI(Значение val, Type destTy, string имя = "") 
+        public Р—РЅР°С‡РµРЅРёРµ CreateFPToSI(Р—РЅР°С‡РµРЅРёРµ val, РўРёРї destTy, С‚РєСЃС‚ РёРјСЏ = "") 
 		{
-			return LLVM.BuildFPToSI(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildFPToSI(this.СЂР°СЃРєСЂРѕР№(), val.СЂР°СЃРєСЂРѕР№(), destTy.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateUIToFP(Значение val, Type destTy, string имя = "") 
+        public Р—РЅР°С‡РµРЅРёРµ CreateUIToFP(Р—РЅР°С‡РµРЅРёРµ val, РўРёРї destTy, С‚РєСЃС‚ РёРјСЏ = "") 
 		{
-			return LLVM.BuildUIToFP(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildUIToFP(this.СЂР°СЃРєСЂРѕР№(), val.СЂР°СЃРєСЂРѕР№(), destTy.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateSIToFP(Значение val, Type destTy, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateSIToFP(Р—РЅР°С‡РµРЅРёРµ val, РўРёРї destTy, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return LLVM.BuildSIToFP(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildSIToFP(this.СЂР°СЃРєСЂРѕР№(), val.СЂР°СЃРєСЂРѕР№(), destTy.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateFPTrunc(Значение val, Type destTy, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateFPTrunc(Р—РЅР°С‡РµРЅРёРµ val, РўРёРї destTy, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return LLVM.BuildFPTrunc(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildFPTrunc(this.СЂР°СЃРєСЂРѕР№(), val.СЂР°СЃРєСЂРѕР№(), destTy.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateFPExt(Значение val, Type destTy, string имя = "") 
+        public Р—РЅР°С‡РµРЅРёРµ CreateFPExt(Р—РЅР°С‡РµРЅРёРµ val, РўРёРї destTy, С‚РєСЃС‚ РёРјСЏ = "") 
 		{
-			return LLVM.BuildFPExt(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildFPExt(this.СЂР°СЃРєСЂРѕР№(), val.СЂР°СЃРєСЂРѕР№(), destTy.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreatePtrToInt(Значение val, Type destTy, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreatePtrToInt(Р—РЅР°С‡РµРЅРёРµ val, РўРёРї destTy, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return LLVM.BuildPtrToInt(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildPtrToInt(this.СЂР°СЃРєСЂРѕР№(), val.СЂР°СЃРєСЂРѕР№(), destTy.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateIntToPtr(Значение val, Type destTy, string имя = "") 
+        public Р—РЅР°С‡РµРЅРёРµ CreateIntToPtr(Р—РЅР°С‡РµРЅРёРµ val, РўРёРї destTy, С‚РєСЃС‚ РёРјСЏ = "") 
 		{ 
-			return LLVM.BuildIntToPtr(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildIntToPtr(this.СЂР°СЃРєСЂРѕР№(), val.СЂР°СЃРєСЂРѕР№(), destTy.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateBitCast(Значение val, Type destTy, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateBitCast(Р—РЅР°С‡РµРЅРёРµ val, РўРёРї destTy, С‚РєСЃС‚ РёРјСЏ = "")
 		{ 
-			return LLVM.BuildBitCast(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildBitCast(this.СЂР°СЃРєСЂРѕР№(), val.СЂР°СЃРєСЂРѕР№(), destTy.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateAddrSpaceCast(Значение val, Type destTy, string имя = "") 
+        public Р—РЅР°С‡РµРЅРёРµ CreateAddrSpaceCast(Р—РЅР°С‡РµРЅРёРµ val, РўРёРї destTy, С‚РєСЃС‚ РёРјСЏ = "") 
 		{
-			return LLVM.BuildAddrSpaceCast(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildAddrSpaceCast(this.СЂР°СЃРєСЂРѕР№(), val.СЂР°СЃРєСЂРѕР№(), destTy.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateTruncOrBitCast(Значение val, Type destTy, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateTruncOrBitCast(Р—РЅР°С‡РµРЅРёРµ val, РўРёРї destTy, С‚РєСЃС‚ РёРјСЏ = "")
 		{ 
-			return LLVM.BuildTruncOrBitCast(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildTruncOrBitCast(this.СЂР°СЃРєСЂРѕР№(), val.СЂР°СЃРєСЂРѕР№(), destTy.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateCast(Opcode op, Значение val, Type destTy, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateCast(Opcode op, Р—РЅР°С‡РµРЅРёРµ val, РўРёРї destTy, С‚РєСЃС‚ РёРјСЏ = "")
 		{ 
-			return LLVM.BuildCast(this.раскрой(), op.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildCast(this.СЂР°СЃРєСЂРѕР№(), op.СЂР°СЃРєСЂРѕР№(), val.СЂР°СЃРєСЂРѕР№(), destTy.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreatePointerCast(Значение val, Type destTy, string имя = "") 
+        public Р—РЅР°С‡РµРЅРёРµ CreatePointerCast(Р—РЅР°С‡РµРЅРёРµ val, РўРёРї destTy, С‚РєСЃС‚ РёРјСЏ = "") 
 		{
-			return LLVM.BuildPointerCast(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildPointerCast(this.СЂР°СЃРєСЂРѕР№(), val.СЂР°СЃРєСЂРѕР№(), destTy.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateIntCast(Значение val, Type destTy, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateIntCast(Р—РЅР°С‡РµРЅРёРµ val, РўРёРї destTy, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			LLVM.BuildIntCast(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+			LLVM.BuildIntCast(this.СЂР°СЃРєСЂРѕР№(), val.СЂР°СЃРєСЂРѕР№(), destTy.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateFPCast(Значение val, Type destTy, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateFPCast(Р—РЅР°С‡РµРЅРёРµ val, РўРёРї destTy, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return LLVM.BuildFPCast(this.раскрой(), val.раскрой(), destTy.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildFPCast(this.СЂР°СЃРєСЂРѕР№(), val.СЂР°СЃРєСЂРѕР№(), destTy.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateICmp(ЛЛЦелПредикат op, Значение lhs, Значение rhs, string имя = "") 
+        public Р—РЅР°С‡РµРЅРёРµ CreateICmp(Р›Р›Р¦РµР»РџСЂРµРґРёРєР°С‚ op, Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "") 
 		{ 
-			return LLVM.BuildICmp(this.раскрой(), op.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildICmp(this.СЂР°СЃРєСЂРѕР№(), op.СЂР°СЃРєСЂРѕР№(), lhs.СЂР°СЃРєСЂРѕР№(), rhs.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateICmpEQ(Значение lhs, Значение rhs, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateICmpEQ(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "")
 		{ 
-			return this.CreateICmp(ЛЛЦелПредикат.EQ, lhs, rhs, имя);
+			return this.CreateICmp(Р›Р›Р¦РµР»РџСЂРµРґРёРєР°С‚.EQ, lhs, rhs, РёРјСЏ);
 		}
 
-        public Значение CreateICmpNE(Значение lhs, Значение rhs, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateICmpNE(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return this.CreateICmp(ЛЛЦелПредикат.NE, lhs, rhs, имя);
+			return this.CreateICmp(Р›Р›Р¦РµР»РџСЂРµРґРёРєР°С‚.NE, lhs, rhs, РёРјСЏ);
 		}
 
-        public Значение CreateICmpUGT(Значение lhs, Значение rhs, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateICmpUGT(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			this.CreateICmp(ЛЛЦелПредикат.UGT, lhs, rhs, имя);
+			this.CreateICmp(Р›Р›Р¦РµР»РџСЂРµРґРёРєР°С‚.UGT, lhs, rhs, РёРјСЏ);
 		}
 
-        public Значение CreateICmpULT(Значение lhs, Значение rhs, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateICmpULT(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return this.CreateICmp(ЛЛЦелПредикат.ULT, lhs, rhs, имя);
+			return this.CreateICmp(Р›Р›Р¦РµР»РџСЂРµРґРёРєР°С‚.ULT, lhs, rhs, РёРјСЏ);
 		}
 
-        public Значение CreateICmpULE(Значение lhs, Значение rhs, string имя = "") 
+        public Р—РЅР°С‡РµРЅРёРµ CreateICmpULE(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "") 
 		{ 
-			return this.CreateICmp(ЛЛЦелПредикат.ULE, lhs, rhs, имя);
+			return this.CreateICmp(Р›Р›Р¦РµР»РџСЂРµРґРёРєР°С‚.ULE, lhs, rhs, РёРјСЏ);
 		}
 
-        public Значение CreateICmpSGT(Значение lhs, Значение rhs, string имя = "") 
+        public Р—РЅР°С‡РµРЅРёРµ CreateICmpSGT(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "") 
 		{
-			return this.CreateICmp(ЛЛЦелПредикат.SGT, lhs, rhs, имя);
+			return this.CreateICmp(Р›Р›Р¦РµР»РџСЂРµРґРёРєР°С‚.SGT, lhs, rhs, РёРјСЏ);
 		}
 
-        public Значение CreateICmpSGE(Значение lhs, Значение rhs, string имя = "") 
+        public Р—РЅР°С‡РµРЅРёРµ CreateICmpSGE(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "") 
 		{
-			return this.CreateICmp(ЛЛЦелПредикат.SGE, lhs, rhs, имя);
+			return this.CreateICmp(Р›Р›Р¦РµР»РџСЂРµРґРёРєР°С‚.SGE, lhs, rhs, РёРјСЏ);
 		}
 
-        public Значение CreateICmpSLT(Значение lhs, Значение rhs, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateICmpSLT(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return this.CreateICmp(ЛЛЦелПредикат.SLT, lhs, rhs, имя);
+			return this.CreateICmp(Р›Р›Р¦РµР»РџСЂРµРґРёРєР°С‚.SLT, lhs, rhs, РёРјСЏ);
 		}
 
-        public Значение CreateICmpSLE(Значение lhs, Значение rhs, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateICmpSLE(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return this.CreateICmp(ЛЛЦелПредикат.SLE, lhs, rhs, имя);
+			return this.CreateICmp(Р›Р›Р¦РµР»РџСЂРµРґРёРєР°С‚.SLE, lhs, rhs, РёРјСЏ);
 		}
 
-        public Значение CreateFCmp(ЛЛПредикатРеала op, Значение lhs, Значение rhs, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateFCmp(Р›Р›РџСЂРµРґРёРєР°С‚Р РµР°Р»Р° op, Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "")
 		{ 
-			return LLVM.BuildFCmp(this.раскрой(), op.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildFCmp(this.СЂР°СЃРєСЂРѕР№(), op.СЂР°СЃРєСЂРѕР№(), lhs.СЂР°СЃРєСЂРѕР№(), rhs.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateFCmpOEQ(Значение lhs, Значение rhs, string имя = "") 
+        public Р—РЅР°С‡РµРЅРёРµ CreateFCmpOEQ(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "") 
 		{ 
-			return this.CreateFCmp(ЛЛПредикатРеала.OEQ, lhs, rhs, имя);
+			return this.CreateFCmp(Р›Р›РџСЂРµРґРёРєР°С‚Р РµР°Р»Р°.OEQ, lhs, rhs, РёРјСЏ);
 		}
 
-        public Значение CreateFCmpOGT(Значение lhs, Значение rhs, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateFCmpOGT(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return this.CreateFCmp(ЛЛПредикатРеала.OGT, lhs, rhs, имя);
+			return this.CreateFCmp(Р›Р›РџСЂРµРґРёРєР°С‚Р РµР°Р»Р°.OGT, lhs, rhs, РёРјСЏ);
 		}
 
-        public Значение CreateFCmpOGE(Значение lhs, Значение rhs, string имя = "") 
+        public Р—РЅР°С‡РµРЅРёРµ CreateFCmpOGE(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "") 
 		{
-			return this.CreateFCmp(ЛЛПредикатРеала.OGE, lhs, rhs, имя);
+			return this.CreateFCmp(Р›Р›РџСЂРµРґРёРєР°С‚Р РµР°Р»Р°.OGE, lhs, rhs, РёРјСЏ);
 		}
 
-        public Значение CreateFCmpOLT(Значение lhs, Значение rhs, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateFCmpOLT(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return this.CreateFCmp(ЛЛПредикатРеала.OLT, lhs, rhs, имя);
+			return this.CreateFCmp(Р›Р›РџСЂРµРґРёРєР°С‚Р РµР°Р»Р°.OLT, lhs, rhs, РёРјСЏ);
 		}
 
-        public Значение CreateFCmpOLE(Значение lhs, Значение rhs, string имя = "") 
+        public Р—РЅР°С‡РµРЅРёРµ CreateFCmpOLE(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "") 
 		{
-			return this.CreateFCmp(ЛЛПредикатРеала.OLE, lhs, rhs, имя);
+			return this.CreateFCmp(Р›Р›РџСЂРµРґРёРєР°С‚Р РµР°Р»Р°.OLE, lhs, rhs, РёРјСЏ);
 		}
 
-        public Значение CreateFCmpONE(Значение lhs, Значение rhs, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateFCmpONE(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return this.CreateFCmp(ЛЛПредикатРеала.ONE, lhs, rhs, имя);
+			return this.CreateFCmp(Р›Р›РџСЂРµРґРёРєР°С‚Р РµР°Р»Р°.ONE, lhs, rhs, РёРјСЏ);
 		}
 
-        public Значение CreateFCmpORD(Значение lhs, Значение rhs, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateFCmpORD(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			this.CreateFCmp(ЛЛПредикатРеала.ORD, lhs, rhs, имя);
+			this.CreateFCmp(Р›Р›РџСЂРµРґРёРєР°С‚Р РµР°Р»Р°.ORD, lhs, rhs, РёРјСЏ);
 		}
 
-        public Значение CreateFCmpUNO(Значение lhs, Значение rhs, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateFCmpUNO(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "")
 		{ 
-			return this.CreateFCmp(ЛЛПредикатРеала.UNO, lhs, rhs, имя);
+			return this.CreateFCmp(Р›Р›РџСЂРµРґРёРєР°С‚Р РµР°Р»Р°.UNO, lhs, rhs, РёРјСЏ);
 		}
 
-        public Значение CreateFCmpUEQ(Значение lhs, Значение rhs, string имя = "") 
+        public Р—РЅР°С‡РµРЅРёРµ CreateFCmpUEQ(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "") 
 		{
-			return this.CreateFCmp(ЛЛПредикатРеала.UEQ, lhs, rhs, имя);
+			return this.CreateFCmp(Р›Р›РџСЂРµРґРёРєР°С‚Р РµР°Р»Р°.UEQ, lhs, rhs, РёРјСЏ);
 		}
 
-        public Значение CreateFCmpUGT(Значение lhs, Значение rhs, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateFCmpUGT(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return this.CreateFCmp(ЛЛПредикатРеала.UGT, lhs, rhs, имя);
+			return this.CreateFCmp(Р›Р›РџСЂРµРґРёРєР°С‚Р РµР°Р»Р°.UGT, lhs, rhs, РёРјСЏ);
 		}
 
-        public Значение CreateFCmpUGE(Значение lhs, Значение rhs, string имя = "") 
+        public Р—РЅР°С‡РµРЅРёРµ CreateFCmpUGE(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "") 
 		{
-			return this.CreateFCmp(ЛЛПредикатРеала.UGE, lhs, rhs, имя);
+			return this.CreateFCmp(Р›Р›РџСЂРµРґРёРєР°С‚Р РµР°Р»Р°.UGE, lhs, rhs, РёРјСЏ);
 		}
 
-        public Значение CreateFCmpULT(Значение lhs, Значение rhs, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateFCmpULT(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return this.CreateFCmp(ЛЛПредикатРеала.ULT, lhs, rhs, имя);
+			return this.CreateFCmp(Р›Р›РџСЂРµРґРёРєР°С‚Р РµР°Р»Р°.ULT, lhs, rhs, РёРјСЏ);
 		}
 
-        public Значение CreateFCmpUNE(Значение lhs, Значение rhs, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateFCmpUNE(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "")
 		{ 
-			return this.CreateFCmp(ЛЛПредикатРеала.UNE, lhs, rhs, имя);
+			return this.CreateFCmp(Р›Р›РџСЂРµРґРёРєР°С‚Р РµР°Р»Р°.UNE, lhs, rhs, РёРјСЏ);
 		}
 
-        public PHINode CreatePhi(Type ty, string имя = "")
+        public PHINode CreatePhi(РўРёРї ty, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return LLVM.BuildPhi(this.раскрой(), ty.раскрой(), имя).WrapAs!(PHINode)();
+			return LLVM.BuildPhi(this.СЂР°СЃРєСЂРѕР№(), ty.СЂР°СЃРєСЂРѕР№(), РёРјСЏ).WrapAs!(PHINode)();
 		}
 
-        public CallInst CreateCall(Значение fn, Значение[] args, string имя) 
+        public CallInst CreateCall(Р—РЅР°С‡РµРЅРёРµ fn, Р—РЅР°С‡РµРЅРёРµ[] args, С‚РєСЃС‚ РёРјСЏ) 
 		{ 
-			return LLVM.BuildCall(this.раскрой(), fn.раскрой(), args.раскрой(), имя).WrapAs!(CallInst)();
+			return LLVM.BuildCall(this.СЂР°СЃРєСЂРѕР№(), fn.СЂР°СЃРєСЂРѕР№(), args.СЂР°СЃРєСЂРѕР№(), РёРјСЏ).WrapAs!(CallInst)();
 		}
 
-        public CallInst CreateCall(Значение fn, string имя, params Значение[] args)
+        public CallInst CreateCall(Р—РЅР°С‡РµРЅРёРµ fn, С‚РєСЃС‚ РёРјСЏ, params Р—РЅР°С‡РµРЅРёРµ[] args)
 		{
-			return this.CreateCall(fn, args, имя);
+			return this.CreateCall(fn, args, РёРјСЏ);
 		}
 
-        public CallInst CreateCall(Значение fn, params Значение[] args) 
+        public CallInst CreateCall(Р—РЅР°С‡РµРЅРёРµ fn, params Р—РЅР°С‡РµРЅРёРµ[] args) 
 		{ 
-			return this.CreateCall(fn, args, string.Empty);
+			return this.CreateCall(fn, args, С‚РєСЃС‚.Empty);
 		}
 
-        public Значение CreateSelect(Значение @If, Значение then, Значение @Else, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateSelect(Р—РЅР°С‡РµРЅРёРµ @If, Р—РЅР°С‡РµРЅРёРµ then, Р—РЅР°С‡РµРЅРёРµ @Else, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return LLVM.BuildSelect(this.раскрой(), If.раскрой(), then.раскрой(), Else.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildSelect(this.СЂР°СЃРєСЂРѕР№(), If.СЂР°СЃРєСЂРѕР№(), then.СЂР°СЃРєСЂРѕР№(), Else.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public VAArgInst CreateVAArg(Значение list, Type ty, string имя = "")
+        public VAArgInst CreateVAArg(Р—РЅР°С‡РµРЅРёРµ list, РўРёРї ty, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return LLVM.BuildVAArg(this.раскрой(), list.раскрой(), ty.раскрой(), имя).WrapAs!(VAArgInst)();
+			return LLVM.BuildVAArg(this.СЂР°СЃРєСЂРѕР№(), list.СЂР°СЃРєСЂРѕР№(), ty.СЂР°СЃРєСЂРѕР№(), РёРјСЏ).WrapAs!(VAArgInst)();
 		}
 
-        public Значение CreateExtractElement(Значение vecVal, Значение индекс, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateExtractElement(Р—РЅР°С‡РµРЅРёРµ vecVal, Р—РЅР°С‡РµРЅРёРµ РёРЅРґРµРєСЃ, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return LLVM.BuildExtractElement(this.раскрой(), vecVal.раскрой(), индекс.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildExtractElement(this.СЂР°СЃРєСЂРѕР№(), vecVal.СЂР°СЃРєСЂРѕР№(), РёРЅРґРµРєСЃ.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateInsertElement(Значение vecVal, Значение eltVal, Значение индекс, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateInsertElement(Р—РЅР°С‡РµРЅРёРµ vecVal, Р—РЅР°С‡РµРЅРёРµ eltVal, Р—РЅР°С‡РµРЅРёРµ РёРЅРґРµРєСЃ, С‚РєСЃС‚ РёРјСЏ = "")
 		{ 
-			return LLVM.BuildInsertElement(this.раскрой(), vecVal.раскрой(), eltVal.раскрой(), индекс.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildInsertElement(this.СЂР°СЃРєСЂРѕР№(), vecVal.СЂР°СЃРєСЂРѕР№(), eltVal.СЂР°СЃРєСЂРѕР№(), РёРЅРґРµРєСЃ.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateShuffleVector(Значение v1, Значение v2, Значение mask, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateShuffleVector(Р—РЅР°С‡РµРЅРёРµ v1, Р—РЅР°С‡РµРЅРёРµ v2, Р—РЅР°С‡РµРЅРёРµ mask, С‚РєСЃС‚ РёРјСЏ = "")
 		{ 
-			return LLVM.BuildShuffleVector(this.раскрой(), v1.раскрой(), v2.раскрой(), mask.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildShuffleVector(this.СЂР°СЃРєСЂРѕР№(), v1.СЂР°СЃРєСЂРѕР№(), v2.СЂР°СЃРєСЂРѕР№(), mask.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateExtractValue(Значение aggVal, uint индекс, string имя = "") 
+        public Р—РЅР°С‡РµРЅРёРµ CreateExtractValue(Р—РЅР°С‡РµРЅРёРµ aggVal, uint РёРЅРґРµРєСЃ, С‚РєСЃС‚ РёРјСЏ = "") 
 		{ 
-			return LLVM.BuildExtractValue(this.раскрой(), aggVal.раскрой(), индекс, имя).WrapAs!(Значение)();
+			return LLVM.BuildExtractValue(this.СЂР°СЃРєСЂРѕР№(), aggVal.СЂР°СЃРєСЂРѕР№(), РёРЅРґРµРєСЃ, РёРјСЏ);
 		}
 
-        public Значение CreateInsertValue(Значение aggVal, Значение eltVal, uint индекс, string имя = "") 
+        public Р—РЅР°С‡РµРЅРёРµ CreateInsertValue(Р—РЅР°С‡РµРЅРёРµ aggVal, Р—РЅР°С‡РµРЅРёРµ eltVal, uint РёРЅРґРµРєСЃ, С‚РєСЃС‚ РёРјСЏ = "") 
 		{ 
-			return LLVM.BuildInsertValue(this.раскрой(), aggVal.раскрой(), eltVal.раскрой(), индекс, имя).WrapAs!(Значение)();
+			return LLVM.BuildInsertValue(this.СЂР°СЃРєСЂРѕР№(), aggVal.СЂР°СЃРєСЂРѕР№(), eltVal.СЂР°СЃРєСЂРѕР№(), РёРЅРґРµРєСЃ, РёРјСЏ);
 		}
 
-        public Значение CreateIsNull(Значение val, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateIsNull(Р—РЅР°С‡РµРЅРёРµ val, С‚РєСЃС‚ РёРјСЏ = "")
 		{ 
-			return LLVM.BuildIsNull(this.раскрой(), val.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildIsNull(this.СЂР°СЃРєСЂРѕР№(), val.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreateIsNotNull(Значение val, string имя = "")
+        public Р—РЅР°С‡РµРЅРёРµ CreateIsNotNull(Р—РЅР°С‡РµРЅРёРµ val, С‚РєСЃС‚ РёРјСЏ = "")
 		{
-			return LLVM.BuildIsNotNull(this.раскрой(), val.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildIsNotNull(this.СЂР°СЃРєСЂРѕР№(), val.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public Значение CreatePtrDiff(Значение lhs, Значение rhs, string имя = "") 
+        public Р—РЅР°С‡РµРЅРёРµ CreatePtrDiff(Р—РЅР°С‡РµРЅРёРµ lhs, Р—РЅР°С‡РµРЅРёРµ rhs, С‚РєСЃС‚ РёРјСЏ = "") 
 		{
-			return LLVM.BuildPtrDiff(this.раскрой(), lhs.раскрой(), rhs.раскрой(), имя).WrapAs!(Значение)();
+			return LLVM.BuildPtrDiff(this.СЂР°СЃРєСЂРѕР№(), lhs.СЂР°СЃРєСЂРѕР№(), rhs.СЂР°СЃРєСЂРѕР№(), РёРјСЏ);
 		}
 
-        public FenceInst CreateFence(AtomicOrdering ordering, bool singleThread, string имя = "")
+        public FenceInst CreateFence(AtomicOrdering ordering, bool singleThread, С‚РєСЃС‚ РёРјСЏ = "")
 		{ 
-			return LLVM.BuildFence(this.раскрой(), ordering.раскрой(), singleThread, имя).WrapAs!(FenceInst)();
+			return LLVM.BuildFence(this.СЂР°СЃРєСЂРѕР№(), ordering.СЂР°СЃРєСЂРѕР№(), singleThread, РёРјСЏ).WrapAs!(FenceInst)();
 		}
 
-        public AtomicRMWInst CreateAtomicRMW(AtomicRMWBinOp op, Значение ptr, Значение val, AtomicOrdering ordering, bool singleThread) 
+        public AtomicRMWInst CreateAtomicRMW(AtomicRMWBinOp op, Р—РЅР°С‡РµРЅРёРµ ptr, Р—РЅР°С‡РµРЅРёРµ val, AtomicOrdering ordering, bool singleThread) 
 		{
-			return LLVM.BuildAtomicRMW(this.раскрой(), op.раскрой(), ptr.раскрой(), val.раскрой(), ordering.раскрой(), singleThread).WrapAs!(AtomicRMWInst)();
+			return LLVM.BuildAtomicRMW(this.СЂР°СЃРєСЂРѕР№(), op.СЂР°СЃРєСЂРѕР№(), ptr.СЂР°СЃРєСЂРѕР№(), val.СЂР°СЃРєСЂРѕР№(), ordering.СЂР°СЃРєСЂРѕР№(), singleThread).WrapAs!(AtomicRMWInst)();
 		}
 
         public bool Equals(IRBuilder other) 
 		{
-			return ReferenceEquals(other, null) ? false : this.экземпл == other.экземпл;
+			return ReferenceEquals(other, null) ? false : this.СЌРєР·РµРјРїР» == other.СЌРєР·РµРјРїР»;
 		}
 
         public override bool Equals(object obj) 
@@ -701,8 +676,9 @@ module ll.api.IRBuilder;
 
         public override int GetHashCode() 
 		{
-			return this.экземпл.GetHashCode();
+			return this.СЌРєР·РµРјРїР».GetHashCode();
 		}
     }
   }
+		+/
 }

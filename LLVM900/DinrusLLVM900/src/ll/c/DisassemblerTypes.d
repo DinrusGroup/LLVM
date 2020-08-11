@@ -4,7 +4,7 @@ import ll.c.DataTypes;
 
 
 /**
- * An opaque reference to a disassembler контекст.
+ * "Огульная" ссылка на контекст дизассемблера.
  */
 alias ук ЛЛКонтекстДизасма;
 

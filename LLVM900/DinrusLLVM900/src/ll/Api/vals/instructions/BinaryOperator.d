@@ -25,7 +25,7 @@ public class БинОп : Инструкция
     {
 		private ЛЛЗначение экзэмпл;
 
-        static БинОп создай()
+        БинОп создай()
         {
             auto опкод = ЛЛДайОпкодИнстр(this.экзэмпл);
             switch (опкод)
@@ -38,7 +38,7 @@ public class БинОп : Инструкция
                     return new Sub(this.экзэмпл);
                 case ЛЛОпкод.ПОтними:
                     return new FSub(this.экзэмпл);
-                case ЛЛОпкод.Уиножь:
+                case ЛЛОпкод.Умножь:
                     return new Mul(this.экзэмпл);
                 case ЛЛОпкод.ПУмножь:
                     return new FMul(this.экзэмпл);
@@ -67,7 +67,7 @@ public class БинОп : Инструкция
                 case ЛЛОпкод.ИИли:
                     return new Xor(this.экзэмпл);
                 default:
-                    //this(экзэмпл);
+                    return this;
             }
         }
 

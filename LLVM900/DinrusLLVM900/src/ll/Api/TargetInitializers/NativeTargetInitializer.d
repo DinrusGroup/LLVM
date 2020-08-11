@@ -1,4 +1,4 @@
-module ll.c.api.TargetInitializers.MipsTargetInitializer;
+module ll.c.api.TargetInitializers.NativeTargetInitializer;
 
 import ll.c.api.TargetInitializers.TargetInitializer;
 import ll.c.Target;

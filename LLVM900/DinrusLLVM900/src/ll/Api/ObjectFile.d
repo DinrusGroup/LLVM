@@ -3,6 +3,7 @@ module ll.api.ObjectFile;
 import ll.api.SymbolIterator;
 import ll.api.SectionIterator;
 import ll.c.Types, ll.c.Core, ll.c.Object;
+import ll.api.MemoryBuffer;
 
     public class ОбъФайл
     {
@@ -10,7 +11,7 @@ import ll.c.Types, ll.c.Core, ll.c.Object;
 		
         public this(БуфПам буфПам)
         {
-            return this(ЛЛСоздайФайлОбъекта(буфПам.раскрой()));
+            this(ЛЛСоздайФайлОбъекта(буфПам.раскрой()));
         }        
 
         this(ЛЛФайлОбъекта экзэмпл)
@@ -25,12 +26,12 @@ import ll.c.Types, ll.c.Core, ll.c.Object;
 		
 		public ЛЛФайлОбъекта раскрой()
 		{
-            return this.экзэмпл;
+            return this.экземпл;
 		}
 
         public ИтераторСекций секции()
 		{
-			return ЛЛДайСекции(this.раскрой());
+			return new ИтераторСекций(ЛЛДайСекции(this.раскрой()));
 		}
 
         public бул вКонцеСекцИтер_ли(ИтераторСекций si)
@@ -42,9 +43,9 @@ import ll.c.Types, ll.c.Core, ll.c.Object;
 		{ 
 			return new СимвИтератор(ЛЛДайСимволы(this.раскрой()));
 		}
-        public проц вКонцеСимИтер_ли(СимвИтератор si) 
+        public бул вКонцеСимИтер_ли(СимвИтератор si) 
 		{ 
-			return ЛЛОбъФайл_СимвИтераторВКонце_ли(this.раскрой(), si.раскрой());
+			return ЛЛОбъФайл_СимвИтераторВКонце_ли(cast(ЛЛБинарник) this.раскрой(), si.раскрой());
          }
     }
 

@@ -23,6 +23,7 @@ import ll.api.vals.consts.GlobalValues.GlobalObject;
 import ll.api.vals.consts.GlobalValues.GlobalObjects.GlobalVariable;
 import ll.api.vals.consts.GlobalValues.GlobalObjects.Function;
 
+alias Константа[] Константы;
 
     public class Константа : Значение
     {
@@ -130,10 +131,10 @@ import ll.api.vals.consts.GlobalValues.GlobalObjects.Function;
 			this.экземпл = экземпл;
         }
 		
-		public override ЛЛЗначение раскрой()
+		public ЛЛЗначение раскрой()
 		{
 		return this.экземпл;
 		}
 
-        public бул нулл_ли() { cast(бул) ЛЛПусто_ли(this.раскрой());}
+        public бул нулл_ли() { return cast(бул) ЛЛПусто_ли(this.раскрой());}
     }

@@ -39,7 +39,7 @@ import ll.common;
 
         public override бул типСОднимЗначением_ли() {return true;}
 
-        public override ткст имя()
+        public override ткст вТкст()
 		{
 			return фм("i{}", this.битШирина);
 		}

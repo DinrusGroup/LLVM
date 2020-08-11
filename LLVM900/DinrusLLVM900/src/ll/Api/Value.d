@@ -11,14 +11,16 @@ import ll.api.vals.Instruction;
 import ll.api.Use;
 import ll.api.vals.Constant;
 import ll.api.vals.Argument;
-import ll.api.MDStringAsValue;
+import ll.api.Metadata;
 import ll.api.OperandList;
 
 import ll.common;
 
-    public abstract class Значение
+alias Значение[] Значения;
+
+    public class Значение
     {
-        static Значение создай()
+        Значение создай()
         {
             if (this.экземпл == null)
             {
@@ -37,17 +39,20 @@ import ll.common;
 
             if (cast(бул) ЛЛБинарныйОператор_ли(this.экземпл))
             {
-                return new БинОп(this.экземпл).создай();
+                auto оп = new БинОп(this.экземпл);
+                return оп.создай();
             }
 
             if (cast(бул) ЛЛИнструкция_ли(this.экземпл))
             {
-                return new Инструкция(this.экземпл).создай();
+                auto оп = new Инструкция(this.экземпл);
+                return оп.создай();
             }
 
             if (cast(бул) ЛЛКонстанта_ли(this.экземпл))
             {
-                return Константа(this.экземпл).создай();
+                auto оп = new Константа(this.экземпл);
+                return оп.создай();
             }
 
             if (cast(бул)  ЛЛАргумент_ли(this.экземпл))
@@ -57,10 +62,10 @@ import ll.common;
 
             if (cast(бул) ЛЛМДТкст_ли(this.экземпл))
             {
-                return new МДТекстКакЗначение(this.экземпл);
+                return new МДТкст(this.экземпл);
             }
 
-            throw new NotImplementedException();
+            throw new Искл("NotImplementedException()");
         }
         
         private ЛЛЗначение экземпл;
@@ -71,11 +76,13 @@ import ll.common;
             this.операнды = new СписокОперандов(this);
         }
 
+        public ЛЛЗначение раскрой(){return this.экземпл;}
+
         public Тип тип(){ return new Тип(ЛЛТипУ(this.раскрой()));}
 
         public ткст имя()
         {
-            return вТкст(ЛЛДайИмяЗначения(this.раскрой()));
+            return ll.common.вТкст(ЛЛДайИмяЗначения(this.раскрой()));
          }
 
         public проц имя(ткст знач)
@@ -85,7 +92,7 @@ import ll.common;
 
         public Контекст контекст()
 		{ 
-			return this.тип.Context;
+			return this.тип().контекст();
 		}
                 
         public проц дамп()
@@ -98,10 +105,11 @@ import ll.common;
            // get
             
                 Использование[] список;
-                auto исп = new Использование(ЛЛДайПервоеИспользование(this.раскрой()));
-                while(исп != null)
+                Использование исп;
+                исп = new Использование(ЛЛДайПервоеИспользование(this.раскрой()));
+                while(исп !is пусто)
                 {
-                    список += исп;
+                    список ~= исп;
                     исп = исп.следщ;
                 }
                 return список;            
@@ -121,29 +129,7 @@ import ll.common;
 
         public override ткст вТкст()
 		{
-			return вТкст(cast(ткст0) this.раскрой());
-		}
-/+
-        public override int GetHashCode()
-		{
-			return this.экземпл.GetHashCode();
+			return ll.common.вТкст(cast(ткст0) this.раскрой());
 		}
 
-        public override bool Equals(object obj)
-		{
-			return this.Equals(obj as Значение);
-		}
-
-        public bool Equals(Значение other) 
-		{ 
-			return ReferenceEquals(other, null) ? false : this.экземпл == other.экземпл;
-		}
-
-        public static bool operator ==(Значение op1, Значение op2) 
-		{
-			return ReferenceEquals(op1, null) ? ReferenceEquals(op2, null) : op1.Equals(op2);
-		}
-
-        public static bool operator !=(Значение op1, Значение op2) {return !(op1 == op2);}
-+/
     }

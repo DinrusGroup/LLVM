@@ -4,8 +4,8 @@ import ll.c.Core, ll.c.Types;
 import ll.api.Module;
 import ll.api.ModuleProvider;
 import ll.api.vals.consts.GlobalValues.GlobalObjects.Function;
-import ll.c.Transforms.IPO;
-import ll.c.Transforms.Scalar;
+import ll.c.AllTransforms;
+import ll.c.Transforms.IPO: ЛЛДобавьПроходкуГлобДЦЕ;
 
     public class МенеджерПроходок
     {
@@ -35,10 +35,10 @@ import ll.c.Transforms.Scalar;
         {
             ЛЛВыместиМенеджерПроходок(this.раскрой());
         }
-
+		
 		public ЛЛМенеджерПроходок раскрой()
 		{
-			return this.экземпл;
+		return this.экземпл;
 		}
 
         public бул выполни(Модуль m)
@@ -61,276 +61,288 @@ import ll.c.Transforms.Scalar;
 			return ЛЛФинализуйМенеджерФукнцПроходок(this.раскрой());
 		}
 
-        public void AddArgumentPromotionPass()
+        public проц вклПродвижАргов()
 		{
 			ЛЛДобавьПроходкуПродвиженияАргументов(this.раскрой());
 		}
 
-        public void AddConstantMergePass()
+        public проц вклМёрджКонстант()
 		{
 			ЛЛДобавьПроходкуМёрджКонстант(this.раскрой());
 		}
 
-        public void AddDeadArgEliminationPass()
+        public проц вклИскорененНеиспАргов()
 		{
 			ЛЛДобавьПроходкуИскорененияНенужныхАргов(this.раскрой());
 		}
 
-        public void AddFunctionAttrsPass() 
+        public проц вклАтрыФункц() 
 		{
 			ЛЛДобавьПроходкуАтрибутовФункций(this.раскрой());
 		}
 
-        public void AddFunctionInliningPass()
+        public проц вклИнтайнингФункц()
 		{
 			ЛЛДобавьПроходкуИнлайнингаФункций(this.раскрой());
 		}
 
-        public void AddAlwaysInlinerPass()
+        public проц вклИнлайнВсегда()
 		{
 			ЛЛДобавьПроходкуИнлайнВсегда(this.раскрой());
 		}
 
-        public void AddGlobalDCEPass()
+        public проц вклГлобДЦЕ()
 		{
 			ЛЛДобавьПроходкуГлобДЦЕ(this.раскрой());
 		}
 
-        public void AddGlobalOptimizerPass() 
+        public проц вклГлобОптимизатор() 
 		{ 
 			ЛЛДобавьПроходкуГлобОптимизатора(this.раскрой());
 		}
 
-        public void AddIPConstantPropagationPass() 
+        public проц вклПропагКонстант() 
 		{ 
 			ЛЛДобавьПроходкуПропагацииИПКонстант(this.раскрой());
 		}
 
-        public void AddPruneEHPass()
+        public проц вклПрюнЕХ()
 		{
 			ЛЛДобавьПроходкуПрюнЕХ(this.раскрой());
 		}
 
-        public void AddIPSCCPPass()
+        public проц вклИПСЦЦ()
 		{
 			ЛЛДобавьПроходкуИПСЦЦ(this.раскрой());
 		}
 
-        public void AddInternalizePass(uint allButMain)
+        public проц вклИнтернализацию(uint allButMain)
 		{
 			ЛЛДобавьПроходкуИнтернализации(this.раскрой(), allButMain);
          }
 
 
-        public void AddStripDeadPrototypesPass() 
+        public проц вклУбратьНеиспПрототипы() 
 		{ 
 			ЛЛДобавьПроходкуОчисткиНенужныхПрототипов(this.раскрой());
 		}
 
-        public void AddStripSymbolsPass()
+        public проц вклУбратьСимволы()
 		{
 			ЛЛДобавьПроходкуОчисткиСимволов(this.раскрой());
 		}
 
-        public void AddAggressiveDCEPass()
+        public проц вклАгрессивнДЦЕ()
 		{
 			ЛЛДобавьПроходкуАгрессивДЦЕ(this.раскрой());
 		}
 
-        public void AddAlignmentFromAssumptionsPass()
+        public проц вклРаскладкуИзПредположений()
 		{ 
 			ЛЛДобавьПроходкуРаскладкаИзАссумпций(this.раскрой());
 		}
 
-        public void AddCFGSimplificationPass()
+        public проц вклКФГУпрощения()
 		{ 
 			ЛЛДобавьПроходкуКФГУпрощения(this.раскрой());
 		}
 
-        public void AddDeadStoreEliminationPass() 
+        public проц вклИскорНеиспХран() 
 		{ 
 			ЛЛДобавьПроходкуУдаленияМёртвыхХранилищ(this.раскрой());
 		}
 
-        public void AddScalarizerPass()
+        public проц вклСкаляризатор()
 		{ 
 			ЛЛДобавьПроходкуСкаляризатора(this.раскрой());
 		}
 
-        public void AddMergedLoadStoreMotionPass() 
+        public проц вклДМЗХ() 
 		{ 
-			LLVM.AddMergedLoadStoreMotionPass(this.раскрой());
+			ЛЛДобавьПроходкуМёрдждЛоудСторМоушн(this.раскрой());
 		}
 
-        public void AddGVNPass() 
+        public проц вклГВН() 
 		{ 
-			LLVM.AddGVNPass(this.раскрой());
+			ЛЛДобавьПроходкуГВН(this.раскрой());
 		}
+		
+	//	ЛЛДобавьПроходкуНовГВН
 
-        public void AddIndVarSimplifyPass() 
+        public проц вклУпрощениеПИ() 
 		{
-			LLVM.AddIndVarSimplifyPass(this.раскрой());
+			ЛЛДобавьПроходкуИндВарУпрощения(this.раскрой());
 		}
 
-        public void AddInstructionCombiningPass()
+        public проц AddInstructionCombiningPass()
 		{ 
-			LLVM.AddInstructionCombiningPass(this.раскрой());
+			ЛЛДобавьПроходкуКомбинированияИнструкций(this.раскрой());
 		}
 
-        public void AddJumpThreadingPass()
+        public проц вклДжампПоточность()
 		{ 
-			LLVM.AddJumpThreadingPass(this.раскрой());
+			ЛЛДобавьПроходкуДжампПоточности(this.раскрой());
 		}
 
-        public void AddLICMPass()
+        public проц вклЛИЦМ()
 		{
-			LLVM.AddLICMPass(this.раскрой());
+			ЛЛДобавьПроходкуЛИЦМ(this.раскрой());
 		}
 
-        public void AddLoopDeletionPass() 
+        public проц вклУдалениеЦиклов() 
 		{ 
-			LLVM.AddLoopDeletionPass(this.раскрой());
+			ЛЛДобавьПроходкуЛупДелешн(this.раскрой());
 		}
 
-        public void AddLoopIdiomPass()
+        public проц вклИдиомыЦикла()
 		{
-			LLVM.AddLoopIdiomPass(this.раскрой());
+			ЛЛДобавьПроходкуЛупИдиом(this.раскрой());
 		}
 
-        public void AddLoopRotatePass() 
+        public проц вклВращениеЦикла() 
 		{
-			LLVM.AddLoopRotatePass(this.раскрой());
+			ЛЛДобавьПроходкуЛупРотейт(this.раскрой());
 		}
 
-        public void AddLoopRerollPass()
+        public проц вклРероллЦикла()
 		{
-			LLVM.AddLoopRerollPass(this.раскрой());
+			ЛЛДобавьПроходкуЛупРеролл(this.раскрой());
 		}
 
-        public void AddLoopUnrollPass()
+        public проц вклАнроллЦикла()
 		{ 
-			LLVM.AddLoopUnrollPass(this.раскрой());
+			ЛЛДобавьПроходкуЛупАнролл(this.раскрой());
 		}
+		
+		//ЛЛДобавьПроходкуЛупАнроллЭндДжем
 
-        public void AddLoopUnswitchPass()
+        public проц вклАнсвитчЦикла()
 		{
-			LLVM.AddLoopUnswitchPass(this.раскрой());
+			ЛЛДобавьПроходкуЛупАнСвитч(this.раскрой());
 		}
+		
+		
+		//ЛЛДобавьПроходкуЛоверАтомик
 
-        public void AddMemCpyOptPass()
+        public проц вклОптКопирПам()
 		{
-			LLVM.AddMemCpyOptPass(this.раскрой());
+			ЛЛДобавьПроходкуКопирПамОпц(this.раскрой());
 		}
 
-        public void AddPartiallyInlineLibCallsPass()
+        public проц вклЧастичнИнлайнБибВыз()
 		{
-			LLVM.AddPartiallyInlineLibCallsPass(this.раскрой());
+			ЛЛДобавьПроходкуЧастичнИнлайнВызБиб(this.раскрой());
 		}
 
-        public void AddLowerSwitchPass()
+        public проц AddLowerSwitchPass()
 		{
-			LLVM.AddLowerSwitchPass(this.раскрой());
+			ЛЛДобавьПроходкуЛоверСвитч(this.раскрой());
 		}
 
-        public void AddPromoteMemoryToRegisterPass()
+        public проц AddPromoteMemoryToRegisterPass()
 		{
-			LLVM.AddPromoteMemoryToRegisterPass(this.раскрой());
+			ЛЛДобавьПроходкуПамятьВРегистр(this.раскрой());
 		}
 
-        public void AddReassociatePass()
+        public проц вклРеассоциацию()
 		{
-			LLVM.AddReassociatePass(this.раскрой());
+			ЛЛДобавьПроходкуРеассоциации(this.раскрой());
 		}
 
-        public void AddSCCPPass()
+        public проц вклСЦЦП()
 		{ 
-			LLVM.AddSCCPPass(this.раскрой());
+			ЛЛДобавьПроходкуСЦЦП(this.раскрой());
 		}
 
-        public void AddScalarReplAggregatesPass() 
+        public проц AddScalarReplAggregatesPass() 
 		{
-			LLVM.AddScalarReplAggregatesPass(this.раскрой());
+			ЛЛДобавьПроходкуСкалярРеплАгрегаты(this.раскрой());
 		}
 
-        public void AddScalarReplAggregatesPassSSA()
+        public проц AddScalarReplAggregatesPassSSA()
 		{
-			LLVM.AddScalarReplAggregatesPassSSA(this.раскрой());
+			ЛЛДобавьССАПроходкиСкалярРеплАгрегаты(this.раскрой());
 		}
 
-        public void AddScalarReplAggregatesPassWithThreshold(int threshold)
+        public проц AddScalarReplAggregatesPassWithThreshold(int threshold)
 		{
-			LLVM.AddScalarReplAggregatesPassWithThreshold(this.раскрой(), threshold);
+			ЛЛДобавьПроходкуСкалярРеплАгрегатыСПорогом(this.раскрой(), threshold);
 		}
 
-        public void AddSimplifyLibCallsPass()
+        public проц AddSimplifyLibCallsPass()
 		{ 
-			LLVM.AddSimplifyLibCallsPass(this.раскрой());
+			ЛЛДобавьПроходкуУпроститьВызовыБиб(this.раскрой());
 		}
 
-        public void AddTailCallEliminationPass() 
+        public проц AddTailCallEliminationPass() 
 		{
-			LLVM.AddTailCallEliminationPass(this.раскрой());
+			ЛЛДобавьПроходкуИскоренениеТейлВызовов(this.раскрой());
 		}
 
-        public void AddConstantPropagationPass()
+        public проц AddConstantPropagationPass()
 		{ 
-			LLVM.AddConstantPropagationPass(this.раскрой());
+			ЛЛДобавьПроходкуПропагацияКонстант(this.раскрой());
 		}
 
-        public void AddDemoteMemoryToRegisterPass() 
+        public проц AddDemoteMemoryToRegisterPass() 
 		{
-			LLVM.AddDemoteMemoryToRegisterPass(this.раскрой());
+			ЛЛДобавьПроходкуДемотПамВРегистр(this.раскрой());
 		}
 
-        public void AddVerifierPass() 
+        public проц вклВерификатор() 
 		{
-			LLVM.AddVerifierPass(this.раскрой());
+			ЛЛДобавьПроходкуВерификатора(this.раскрой());
 		}
 
-        public void AddCorrelatedValuePropagationPass() 
+        public проц AddCorrelatedValuePropagationPass() 
 		{
-			LLVM.AddCorrelatedValuePropagationPass(this.раскрой());
+			ЛЛДобавьПроходкуПропагацииКоррелирЗначений(this.раскрой());
 		}
 
-        public void AddEarlyCSEPass()
+        public проц AddEarlyCSEPass()
 		{
-			LLVM.AddEarlyCSEPass(this.раскрой());
+			ЛЛДобавьПроходкуЁлиЦСЕ(this.раскрой());
 		}
+		
+		//ЛЛДобавьПроходкуЁлиЦСЕПамССА
 
-        public void AddLowerExpectIntrinsicPass()
+        public проц AddLowerExpectIntrinsicPass()
 		{ 
-			LLVM.AddLowerExpectIntrinsicPass(this.раскрой());
+			ЛЛДобавьПроходкуЛоверЭкпектИнтринсик(this.раскрой());
 		}
 
-        public void AddTypeBasedAliasAnalysisPass()
+        public проц AddTypeBasedAliasAnalysisPass()
 		{
-			LLVM.AddTypeBasedAliasAnalysisPass(this.раскрой());
+			ЛЛДобавьПроходкуАнализАлиасаНаОвеТипа(this.раскрой());
 		}
 
-        public void AddScopedNoAliasAAPass()
+        public проц AddScopedNoAliasAAPass()
 		{ 
-			LLVM.AddScopedNoAliasAAPass(this.раскрой());
+			ЛЛДобавьПроходкуМасштбнБезАлиасАА(this.раскрой());
 		}
 
-        public void AddBasicAliasAnalysisPass()
+        public проц вклБазАнализНика()
 		{
-			LLVM.AddBasicAliasAnalysisPass(this.раскрой());
+			ЛЛДобавьПроходкуБазовыйАнализАлиаса(this.раскрой());
 		}
-
-        public void AddBBVectorizePass() 
+		
+		//ЛЛДобавьПроходкуУнификацииУзловВыходаИзФункц
+/+
+        public проц AddBBVectorizePass() 
 		{
 			LLVM.AddBBVectorizePass(this.раскрой());
 		}
-
-        public void AddLoopVectorizePass()
++/
+        public проц вклВекторизацЦикла()
 		{ 
-			LLVM.AddLoopVectorizePass(this.раскрой());
+			ЛЛДобавьПроходкуВекторизацЦикла(this.раскрой());
 		}
 
-        public void AddSLPVectorizePass() 
+        public проц AddSLPVectorizePass() 
 		{
-			LLVM.AddSLPVectorizePass(this.раскрой());
+			ЛЛДобавьПроходкуВекторизацСЛП(this.раскрой());
 		}
+
 /+
         public override int GetHashCode()
 		{

@@ -1,90 +1,96 @@
 module ll.api.TargetMachine;
 
+import ll.api.Target;
+import ll.c.TargetMachine;
+import ll.api.PassManager;
+import ll.api.Module;
+import ll.api.MemoryBuffer;
+import ll.c.Types, ll.c.Core;
+import ll.common;
 
-    public class TargetMachine : IDisposableWrapper!(LLVMTargetMachineRef), IDisposable
+    public class МашинаЦели
     {
-        //LLVMTargetMachineRef IWrapper!(LLVMTargetMachineRef).ToHandleType()		{ this.�������;}
+        private ЛЛЦелеваяМашина экземпл;
 
-       // void IDisposableWrapper!(LLVMTargetMachineRef).MakeHandleOwner()		{ this._owner = true;}
-
-        private LLVMTargetMachineRef �������;
-        private bool _disposed;
-        private bool _owner;
-
-        this(LLVMTargetMachineRef �������)
+        this(ЛЛЦелеваяМашина экзэмпл)
         {
-            this.������� = �������;
+            this.экземпл = экзэмпл;
         }
+
+
+		public ЛЛЦелеваяМашина раскрой()
+		{
+			return this.экземпл;
+		}
 
         ~this()
         {
-            this.Dispose(false);
+            ЛЛВыместиЦелМаш(this.раскрой());
         }
 
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+        public Цель цель() 
+		{
+			return new Цель(ЛЛДайЦельЦелМаш(this.раскрой()));
+		}
 
-        private void Dispose(bool disposing)
+        public ткст триада()
+		{
+			ткст0 триада = ЛЛДайТриадуЦелМаш(this.раскрой());
+			ткст рез = ll.common.вТкст(триада);
+			ЛЛВыместиСообщение(триада);
+			return рез;
+		}
+
+        public ткст ЦПБ()
+		{
+			ткст0 цпб = ЛЛДайЦПБЦелМаш(this.раскрой());
+			ткст рез = ll.common.вТкст(цпб);
+			ЛЛВыместиСообщение(цпб);
+			return рез;
+		}
+
+        public ткст ткстФич()
+		{
+			ткст0 фичи = ЛЛДайТкстФичЦелМаш(this.раскрой());
+			ткст рез = ll.common.вТкст(фичи);
+			ЛЛВыместиСообщение(фичи);
+			return рез;
+		}
+
+        public проц устАсмПодробность(бул вербАсм)
+		{
+			ЛЛУстЦелМашАсмВербозность(this.раскрой(), вербАсм);
+		}
+
+        public бул выведиВФайл(Модуль m, ткст имяф, ЛЛТипФайлаКодгена кодген, out ук ошСооб)
+		{
+			ткст0 errorMessage = cast(ткст0) ошСооб;
+			if(!ЛЛЦелМашГенерируйВФайл(this.раскрой(), m.раскрой(),  вТкст0(имяф), кодген, &errorMessage))
+			{
+			ткст ош_ = ll.common.вТкст(errorMessage);
+			ЛЛВыместиСообщение(errorMessage);
+            throw new Искл(ош_);
+			}
+				else return да;
+		}
+
+        public БуфПам выведиВБуфПам(Модуль m, ЛЛТипФайлаКодгена кодген)
         {
-            if (this._disposed)
+			ткст0 ошСооб;
+			ЛЛБуферПамяти буф;
+            if (!ЛЛЦелМашГенерируйВБуфПам(this.раскрой(), m.раскрой(), кодген, &ошСооб, &буф))
             {
-                return;
+			ткст ош_ = ll.common.вТкст(ошСооб);
+			ЛЛВыместиСообщение(ошСооб);
+                throw new Искл(ош_);
             }
 
-            if (this._owner)
-            {
-                LLVM.DisposeTargetMachine(this.�������());
-            }
-
-            this._disposed = true;
+            return new БуфПам(буф);
         }
 
-        public Target Target() 
+        public проц добавьПроходкуАнализа(МенеджерПроходок pm)
 		{
-			return LLVM.GetTargetMachineTarget(this.�������()).Wrap();
-		}
-
-        public string Triple()
-		{
-			return LLVM.GetTargetMachineTriple(this.�������()).MessageToString();
-		}
-
-        public string CPU()
-		{
-			return LLVM.GetTargetMachineCPU(this.�������()).MessageToString();
-		}
-
-        public string FeatureString
-		{
-			return LLVM.GetTargetMachineFeatureString(this.�������()).MessageToString();
-		}
-
-        public void SetAsmVerbosity(bool verboseAsm)
-		{
-			return LLVM.SetTargetMachineAsmVerbosity(this.�������(), verboseAsm);
-		}
-
-        public bool EmitToFile(������ m, �� ����, LLVMCodeGenFileType codegen, out �� errorMessage)
-		{
-			return LLVM.TargetMachineEmitToFile(this.�������(), m.�������(), ����, codegen, out errorMessage);
-		}
-
-        public MemoryBuffer EmitToMemoryBuffer(������ m, LLVMCodeGenFileType codegen)
-        {
-            if (LLVM.TargetMachineEmitToMemoryBuffer(this.�������(), m.�������(), codegen, out �� error, out LLVMMemoryBufferRef buf).Failed())
-            {
-                TextUtilities.Throw(error);
-            }
-
-            return buf.Wrap();
-        }
-
-        public void AddAnalysisPasses(PassManager pm)
-		{
-			LLVM.AddAnalysisPasses(this.�������(), pm.�������());
+			ЛЛДобавьПроходкуАнализа(this.раскрой(), pm.раскрой());
 		}
     }
 

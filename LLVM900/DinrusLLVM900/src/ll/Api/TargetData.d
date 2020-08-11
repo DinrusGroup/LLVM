@@ -1,123 +1,113 @@
 module ll.api.TargetData;
 
+import ll.c.Core, ll.c.Types;
+import ll.c.Target;
+import ll.common;
+import ll.api.Type;
+import ll.api.Value;
 
-    public class TargetData : IDisposableWrapper!(LLVMTargetDataRef), IDisposable
+import ll.common;
+
+    public class ДанныеОЦели 
     {
-       // LLVMTargetDataRef IWrapper!(LLVMTargetDataRef).ToHandleType { this.�������;
-       // void IDisposableWrapper!(LLVMTargetDataRef).MakeHandleOwner() { this._owner = true;
-
-        public static TargetData ������(string stringRep)
+        public this(ткст стрПредст)
 		{
-			LLVM.CreateTargetData(stringRep).Wrap().MakeHandleOwner!(TargetData, LLVMTargetDataRef)();
+			this(ЛЛСоздайДанОЦели(вТкст0(стрПредст)));
 		}
 
-        private LLVMTargetDataRef �������;
-        private bool _disposed;
-        private bool _owner;
+        private ЛЛДанныеОЦели экземпл;
 
-        this(LLVMTargetDataRef �������)
+        this(ЛЛДанныеОЦели экзэмпл)
         {
-            this.������� = �������;
+            this.экземпл = экзэмпл;
         }
+
+		public ЛЛДанныеОЦели раскрой()
+		{
+			return this.экземпл;
+		}
 
         ~this()
         {
-            this.Dispose(false);
+            ЛЛВыместиДанОЦели(this.экземпл);
         }
 
-        public string CopyStringRepOfTargetData()
+        public ткст копируйТкстПредст()
 		{
-			return LLVM.CopyStringRepOfTargetData(this.�������()).MessageToString();
+			ткст0 сооб = ЛЛКопируйТкстПредстДанОЦели(this.раскрой());
+			ткст рез = ll.common.вТкст(сооб);
+			ЛЛВыместиСообщение(сооб);
+			return рез;
 		}
 
-        public LLVMByteOrdering ByteOrder ()
+        public ЛЛППорядокБайт порядокБайт ()
 		{
-			return LLVM.ByteOrder(this.�������());
+			return ЛЛПорядокБайт(this.раскрой());
 		}
 
-        public uint GetPointerSize() 
+        public бцел дайРазмУкз() 
 		{
-			return LLVM.PointerSize(this.�������());
+			return ЛЛРазмУкз(this.раскрой());
         }
 
-        public uint GetPointerSize(uint ��������������) 
+        public бцел дайРазмУкз(бцел адреснПрострво) 
 		{ 
-			return LLVM.PointerSizeForAS(this.�������(), ��������������);
+			return ЛЛРазмУкзДляАП(this.раскрой(), адреснПрострво);
 		}
 
-        public Type GetIntPtrType() 
+        public Тип дайТипЦелУкз() 
 		{
-			return LLVM.IntPtrType(this.�������()).Wrap();
+			return new Тип(ЛЛТипЦелУкз(this.раскрой()));
 		}
 
-        public Type GetIntPtrType(uint ��������������) 
+        public Тип дайТипЦелУкз(бцел адреснПрострво) 
 		{
-			return LLVM.IntPtrTypeForAS(this.�������(), ��������������).Wrap();
+			return new Тип(ЛЛТипЦелУкзДляАП(this.раскрой(), адреснПрострво));
 		}
 
-        public ulong SizeOfTypeInBits(Type ty) 
+        public бдол размТипаВБитах(Тип тип) 
 		{
-			return LLVM.SizeOfTypeInBits(this.�������(), ty.�������());
+			return ЛЛРазмТипаВБитах(this.раскрой(), тип.раскрой());
 		}
-        public ulong StoreSizeOfType(Type ty)
+        public бдол размХранТипа(Тип тип)
 		{
-			return LLVM.StoreSizeOfType(this.�������(), ty.�������());
+			return ЛЛРазмХранТипа(this.раскрой(), тип.раскрой());
 		}
 
-        public ulong ABISizeOfType(Type ty)
+        public бдол размДИПТипа(Тип тип)
 		{
-			return LLVM.ABISizeOfType(this.�������(), ty.�������());
+			return ЛЛДИПРазмТипа(this.раскрой(), тип.раскрой());
 		}
 
-        public uint ABIAlignmentOfType(Type ty)
+        public бцел раскладкаДИПТипа(Тип тип)
 		{
-			return LLVM.ABIAlignmentOfType(this.�������(), ty.�������());
+			return ЛЛДИПРаскладкаТипа(this.раскрой(), тип.раскрой());
 		}
 
-        public uint CallFrameAlignmentOfType(Type ty)
+        public бцел раскладкаФреймаВызТипа(Тип тип)
 		{
-			return LLVM.CallFrameAlignmentOfType(this.�������(), ty.�������());
+			return ЛЛРаскладкаФреймаВызДляТипа(this.раскрой(), тип.раскрой());
 		}
 
-        public uint PreferredAlignmentOfType(Type ty)
+        public бцел предпочтРаскладкаТипа(Тип тип)
 		{
-			return LLVM.PreferredAlignmentOfType(this.�������(), ty.�������());
+			return ЛЛПредпочтРаскладкаТипа(this.раскрой(), тип.раскрой());
 		}
 
-        public uint PreferredAlignmentOfGlobal(�������� globalVar)
+        public бцел предпочтРаскладкаГлоба(Значение глобПерем)
 		{
-			return LLVM.PreferredAlignmentOfGlobal(this.�������(), globalVar.�������());
+			return ЛЛПредпочтРаскладкаГлоба(this.раскрой(), глобПерем.раскрой());
 		}
 
-        public uint ElementAtOffset(Type structTy, ulong offset) 
+        public бцел элтПоСмещ(Тип типСтрукт, бдол смещ) 
 		{
-			return LLVM.ElementAtOffset(this.�������(), structTy.�������(), offset);
+			return ЛЛЭлтПоСмещ(this.раскрой(), типСтрукт.раскрой(), смещ);
 		}
 
-        public ulong OffsetOfElement(Type structTy, uint element)
+        public бдол смещЭлта(Тип типСтрукт, бцел элт)
 		{
-			LLVM.OffsetOfElement(this.�������(), structTy.�������(), element);
+			return ЛЛСмещЭлта(this.раскрой(), типСтрукт.раскрой(), элт);
 		}
 
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        private void Dispose(bool disposing)
-        {
-            if (this._disposed)
-            {
-                return;
-            }
-
-            if (this._owner)
-            {
-                LLVM.DisposeTargetData(this.�������());
-            }
-
-            this._disposed = true;
-        }
     }
 

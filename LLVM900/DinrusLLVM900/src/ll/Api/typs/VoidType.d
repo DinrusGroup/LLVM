@@ -19,7 +19,7 @@ import ll.c.Types;
             return this.экзэмпл;
 		}
 
-        public override string имя () {return "проц";}
-        public override bool типПервКласса_ли() {return false;}
+        public override ткст вТкст() {return "проц";}
+        public override бул типПервКласса_ли() {return нет;}
     }
-}
+

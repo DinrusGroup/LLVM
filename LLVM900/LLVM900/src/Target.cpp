@@ -162,34 +162,34 @@ LLEXPORT ЛЛТип ЛЛТипЦелУкзВКонтексте(ЛЛКонтек�
     return LLVMIntPtrTypeForASInContext(C,  TD, AS);
 }
 
-/** Computes the size of a type in bytes for a target.
+/** Вычисляет размер типа в битах для цели.
     See the method llvm::DataLayout::getTypeSizeInBits. */
 LLEXPORT unsigned long long ЛЛРазмТипаВБитах(ЛЛДанныеОЦели  TD,ЛЛТип Ty) {
     return LLVMSizeOfTypeInBits(TD, Ty);
 }
-/** Computes the storage size of a type in bytes for a target.
+/** Вычисляет размер хранения типа в битах для цели.
     See the method llvm::DataLayout::getTypeStoreSize. */
 LLEXPORT unsigned long long ЛЛРазмХранТипа(ЛЛДанныеОЦели TD, ЛЛТип Ty) {
     return LLVMStoreSizeOfType( TD, Ty) ;
 }
 
-/** Computes the ABI size of a type in bytes for a target.
+/** Вычисляет размер ABI типа в байтах для цели.
     See the method llvm::DataLayout::getTypeAllocSize. */
 LLEXPORT unsigned long long ЛЛДИПРазмТипа(ЛЛДанныеОЦели TD, ЛЛТип Ty) {
     return LLVMABISizeOfType(TD, Ty);
 }
-/** Computes the ABI alignment of a type in bytes for a target.
+/** Вычисляет раскладку ABI типа в байтах для цели.
     See the method llvm::DataLayout::getTypeABISize. */
 LLEXPORT unsigned ЛЛДИПРаскладкаТипа(ЛЛДанныеОЦели TD, ЛЛТип Ty) {
     return LLVMABIAlignmentOfType( TD, Ty);
 }
 
-/** Computes the call frame alignment of a type in bytes for a target.
+/** Вычисляет раскладку фрейма вызова типа в байтах для цели.
     See the method llvm::DataLayout::getTypeABISize. */
 LLEXPORT unsigned ЛЛРаскладкаФреймаВызДляТипа(ЛЛДанныеОЦели TD, ЛЛТип Ty) {
     return LLVMCallFrameAlignmentOfType( TD,  Ty);
 }
-/** Computes the preferred alignment of a type in bytes for a target.
+/** Вычисляет предпочитаемую раскладку типа в байтах для цели.
     See the method llvm::DataLayout::getTypeABISize. */
 LLEXPORT unsigned ЛЛПредпочтРаскладкаТипа(ЛЛДанныеОЦели TD,ЛЛТип Ty) {
     return LLVMPreferredAlignmentOfType( TD,  Ty);
@@ -210,7 +210,7 @@ LLEXPORT unsigned ЛЛЭлтПоСмещ(ЛЛДанныеОЦели TD, ЛЛТи
 }
 /** Computes the byte offset of the indexed struct element for a target.
     See the method llvm::StructLayout::getElementContainingOffset. */
-LLEXPORT unsigned long long ЛЛСМещЭлта(ЛЛДанныеОЦели TD,
+LLEXPORT unsigned long long ЛЛСмещЭлта(ЛЛДанныеОЦели TD,
                                        ЛЛТип StructTy, unsigned Element) {
     return LLVMOffsetOfElement(TD, StructTy,  Element);
 }

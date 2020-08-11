@@ -27,7 +27,7 @@ import ll.c.Types, ll.c.Object, ll.common;
 
         public ткст имяСимвола()
 		{
-			return вТкст(ЛЛДайИмяСимвола(this.раскрой()));
+			return ll.common.вТкст(ЛЛДайИмяСимвола(this.раскрой()));
 		}
 
         public цел адресСимвола()

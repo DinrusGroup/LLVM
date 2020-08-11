@@ -3,6 +3,7 @@ module ll.api.GenericValue;
 import ll.c.ExecutionEngine;
 import ll.api.typs.IntegerType;
 import ll.api.typs.FPType;
+import ll.api.Type;
 
     public  class ГенерноеЗначение
     {
@@ -15,7 +16,7 @@ import ll.api.typs.FPType;
 
         this(ТипЦелое t, бдол n)
 		 {
-			this(t, n, false);
+			this(t, n, нет);
 		 }
 
         this(ТипПЗ ty, дво n)
@@ -32,6 +33,11 @@ import ll.api.typs.FPType;
         {
             this.экземпл = экзэмпл;
         }
+
+		public ЛЛГенерноеЗначение раскрой()
+		{
+			return this.экземпл;
+		}
 
         ~this()
         {
