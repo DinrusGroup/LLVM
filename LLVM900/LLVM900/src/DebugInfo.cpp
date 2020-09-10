@@ -89,9 +89,9 @@ LLEXPORT void ЛЛПостроительОИ_Финализуй(ЛЛПостро
  */
 LLEXPORT ЛЛМетаданные ЛЛПостроительОИ_СоздайЕдиницуКомпиляции(
     ЛЛПостроительОИ Builder, LLVMDWARFSourceLanguage Lang,
-    ЛЛМетаданные FileRef, const char *Producer, size_t ProducerLen,
-    ЛЛБул isOptimized, const char *Flags, size_t FlagsLen,
-    unsigned RuntimeVer, const char *SplitName, size_t SplitNameLen,
+    ЛЛМетаданные FileRef, ткст0 Producer, size_t ProducerLen,
+    ЛЛБул isOptimized, ткст0 Flags, size_t FlagsLen,
+    unsigned RuntimeVer, ткст0 SplitName, size_t SplitNameLen,
     LLVMDWARFEmissionKind Kind, unsigned DWOId, ЛЛБул SplitDebugInlining,
     ЛЛБул DebugInfoForProfiling) {
     return  LLVMDIBuilderCreateCompileUnit( Builder,  Lang, FileRef, Producer,  ProducerLen,
@@ -108,8 +108,8 @@ LLEXPORT ЛЛМетаданные ЛЛПостроительОИ_СоздайЕ�
  * \param DirectoryLen The length of the C string passed to \c Directory.
  */
 LLEXPORT ЛЛМетаданные
-ЛЛПостроительОИ_СоздайФайл(ЛЛПостроительОИ Builder, const char *Filename,
-                        size_t FilenameLen, const char *Directory,
+ЛЛПостроительОИ_СоздайФайл(ЛЛПостроительОИ Builder, ткст0 Filename,
+                        size_t FilenameLen, ткст0 Directory,
                         size_t DirectoryLen) {
     return LLVMDIBuilderCreateFile( Builder, Filename, FilenameLen, 
       Directory,DirectoryLen);
@@ -131,10 +131,10 @@ LLEXPORT ЛЛМетаданные
  */
 LLEXPORT ЛЛМетаданные
 ЛЛПостроительОИ_СоздайМодуль(ЛЛПостроительОИ Builder, ЛЛМетаданные ParentScope,
-                          const char *Name, size_t NameLen,
-                          const char *ConfigMacros, size_t ConfigMacrosLen,
-                          const char *IncludePath, size_t IncludePathLen,
-                          const char *ISysRoot, size_t ISysRootLen) {
+                          ткст0 Name, size_t NameLen,
+                          ткст0 ConfigMacros, size_t ConfigMacrosLen,
+                          ткст0 IncludePath, size_t IncludePathLen,
+                          ткст0 ISysRoot, size_t ISysRootLen) {
     return LLVMDIBuilderCreateModule( Builder,  ParentScope,
                           Name,  NameLen, ConfigMacros,  ConfigMacrosLen,
                           IncludePath,  IncludePathLen, ISysRoot,  ISysRootLen);
@@ -152,7 +152,7 @@ LLEXPORT ЛЛМетаданные
 LLEXPORT ЛЛМетаданные
 ЛЛПостроительОИ_СоздайПрострвоИмён(ЛЛПостроительОИ Builder,
                              ЛЛМетаданные ParentScope,
-                             const char *Name, size_t NameLen,
+                             ткст0 Name, size_t NameLen,
                              ЛЛБул ExportSymbols) {
     return LLVMDIBuilderCreateNameSpace( Builder, ParentScope,
                              Name,  NameLen, ExportSymbols);
@@ -177,8 +177,8 @@ LLEXPORT ЛЛМетаданные
  * \param IsOptimized     True if optimization is ON.
  */
 LLEXPORT ЛЛМетаданные ЛЛПостроительОИ_СоздайФункц(
-    ЛЛПостроительОИ Builder, ЛЛМетаданные Scope, const char *Name,
-    size_t NameLen, const char *LinkageName, size_t LinkageNameLen,
+    ЛЛПостроительОИ Builder, ЛЛМетаданные Scope, ткст0 Name,
+    size_t NameLen, ткст0 LinkageName, size_t LinkageNameLen,
     ЛЛМетаданные File, unsigned LineNo, ЛЛМетаданные Ty,
     ЛЛБул IsLocalToUnit, ЛЛБул IsDefinition,
     unsigned ScopeLine, LLVMDIFlags Flags, ЛЛБул IsOptimized) {
@@ -289,7 +289,7 @@ LLEXPORT ЛЛМетаданные
                                        ЛЛМетаданные Decl,
                                        ЛЛМетаданные File,
                                        unsigned Line,
-                                       const char *Name, size_t NameLen) {
+                                       ткст0 Name, size_t NameLen) {
     return LLVMDIBuilderCreateImportedDeclaration( Builder,
                                         Scope,Decl,File,Line, Name, NameLen) ;
 }
@@ -367,7 +367,7 @@ LLEXPORT ЛЛМетаданные ЛЛМасштабОИ_ДайФайл(ЛЛМе
  *
  * @see DIFile::getDirectory()
  */
-LLEXPORT const char *ЛЛФайлОИ_ДайПапку(ЛЛМетаданные File, unsigned *Len) {
+LLEXPORT ткст0 ЛЛФайлОИ_ДайПапку(ЛЛМетаданные File, unsigned *Len) {
     return LLVMDIFileGetDirectory( File, Len);
 }
 
@@ -378,7 +378,7 @@ LLEXPORT const char *ЛЛФайлОИ_ДайПапку(ЛЛМетаданные 
  *
  * @see DIFile::getFilename()
  */
-LLEXPORT const char *ЛЛФайлОИ_ДайИмяФ(ЛЛМетаданные File, unsigned *Len) {
+LLEXPORT ткст0 ЛЛФайлОИ_ДайИмяФ(ЛЛМетаданные File, unsigned *Len) {
     return LLVMDIFileGetFilename( File, Len);
 }
 /**
@@ -388,7 +388,7 @@ LLEXPORT const char *ЛЛФайлОИ_ДайИмяФ(ЛЛМетаданные Fi
  *
  * @see DIFile::getSource()
  */
-LLEXPORT const char *ЛЛФайлОИ_ДайИсходник(ЛЛМетаданные File, unsigned *Len) {
+LLEXPORT ткст0 ЛЛФайлОИ_ДайИсходник(ЛЛМетаданные File, unsigned *Len) {
     return LLVMDIFileGetSource( File, Len);
 }
 
@@ -433,7 +433,7 @@ LLEXPORT ЛЛМетаданные
  * @param IsUnsigned     True if the value is unsigned.
  */
 LLEXPORT ЛЛМетаданные ЛЛПостроительОИ_СоздайПеречислитель(ЛЛПостроительОИ Builder,
-                                              const char *Name, size_t NameLen,
+                                              ткст0 Name, size_t NameLen,
                                               int64_t Value,
                                               ЛЛБул IsUnsigned) {
     return LLVMDIBuilderCreateEnumerator( Builder, Name,  NameLen, Value, IsUnsigned);
@@ -454,7 +454,7 @@ LLEXPORT ЛЛМетаданные ЛЛПостроительОИ_СоздайП�
  * \param ClassTy        Underlying type of a C++11/ObjC fixed enum.
  */
 LLEXPORT ЛЛМетаданные ЛЛПостроительОИ_СоздайТипПеречисления(
-    ЛЛПостроительОИ Builder, ЛЛМетаданные Scope, const char *Name,
+    ЛЛПостроительОИ Builder, ЛЛМетаданные Scope, ткст0 Name,
     size_t NameLen, ЛЛМетаданные File, unsigned LineNumber,
     uint64_t SizeInBits, uint32_t AlignInBits, ЛЛМетаданные *Elements,
     unsigned NumElements, ЛЛМетаданные ClassTy) 
@@ -482,11 +482,11 @@ LLEXPORT ЛЛМетаданные ЛЛПостроительОИ_СоздайТ�
  * \param UniqueIdLen  Length of unique identifier.
  */
 LLEXPORT ЛЛМетаданные ЛЛПостроительОИ_СоздайТипСоюз(
-    ЛЛПостроительОИ Builder, ЛЛМетаданные Scope, const char *Name,
+    ЛЛПостроительОИ Builder, ЛЛМетаданные Scope, ткст0 Name,
     size_t NameLen, ЛЛМетаданные File, unsigned LineNumber,
     uint64_t SizeInBits, uint32_t AlignInBits, LLVMDIFlags Flags,
     ЛЛМетаданные *Elements, unsigned NumElements, unsigned RunTimeLang,
-    const char *UniqueId, size_t UniqueIdLen) 
+    ткст0 UniqueId, size_t UniqueIdLen) 
 {
     return LLVMDIBuilderCreateUnionType(Builder,  Scope, Name, NameLen,  File,  LineNumber,
      SizeInBits,  AlignInBits,  Flags, Elements,  NumElements,  RunTimeLang, UniqueId,  UniqueIdLen);
@@ -536,7 +536,7 @@ LLEXPORT ЛЛМетаданные
  * \param NameLen   Length of type name.
  */
 LLEXPORT ЛЛМетаданные
-ЛЛПостроительОИ_СоздайНеукТип(ЛЛПостроительОИ Builder, const char *Name,
+ЛЛПостроительОИ_СоздайНеукТип(ЛЛПостроительОИ Builder, ткст0 Name,
                                    size_t NameLen) {
     return LLVMDIBuilderCreateUnspecifiedType( Builder, Name, NameLen);
 }
@@ -552,7 +552,7 @@ LLEXPORT ЛЛМетаданные
  * \param Flags       Flags to encode optional attribute like endianity
  */
 LLEXPORT ЛЛМетаданные
-ЛЛПостроительОИ_СоздайБазовыйТип(ЛЛПостроительОИ Builder, const char *Name,
+ЛЛПостроительОИ_СоздайБазовыйТип(ЛЛПостроительОИ Builder, ткст0 Name,
                              size_t NameLen, uint64_t SizeInBits,
                              LLVMDWARFTypeEncoding Encoding,
                              LLVMDIFlags Flags) {
@@ -573,7 +573,7 @@ LLEXPORT ЛЛМетаданные
 LLEXPORT ЛЛМетаданные ЛЛПостроительОИ_СоздайТипУказатель(
     ЛЛПостроительОИ Builder, ЛЛМетаданные PointeeTy,
     uint64_t SizeInBits, uint32_t AlignInBits, unsigned AddressSpace,
-    const char *Name, size_t NameLen) {
+    ткст0 Name, size_t NameLen) {
     return LLVMDIBuilderCreatePointerType(Builder,  PointeeTy,SizeInBits,  AlignInBits,  AddressSpace,
     Name,  NameLen);
 }
@@ -597,12 +597,12 @@ LLEXPORT ЛЛМетаданные ЛЛПостроительОИ_СоздайТ�
  * \param UniqueIdLen  Length of the unique identifier for the struct.
  */
 LLEXPORT ЛЛМетаданные ЛЛПостроительОИ_СоздайТипСтрукт(
-    ЛЛПостроительОИ Builder, ЛЛМетаданные Scope, const char *Name,
+    ЛЛПостроительОИ Builder, ЛЛМетаданные Scope, ткст0 Name,
     size_t NameLen, ЛЛМетаданные File, unsigned LineNumber,
     uint64_t SizeInBits, uint32_t AlignInBits, LLVMDIFlags Flags,
     ЛЛМетаданные DerivedFrom, ЛЛМетаданные *Elements,
     unsigned NumElements, unsigned RunTimeLang, ЛЛМетаданные VTableHolder,
-    const char *UniqueId, size_t UniqueIdLen) {
+    ткст0 UniqueId, size_t UniqueIdLen) {
     return LLVMDIBuilderCreateStructType(Builder,  Scope, Name, NameLen,  File,  LineNumber,
      SizeInBits,  AlignInBits,  Flags,DerivedFrom, Elements,NumElements,  RunTimeLang,  VTableHolder,
     UniqueId,  UniqueIdLen) ;
@@ -623,7 +623,7 @@ LLEXPORT ЛЛМетаданные ЛЛПостроительОИ_СоздайТ�
  * \param Ty           Parent type.
  */
 LLEXPORT ЛЛМетаданные ЛЛПостроительОИ_СоздайТипЧлен(
-    ЛЛПостроительОИ Builder, ЛЛМетаданные Scope, const char *Name,
+    ЛЛПостроительОИ Builder, ЛЛМетаданные Scope, ткст0 Name,
     size_t NameLen, ЛЛМетаданные File, unsigned LineNo,
     uint64_t SizeInBits, uint32_t AlignInBits, uint64_t OffsetInBits,
     LLVMDIFlags Flags, ЛЛМетаданные Ty) {
@@ -647,7 +647,7 @@ LLEXPORT ЛЛМетаданные ЛЛПостроительОИ_СоздайТ�
  */
 LLEXPORT ЛЛМетаданные
 ЛЛПостроительОИ_СоздайТипСтатичЧлен(
-    ЛЛПостроительОИ Builder, ЛЛМетаданные Scope, const char *Name,
+    ЛЛПостроительОИ Builder, ЛЛМетаданные Scope, ткст0 Name,
     size_t NameLen, ЛЛМетаданные File, unsigned LineNumber,
     ЛЛМетаданные Type, LLVMDIFlags Flags, ЛЛЗначение ConstantVal,
     uint32_t AlignInBits) {
@@ -690,7 +690,7 @@ LLEXPORT ЛЛМетаданные
  */
 LLEXPORT ЛЛМетаданные
 ЛЛПостроительОИ_СоздайЦВарОбджСи(ЛЛПостроительОИ Builder,
-                            const char *Name, size_t NameLen,
+                            ткст0 Name, size_t NameLen,
                             ЛЛМетаданные File, unsigned LineNo,
                             uint64_t SizeInBits, uint32_t AlignInBits,
                             uint64_t OffsetInBits, LLVMDIFlags Flags,
@@ -716,10 +716,10 @@ LLEXPORT ЛЛМетаданные
  */
 LLEXPORT ЛЛМетаданные
 ЛЛПостроительОИ_СоздайСвойствоОбджСи(ЛЛПостроительОИ Builder,
-                                const char *Name, size_t NameLen,
+                                ткст0 Name, size_t NameLen,
                                 ЛЛМетаданные File, unsigned LineNo,
-                                const char *GetterName, size_t GetterNameLen,
-                                const char *SetterName, size_t SetterNameLen,
+                                ткст0 GetterName, size_t GetterNameLen,
+                                ткст0 SetterName, size_t SetterNameLen,
                                 unsigned PropertyAttributes,
                                 ЛЛМетаданные Ty) {
     return LLVMDIBuilderCreateObjCProperty( Builder, Name,  NameLen,
@@ -740,7 +740,7 @@ LLEXPORT ЛЛМетаданные
 
 /**
  * Create debugging information entry for a qualified
- * type, e.g. 'const int'.
+ * type, e.g. 'const цел'.
  * \param Builder     The DIBuilder.
  * \param Tag         Tag identifying type,
  *                    e.g. LLVMDWARFTypeQualifier_volatile_type
@@ -783,7 +783,7 @@ LLEXPORT ЛЛМетаданные
  */
 LLEXPORT ЛЛМетаданные
 ЛЛПостроительОИ_СоздайТипдеф(ЛЛПостроительОИ Builder, ЛЛМетаданные Type,
-                           const char *Name, size_t NameLen,
+                           ткст0 Name, size_t NameLen,
                            ЛЛМетаданные File, unsigned LineNo,
                            ЛЛМетаданные Scope) {
     return LLVMDIBuilderCreateTypedef( Builder, Type, Name,  NameLen,
@@ -825,10 +825,10 @@ LLEXPORT ЛЛМетаданные
  * \param UniqueIdentifierLen Length of the unique identifier.
  */
 LLEXPORT ЛЛМетаданные ЛЛПостроительОИ_СоздайФорвардДекл(
-    ЛЛПостроительОИ Builder, unsigned Tag, const char *Name,
+    ЛЛПостроительОИ Builder, unsigned Tag, ткст0 Name,
     size_t NameLen, ЛЛМетаданные Scope, ЛЛМетаданные File, unsigned Line,
     unsigned RuntimeLang, uint64_t SizeInBits, uint32_t AlignInBits,
-    const char *UniqueIdentifier, size_t UniqueIdentifierLen){
+    ткст0 UniqueIdentifier, size_t UniqueIdentifierLen){
   return LLVMDIBuilderCreateForwardDecl(Builder,  Tag, Name,NameLen,  Scope,  File,  Line,
      RuntimeLang,  SizeInBits,  AlignInBits, UniqueIdentifier,  UniqueIdentifierLen);
 }
@@ -852,10 +852,10 @@ LLEXPORT ЛЛМетаданные ЛЛПостроительОИ_СоздайФ�
  */
 LLEXPORT ЛЛМетаданные
 ЛЛПостроительОИ_СоздайПеремещаемыйСоставнойТип(
-    ЛЛПостроительОИ Builder, unsigned Tag, const char *Name,
+    ЛЛПостроительОИ Builder, unsigned Tag, ткст0 Name,
     size_t NameLen, ЛЛМетаданные Scope, ЛЛМетаданные File, unsigned Line,
     unsigned RuntimeLang, uint64_t SizeInBits, uint32_t AlignInBits,
-    LLVMDIFlags Flags, const char *UniqueIdentifier,
+    LLVMDIFlags Flags, ткст0 UniqueIdentifier,
     size_t UniqueIdentifierLen){
   return LLVMDIBuilderCreateReplaceableCompositeType(Builder,  Tag, Name,
      NameLen,  Scope,  File,  Line,RuntimeLang,  SizeInBits,  AlignInBits,
@@ -879,7 +879,7 @@ LLEXPORT ЛЛМетаданные
 LLEXPORT ЛЛМетаданные
 ЛЛПостроительОИ_СоздайТипЧленПоля(ЛЛПостроительОИ Builder,
                                       ЛЛМетаданные Scope,
-                                      const char *Name, size_t NameLen,
+                                      ткст0 Name, size_t NameLen,
                                       ЛЛМетаданные File, unsigned LineNumber,
                                       uint64_t SizeInBits,
                                       uint64_t OffsetInBits,
@@ -913,13 +913,13 @@ LLEXPORT ЛЛМетаданные
  * \param UniqueIdentifierLen Length of the unique identifier.
  */
 LLEXPORT ЛЛМетаданные ЛЛПостроительОИ_СоздайТипКласс(ЛЛПостроительОИ Builder,
-    ЛЛМетаданные Scope, const char *Name, size_t NameLen,
+    ЛЛМетаданные Scope, ткст0 Name, size_t NameLen,
     ЛЛМетаданные File, unsigned LineNumber, uint64_t SizeInBits,
     uint32_t AlignInBits, uint64_t OffsetInBits, LLVMDIFlags Flags,
     ЛЛМетаданные DerivedFrom,
     ЛЛМетаданные *Elements, unsigned NumElements,
     ЛЛМетаданные VTableHolder, ЛЛМетаданные TemplateParamsNode,
-    const char *UniqueIdentifier, size_t UniqueIdentifierLen){
+    ткст0 UniqueIdentifier, size_t UniqueIdentifierLen){
   return LLVMDIBuilderCreateClassType( Builder,Scope, Name,  NameLen,
      File,  LineNumber,  SizeInBits, AlignInBits,  OffsetInBits,  Flags,
      DerivedFrom,Elements,  NumElements, VTableHolder,  TemplateParamsNode,
@@ -944,7 +944,7 @@ LLEXPORT ЛЛМетаданные
  *
  * @see DIType::getName()
  */
-LLEXPORT const char *ЛЛТипОИ_ДайИмя(ЛЛМетаданные DType, size_t *Length){
+LLEXPORT ткст0 ЛЛТипОИ_ДайИмя(ЛЛМетаданные DType, size_t *Length){
   return LLVMDITypeGetName(DType, Length);
 }
 
@@ -1065,8 +1065,8 @@ LLEXPORT ЛЛМетаданные
  *                    specified)
  */
 LLEXPORT ЛЛМетаданные ЛЛПостроительОИ_СоздайВыражениеГлобПеременной(
-    ЛЛПостроительОИ Builder, ЛЛМетаданные Scope, const char *Name,
-    size_t NameLen, const char *ЛЛКомпоновка, size_t LinkLen, ЛЛМетаданные File,
+    ЛЛПостроительОИ Builder, ЛЛМетаданные Scope, ткст0 Name,
+    size_t NameLen, ткст0 ЛЛКомпоновка, size_t LinkLen, ЛЛМетаданные File,
     unsigned LineNo, ЛЛМетаданные Ty, ЛЛБул LocalToUnit,
     ЛЛМетаданные Expr, ЛЛМетаданные Decl, uint32_t AlignInBits){
   return LLVMDIBuilderCreateGlobalVariableExpression(Builder,  Scope, Name,
@@ -1169,8 +1169,8 @@ LLEXPORT void ЛЛМетаданные_ЗамениВсеИспользован�
  *                    specified)
  */
 LLEXPORT ЛЛМетаданные ЛЛПостроительОИ_СоздайВремФорвардДеклГлобПерем(
-    ЛЛПостроительОИ Builder, ЛЛМетаданные Scope, const char *Name,
-    size_t NameLen, const char *ЛЛКомпоновка, size_t LnkLen, ЛЛМетаданные File,
+    ЛЛПостроительОИ Builder, ЛЛМетаданные Scope, ткст0 Name,
+    size_t NameLen, ткст0 ЛЛКомпоновка, size_t LnkLen, ЛЛМетаданные File,
     unsigned LineNo, ЛЛМетаданные Ty, ЛЛБул LocalToUnit,
     ЛЛМетаданные Decl, uint32_t AlignInBits){
   return LLVMDIBuilderCreateTempGlobalVariableFwdDecl(Builder,  Scope, Name,
@@ -1258,7 +1258,7 @@ LLEXPORT ЛЛЗначение ЛЛПостроительОИ_ВставьОтл�
  * \param AlignInBits     Variable alignment.
  */
 LLEXPORT ЛЛМетаданные ЛЛПостроительОИ_СоздайАвтоПеременную(
-    ЛЛПостроительОИ Builder, ЛЛМетаданные Scope, const char *Name,
+    ЛЛПостроительОИ Builder, ЛЛМетаданные Scope, ткст0 Name,
     size_t NameLen, ЛЛМетаданные File, unsigned LineNo, ЛЛМетаданные Ty,
     ЛЛБул AlwaysPreserve, LLVMDIFlags Flags, uint32_t AlignInBits){
   return LLVMDIBuilderCreateAutoVariable(Builder, Scope, Name,
@@ -1278,7 +1278,7 @@ LLEXPORT ЛЛМетаданные ЛЛПостроительОИ_СоздайА�
  * \param Flags           Flags.
  */
 LLEXPORT ЛЛМетаданные ЛЛПостроительОИ_СоздайПеременнуюПараметра(
-    ЛЛПостроительОИ Builder, ЛЛМетаданные Scope, const char *Name,
+    ЛЛПостроительОИ Builder, ЛЛМетаданные Scope, ткст0 Name,
     size_t NameLen, unsigned ArgNo, ЛЛМетаданные File, unsigned LineNo,
     ЛЛМетаданные Ty, ЛЛБул AlwaysPreserve, LLVMDIFlags Flags){
   return LLVMDIBuilderCreateParameterVariable(Builder,  Scope, Name,

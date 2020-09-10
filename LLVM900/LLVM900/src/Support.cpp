@@ -20,8 +20,8 @@ return LLVMLoadLibraryPermanently(Filename);
  *
  * @see llvm::cl::ParseCommandLineOptions()
  */
-LLEXPORT void ЛЛРазбериОпцКомСтроки(int argc, const char *const *argv,
-                                 const char *Overview){
+LLEXPORT void ЛЛРазбериОпцКомСтроки(цел argc, ткст0 const *argv,
+                                 ткст0 Overview){
  LLVMParseCommandLineOptions(argc, argv, Overview);
 }
 
@@ -32,7 +32,7 @@ LLEXPORT void ЛЛРазбериОпцКомСтроки(int argc, const char *c
  *
  * @see sys::DynamicLibrary::SearchForAddressOfSymbol()
  */
-LLEXPORT void *ЛЛНайдиАдресСимвола(const char *symbolName){
+LLEXPORT void *ЛЛНайдиАдресСимвола(ткст0 symbolName){
 return LLVMSearchForAddressOfSymbol(symbolName);
 }
 
@@ -43,7 +43,7 @@ return LLVMSearchForAddressOfSymbol(symbolName);
  *
  * @see sys::DynamicLibrary::AddSymbol()
  */
-LLEXPORT void ЛЛДобавьСимвол(const char *symbolName, void *symbolValue){
+LLEXPORT void ЛЛДобавьСимвол(ткст0 symbolName, void *symbolValue){
 LLVMAddSymbol(symbolName, symbolValue) ;
 }
 

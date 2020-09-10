@@ -29,113 +29,136 @@
 using namespace llvm;
 using namespace lto;
 
+namespace llvmlto2{
+
+typedef void проц;
+typedef void* ук;
+
+typedef bool бул;
+
+typedef  signed char байт;   ///int8_t
+typedef  unsigned char ббайт;  ///uint8_t
+
+typedef  short крат;  ///int16_t
+typedef  unsigned short бкрат; ///uint16_t
+
+typedef  int цел;  ///int32_t
+typedef  unsigned int бцел; ///uint32_t
+
+typedef  long long дол;   ///int64_t
+typedef  unsigned long long бдол;  ///uint64_t
+
+typedef  size_t т_мера;
+
+typedef const char* ткст0;
+
 static cl::opt<char>
-    OptLevel("O", cl::desc("Optimization level. [-O0, -O1, -O2, or -O3] "
-                           "(default = '-O2')"),
+    OptLevel("O", cl::desc("Уровень оптимизации. [-O0, -O1, -O2, or -O3] "
+                           "(дефолт = '-O2')"),
              cl::Prefix, cl::ZeroOrMore, cl::init('2'));
 
 static cl::opt<char> CGOptLevel(
     "cg-opt-level",
-    cl::desc("Codegen optimization level (0, 1, 2 or 3, default = '2')"),
+    cl::desc("Уровень оптимизации кодгена (0, 1, 2 или 3, дефолт = '2')"),
     cl::init('2'));
 
 static cl::list<std::string> InputFilenames(cl::Positional, cl::OneOrMore,
-                                            cl::desc("<input bitcode files>"));
+                                            cl::desc("<вводные файлы биткода>"));
 
-static cl::opt<std::string> OutputFilename("o", cl::Required,
-                                           cl::desc("Output filename"),
-                                           cl::value_desc("filename"));
+static cl::opt<std::string> ВыхФИмя("o", cl::Required,
+                                           cl::desc("Имя выходного файла"),
+                                           cl::value_desc("имя_файла"));
 
-static cl::opt<std::string> CacheDir("cache-dir", cl::desc("Cache Directory"),
-                                     cl::value_desc("directory"));
+static cl::opt<std::string> CacheDir("cache-dir", cl::desc("Папка Кэша"),
+                                     cl::value_desc("папка"));
 
 static cl::opt<std::string> OptPipeline("opt-pipeline",
-                                        cl::desc("Optimizer Pipeline"),
-                                        cl::value_desc("pipeline"));
+                                        cl::desc("Пайплайн Оптимизатора"),
+                                        cl::value_desc("пайплайн"));
 
 static cl::opt<std::string> AAPipeline("aa-pipeline",
-                                       cl::desc("Alias Analysis Pipeline"),
-                                       cl::value_desc("aapipeline"));
+                                       cl::desc("Пайплайн Анализа Алиаса"),
+                                       cl::value_desc("пайплайн_аа"));
 
-static cl::opt<bool> SaveTemps("save-temps", cl::desc("Save temporary files"));
+static cl::opt<bool> SaveTemps("save-temps", cl::desc("Сохранить временные файлы"));
 
 static cl::opt<bool>
     ThinLTODistributedIndexes("thinlto-distributed-indexes", cl::init(false),
-                              cl::desc("Write out individual index and "
-                                       "import files for the "
-                                       "distributed backend case"));
+                              cl::desc("Записать индивидуальные индексные и "
+                                       "файлы импорта для"
+                                       "бэкенда дистрибуции"));
 
-static cl::opt<int> Threads("thinlto-threads",
+static cl::opt<цел> Threads("thinlto-threads",
                             cl::init(llvm::heavyweight_hardware_concurrency()));
 
 static cl::list<std::string> SymbolResolutions(
     "r",
-    cl::desc("Specify a symbol resolution: filename,symbolname,resolution\n"
-             "where \"resolution\" is a sequence (which may be empty) of the\n"
-             "following characters:\n"
-             " p - prevailing: the linker has chosen this definition of the\n"
-             "     symbol\n"
-             " l - local: the definition of this symbol is unpreemptable at\n"
+    cl::desc("Указать резолюцию символа: имя_файла,имя_символа,резолюция\n"
+             "где \"резолюция\" - это последовательность (могущая быть пустой)\n"
+             "из следующих символов:\n"
+             " p - превалирующая: компоновщик выбрал эту дефиницию\n"
+             "     символа\n"
+             " l - локальная: дефиниция этого символа is unpreemptable at\n"
              "     runtime and is known to be in this linkage unit\n"
-             " x - externally visible: the definition of this symbol is\n"
-             "     visible outside of the LTO unit\n"
-             "A resolution for each symbol must be specified."),
+             " x - видимая извне: дефиниция этого символа\n"
+             "     видна извне данного блока LTO\n"
+             "Должна быть задана резолюция для каждого символа."),
     cl::ZeroOrMore);
 
 static cl::opt<std::string> OverrideTriple(
-    "override-триада",
-    cl::desc("Replace target triples in input files with this триада"));
+    "override-triple",
+    cl::desc("Заменить целевые триады в вводных файлах на эту триаду"));
 
 static cl::opt<std::string> DefaultTriple(
-    "default-триада",
+    "default-triple",
     cl::desc(
-        "Replace unspecified target triples in input files with this триада"));
+        "Заменить незаданные целевые триады в вводных файлах на эту триаду"));
 
 static cl::opt<bool> RemarksWithHotness(
     "pass-remarks-with-hotness",
-    cl::desc("With PGO, include profile count in optimization remarks"),
+    cl::desc("При PGO, включить профильный счёт в ремарки оптимизации"),
     cl::Hidden);
 
 static cl::opt<std::string>
     RemarksFilename("pass-remarks-output",
-                    cl::desc("Output filename for pass remarks"),
-                    cl::value_desc("filename"));
+                    cl::desc("Имя выходного файла для ремарок проходки"),
+                    cl::value_desc("имя_файла"));
 
 static cl::opt<std::string>
     RemarksPasses("pass-remarks-filter",
                   cl::desc("Only record optimization remarks from passes whose "
                            "names match the given regular expression"),
-                  cl::value_desc("regex"));
+                  cl::value_desc("регвыр"));
 
 static cl::opt<std::string> RemarksFormat(
     "pass-remarks-format",
-    cl::desc("The format used for serializing remarks (default: YAML)"),
-    cl::value_desc("format"), cl::init("yaml"));
+    cl::desc("Формат, используемый для сериализации ремарок (дефолт: YAML)"),
+    cl::value_desc("формат"), cl::init("yaml"));
 
 static cl::opt<std::string>
     SamplePGOFile("lto-sample-profile-file",
-                  cl::desc("Specify a SamplePGO profile file"));
+                  cl::desc("Задать файл профиля SamplePGO"));
 
 static cl::opt<std::string>
     CSPGOFile("lto-cspgo-profile-file",
-              cl::desc("Specify a context sensitive PGO profile file"));
+              cl::desc("Определить файл профиля контекстно-чувствительной PGO"));
 
 static cl::opt<bool>
     RunCSIRInstr("lto-cspgo-gen",
-                 cl::desc("Run PGO context sensitive IR instrumentation"),
+                 cl::desc("Запустить PGO контексто-чувствительную IR инструментацию"),
                  cl::init(false), cl::Hidden);
 
 static cl::opt<bool>
     UseNewPM("use-new-pm",
-             cl::desc("Run LTO passes using the new pass manager"),
+             cl::desc("Запустить проходки LTO, используя новый менеджер проходок"),
              cl::init(false), cl::Hidden);
 
 static cl::opt<bool>
     DebugPassManager("debug-pass-manager", cl::init(false), cl::Hidden,
-                     cl::desc("Print pass management debugging information"));
+                     cl::desc("Вывести отладочную информацию менеджера проходок"));
 
 static cl::opt<std::string>
-    StatsFile("stats-file", cl::desc("Filename to write statistics to"));
+    StatsFile("stats-file", cl::desc("Имя файла для записи статистики"));
 
 static void check(Error E, std::string Msg) {
   if (!E)
@@ -164,13 +187,13 @@ template <typename T> static T check(ErrorOr<T> E, std::string Msg) {
   return T();
 }
 
-static int usage() {
-  errs() << "Available subcommands: dump-symtab run\n";
+static цел usage() {
+  errs() << "Доступные подкоманды: dump-symtab run\n";
   return 1;
 }
 
-static int run(int argc, char **argv) {
-  cl::ParseCommandLineOptions(argc, argv, "Resolution-based LTO test harness");
+static цел run(цел argc, char **argv) {
+  cl::ParseCommandLineOptions(argc, argv, "Тест=харнесс LTO на основе резолюций");
 
   // FIXME: Workaround PR30396 which means that a symbol can appear
   // more than once if it is defined in module-level assembly and
@@ -183,7 +206,7 @@ static int run(int argc, char **argv) {
     StringRef FileName, SymbolName;
     std::tie(FileName, Rest) = Rest.split(',');
     if (Rest.empty()) {
-      llvm::errs() << "invalid resolution: " << R << '\n';
+      llvm::errs() << "неверная резолюция: " << R << '\n';
       return 1;
     }
     std::tie(SymbolName, Rest) = Rest.split(',');
@@ -198,7 +221,7 @@ static int run(int argc, char **argv) {
       else if (C == 'r')
         Res.LinkerRedefined = true;
       else {
-        llvm::errs() << "invalid character " << C << " in resolution: " << R
+        llvm::errs() << "неверный символ " << C << " в резолюции: " << R
                      << '\n';
         return 1;
       }
@@ -227,7 +250,7 @@ static int run(int argc, char **argv) {
   Conf.DebugPassManager = DebugPassManager;
 
   if (SaveTemps)
-    check(Conf.addSaveTemps(OutputFilename + "."),
+    check(Conf.addSaveTemps(ВыхФИмя + "."),
           "Config::addSaveTemps failed");
 
   // Optimization remarks.
@@ -260,7 +283,7 @@ static int run(int argc, char **argv) {
     Conf.CGOptLevel = CodeGenOpt::Aggressive;
     break;
   default:
-    llvm::errs() << "invalid cg optimization level: " << CGOptLevel << '\n';
+    llvm::errs() << "Неверный уровень оптимизации кг: " << CGOptLevel << '\n';
     return 1;
   }
 
@@ -292,7 +315,7 @@ static int run(int argc, char **argv) {
     for (const InputFile::Symbol &Sym : Input->symbols()) {
       auto I = CommandLineResolutions.find({F, Sym.getName()});
       if (I == CommandLineResolutions.end()) {
-        llvm::errs() << argv[0] << ": missing symbol resolution for " << F
+        llvm::errs() << argv[0] << ": отсутствующая символьная резолюция для " << F
                      << ',' << Sym.getName() << '\n';
         HasErrors = true;
       } else {
@@ -313,7 +336,7 @@ static int run(int argc, char **argv) {
   if (!CommandLineResolutions.empty()) {
     HasErrors = true;
     for (auto UnusedRes : CommandLineResolutions)
-      llvm::errs() << argv[0] << ": unused symbol resolution for "
+      llvm::errs() << argv[0] << ": неиспользованная символьная резолюция для "
                    << UnusedRes.first.first << ',' << UnusedRes.first.second
                    << '\n';
   }
@@ -322,7 +345,7 @@ static int run(int argc, char **argv) {
 
   auto AddStream =
       [&](size_t Task) -> std::unique_ptr<lto::NativeObjectStream> {
-    std::string Path = OutputFilename + "." + utostr(Task);
+    std::string Path = ВыхФИмя + "." + utostr(Task);
 
     std::error_code EC;
     auto S = llvm::make_unique<raw_fd_ostream>(Path, EC, sys::fs::F_None);
@@ -336,13 +359,13 @@ static int run(int argc, char **argv) {
 
   NativeObjectCache Cache;
   if (!CacheDir.empty())
-    Cache = check(localCache(CacheDir, AddBuffer), "failed to create cache");
+    Cache = check(localCache(CacheDir, AddBuffer), "не удалось создать кэш");
 
   check(Lto.run(AddStream, Cache), "LTO::run failed");
   return 0;
 }
 
-static int dumpSymtab(int argc, char **argv) {
+static цел dumpSymtab(цел argc, char **argv) {
   for (StringRef F : make_range(argv + 1, argv + argc)) {
     std::unique_ptr<MemoryBuffer> MB = check(MemoryBuffer::getFile(F), F);
     BitcodeFileContents BFC = check(getBitcodeFileContents(*MB), F);
@@ -350,25 +373,25 @@ static int dumpSymtab(int argc, char **argv) {
     if (BFC.Symtab.size() >= sizeof(irsymtab::storage::Header)) {
       auto *Hdr = reinterpret_cast<const irsymtab::storage::Header *>(
           BFC.Symtab.data());
-      outs() << "version: " << Hdr->Version << '\n';
+      outs() << "версия: " << Hdr->Version << '\n';
       if (Hdr->Version == irsymtab::storage::Header::kCurrentVersion)
-        outs() << "producer: " << Hdr->Producer.get(BFC.StrtabForSymtab)
+        outs() << "производитель: " << Hdr->Producer.get(BFC.StrtabForSymtab)
                << '\n';
     }
 
     std::unique_ptr<InputFile> Input =
         check(InputFile::create(MB->getMemBufferRef()), F);
 
-    outs() << "target триада: " << Input->getTargetTriple() << '\n';
+    outs() << "целевая триада: " << Input->getTargetTriple() << '\n';
     Triple TT(Input->getTargetTriple());
 
-    outs() << "source filename: " << Input->getSourceFileName() << '\n';
+    outs() << "имя файла-исходника: " << Input->getSourceFileName() << '\n';
 
     if (TT.isOSBinFormatCOFF())
-      outs() << "linker opts: " << Input->getCOFFLinkerOpts() << '\n';
+      outs() << "опции компоновщика: " << Input->getCOFFLinkerOpts() << '\n';
 
     if (TT.isOSBinFormatELF()) {
-      outs() << "dependent libraries:";
+      outs() << "зависимые библиотеки:";
       for (auto L : Input->getDependentLibraries())
         outs() << " \"" << L << "\"";
       outs() << '\n';
@@ -402,7 +425,7 @@ static int dumpSymtab(int argc, char **argv) {
         outs() << "         size " << Sym.getCommonSize() << " align "
                << Sym.getCommonAlignment() << '\n';
 
-      int Comdat = Sym.getComdatIndex();
+      цел Comdat = Sym.getComdatIndex();
       if (Comdat != -1)
         outs() << "         comdat " << ComdatTable[Comdat] << '\n';
 
@@ -419,7 +442,7 @@ static int dumpSymtab(int argc, char **argv) {
   return 0;
 }
 
-extern "C" __declspec(dllexport) int ЛЛВхоФункцЛЛЛТО2(int argc, char **argv) {
+extern "C" __declspec(dllexport) цел ЛЛВхоФункцЛЛЛТО2(цел argc, char **argv) {
   InitLLVM X(argc, argv);
   InitializeAllTargets();
   InitializeAllTargetMCs();
@@ -440,4 +463,5 @@ extern "C" __declspec(dllexport) int ЛЛВхоФункцЛЛЛТО2(int argc, c
   if (Subcommand == "run")
     return run(argc - 1, argv + 1);
   return usage();
+}
 }

@@ -148,7 +148,7 @@ LLEXPORT void ЛЛДобавьССАПроходкиСкалярРеплАгре
 
 /** See llvm::createSROAPass function. */
 LLEXPORT void ЛЛДобавьПроходкуСкалярРеплАгрегатыСПорогом(ЛЛМенеджерПроходок PM,
-                                                  int Threshold){
+                                                  цел Threshold){
   LLVMAddScalarReplAggregatesPassWithThreshold(PM, Threshold);
 }
 

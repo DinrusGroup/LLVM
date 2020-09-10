@@ -404,7 +404,7 @@ extern "C"
     }
 
     LLEXPORT void ЛЛОВККодГен_УстАсмАрги(lto_code_gen_t cg, const char** args,
-        int nargs) {
+        цел nargs) {
         // In here only for backwards compatibility. We use MC now.
     }
 
@@ -547,7 +547,7 @@ extern "C"
         ltocmd::unwrap(cg)->setCodeGenOnly(CodeGenOnly);
     }
 
-    LLEXPORT void ЛЛОВК2_ОпцииОтладки(const char* const* options, int number) {
+    LLEXPORT void ЛЛОВК2_ОпцииОтладки(const char* const* options, цел number) {
         // if options were requested, set them
         if (number && options) {
             std::vector<const char*> CodegenArgv(1, "libLTO");
@@ -581,7 +581,7 @@ extern "C"
     }
 
     LLEXPORT void ЛЛОВК2КодГен_УстИнтервалПрюнингаКэша(thinlto_code_gen_t cg,
-        int interval) {
+        цел interval) {
         return ltocmd::unwrap(cg)->setCachePruningInterval(interval);
     }
 

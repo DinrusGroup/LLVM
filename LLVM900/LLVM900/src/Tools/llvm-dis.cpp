@@ -34,38 +34,58 @@
 #include "llvm/Support/WithColor.h"
 #include <system_error>
 using namespace llvm;
+typedef void проц;
+typedef void* ук;
+
+typedef bool бул;
+
+typedef  signed char байт;   ///int8_t
+typedef  unsigned char ббайт;  ///uint8_t
+
+typedef  short крат;  ///int16_t
+typedef  unsigned short бкрат; ///uint16_t
+
+typedef  int цел;  ///int32_t
+typedef  unsigned int бцел; ///uint32_t
+
+typedef  long long дол;   ///int64_t
+typedef  unsigned long long бдол;  ///uint64_t
+
+typedef  size_t т_мера;
+
+typedef const char* ткст0;
 
 static cl::opt<std::string>
-InputFilename(cl::Positional, cl::desc("<input bitcode>"), cl::init("-"));
+ВхИмяФ(cl::Positional, cl::desc("<вводный биткод>"), cl::init("-"));
 
 static cl::opt<std::string>
-OutputFilename("o", cl::desc("Override output filename"),
+ВыхИмяФ("o", cl::desc("Переписать выходное имя файла"),
                cl::value_desc("filename"));
 
 static cl::opt<bool>
-Force("f", cl::desc("Enable binary output on terminals"));
+Force("f", cl::desc("Активировать двоичный вывод на терминалы"));
 
 static cl::opt<bool>
-DontPrint("disable-output", cl::desc("Don't output the .ll file"), cl::Hidden);
+DontPrint("disable-output", cl::desc("Не выводить файл .ll"), cl::Hidden);
 
 static cl::opt<bool>
     SetImporting("set-importing",
-                 cl::desc("Set lazy loading to pretend to import a module"),
+                 cl::desc("Установить левиную загрузку, имитирующую загрузку модуля"),
                  cl::Hidden);
 
 static cl::opt<bool>
     ShowAnnotations("show-annotations",
-                    cl::desc("Add informational comments to the .ll file"));
+                    cl::desc("Добавить в файл .ll информационные коммментарии"));
 
 static cl::opt<bool> PreserveAssemblyUseListOrder(
     "preserve-ll-uselistorder",
-    cl::desc("Preserve use-list order when writing LLVM assembly."),
+    cl::desc("Сохранять порядок use-list при записи сборки LLVM."),
     cl::init(false), cl::Hidden);
 
 static cl::opt<bool>
     MaterializeMetadata("materialize-metadata",
-                        cl::desc("Load module without materializing metadata, "
-                                 "then materialize only the metadata"));
+                        cl::desc("Загрузить модуль без материализации метаданных, "
+                                 "затем материализовать только метаданные"));
 
 namespace {
 
@@ -146,7 +166,7 @@ struct LLVMDisDiagnosticHandler : public DiagnosticHandler {
 
 static ExitOnError ExitOnErr;
 
-extern "C" __declspec(dllexport) int ЛЛВхоФункцЛЛДиз(int argc, char **argv) {
+extern "C" __declspec(dllexport) цел ЛЛВхоФункцЛЛДиз(цел argc, char **argv) {
   InitLLVM X(argc, argv);
 
   ExitOnErr.setBanner(std::string(argv[0]) + ": : ");
@@ -157,7 +177,7 @@ extern "C" __declspec(dllexport) int ЛЛВхоФункцЛЛДиз(int argc, ch
   cl::ParseCommandLineOptions(argc, argv, "llvm .bc -> .ll disassembler\n");
 
   std::unique_ptr<MemoryBuffer> MB =
-      ExitOnErr(errorOrToExpected(MemoryBuffer::getFileOrSTDIN(InputFilename)));
+      ExitOnErr(errorOrToExpected(MemoryBuffer::getFileOrSTDIN(ВхИмяФ)));
   std::unique_ptr<Module> M = ExitOnErr(getLazyBitcodeModule(
       *MB, Context, /*ShouldLazyLoadMetadata=*/true, SetImporting));
   if (MaterializeMetadata)
@@ -172,21 +192,21 @@ extern "C" __declspec(dllexport) int ЛЛВхоФункцЛЛДиз(int argc, ch
 
   // Just use stdout.  We won't actually print anything on it.
   if (DontPrint)
-    OutputFilename = "-";
+    ВыхИмяФ = "-";
 
-  if (OutputFilename.empty()) { // Unspecified output, infer it.
-    if (InputFilename == "-") {
-      OutputFilename = "-";
+  if (ВыхИмяФ.empty()) { // Unspecified output, infer it.
+    if (ВхИмяФ == "-") {
+      ВыхИмяФ = "-";
     } else {
-      StringRef IFN = InputFilename;
-      OutputFilename = (IFN.endswith(".bc") ? IFN.drop_back(3) : IFN).str();
-      OutputFilename += ".ll";
+      StringRef IFN = ВхИмяФ;
+      ВыхИмяФ = (IFN.endswith(".bc") ? IFN.drop_back(3) : IFN).str();
+      ВыхИмяФ += ".ll";
     }
   }
 
   std::error_code EC;
   std::unique_ptr<ToolOutputFile> Out(
-      new ToolOutputFile(OutputFilename, EC, sys::fs::F_None));
+      new ToolOutputFile(ВыхИмяФ, EC, sys::fs::F_None));
   if (EC) {
     errs() << EC.message() << '\n';
     return 1;

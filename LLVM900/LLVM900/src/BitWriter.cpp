@@ -6,17 +6,17 @@ extern "C" {
 
     /*===-- Operations on modules ---------------------------------------------===*/
 
-    LLEXPORT int ЛЛПишиБиткодВФайл(ЛЛМодуль M, const char* Path) {
+    LLEXPORT цел ЛЛПишиБиткодВФайл(ЛЛМодуль M, const char* Path) {
         return LLVMWriteBitcodeToFile(M, Path);
     }
 
-    LLEXPORT int ЛЛПишиБиткодВФД(ЛЛМодуль M, int FD, int ShouldClose,
-        int Unbuffered) {
+    LLEXPORT цел ЛЛПишиБиткодВФД(ЛЛМодуль M, цел FD, цел ShouldClose,
+        цел Unbuffered) {
 
         return LLVMWriteBitcodeToFD(M, FD, ShouldClose, Unbuffered);
     }
 
-    LLEXPORT int ЛЛПишиБиткодВФайлУк(ЛЛМодуль M, int FileHandle) {
+    LLEXPORT цел ЛЛПишиБиткодВФайлУк(ЛЛМодуль M, цел FileHandle) {
         return LLVMWriteBitcodeToFD(M, FileHandle, true, false);
     }
 

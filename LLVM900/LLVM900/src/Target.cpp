@@ -95,7 +95,7 @@ LLEXPORT void ЛЛУстРаскладкуДанныхМодуля(ЛЛМоду�
 
 /** Creates target data from a target layout string.
     See the constructor llvm::DataLayout::DataLayout. */
-LLEXPORT ЛЛДанныеОЦели ЛЛСоздайДанОЦели(const char *StringRep) {
+LLEXPORT ЛЛДанныеОЦели ЛЛСоздайДанОЦели(ткст0 StringRep) {
     return LLVMCreateTargetData(StringRep);
 }
 

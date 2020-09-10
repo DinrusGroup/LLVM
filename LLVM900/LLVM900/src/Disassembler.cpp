@@ -11,7 +11,7 @@ extern "C" {
      * LLVMCreateDisasmCPUFeatures() with an empty CPU name and feature set.
      */
 LLEXPORT  ЛЛКонтекстДизасма ЛЛСоздайДизасм(const char* TripleName, void* DisInfo,
-        int TagType, ЛЛОбрвызОпИнфо GetOpInfo,
+        цел TagType, ЛЛОбрвызОпИнфо GetOpInfo,
         ЛЛОбрвызПоискСимвола SymbolLookUp) {
         return LLVMCreateDisasm(TripleName, DisInfo, TagType, GetOpInfo, SymbolLookUp);
     }
@@ -25,7 +25,7 @@ LLEXPORT  ЛЛКонтекстДизасма ЛЛСоздайДизасм(const 
      * to calling LLVMCreateDisasmCPUFeatures() with an empty feature set.
      */
 LLEXPORT  ЛЛКонтекстДизасма ЛЛСоздайДизасмЦПБ(const char* Triple, const char* CPU,
-        void* DisInfo, int TagType,
+        void* DisInfo, цел TagType,
         ЛЛОбрвызОпИнфо GetOpInfo,
         ЛЛОбрвызПоискСимвола SymbolLookUp) {
         return LLVMCreateDisasmCPU(Triple, CPU, DisInfo, TagType, GetOpInfo, SymbolLookUp);
@@ -40,7 +40,7 @@ LLEXPORT  ЛЛКонтекстДизасма ЛЛСоздайДизасмЦПБ(
      */
  LLEXPORT  ЛЛКонтекстДизасма
         ЛЛСоздайДизасмЦПБФичи(const char* Triple, const char* CPU,
-            const char* Features, void* DisInfo, int TagType,
+            const char* Features, void* DisInfo, цел TagType,
             ЛЛОбрвызОпИнфо GetOpInfo,
             ЛЛОбрвызПоискСимвола SymbolLookUp) {
         return LLVMCreateDisasmCPUFeatures(Triple, CPU, Features, DisInfo, TagType,
@@ -51,7 +51,7 @@ LLEXPORT  ЛЛКонтекстДизасма ЛЛСоздайДизасмЦПБ(
      * Set the disassembler's options.  Returns 1 if it can set the Options and 0
      * otherwise.
      */
- LLEXPORT    int ЛЛУстОпцииДизасм(ЛЛКонтекстДизасма DC, uint64_t Options) {
+ LLEXPORT    цел ЛЛУстОпцииДизасм(ЛЛКонтекстДизасма DC, uint64_t Options) {
         return LLVMSetDisasmOptions(DC, Options);
     }
 

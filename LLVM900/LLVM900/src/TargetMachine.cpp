@@ -14,7 +14,7 @@ return LLVMGetNextTarget(T);
 /*===-- Target ------------------------------------------------------------===*/
 /** Finds the target corresponding to the given name and stores it in \p T.
   Returns 0 on success. */
-LLEXPORT ЛЛЦель ЛЛДайЦельИзИмени(const char *Name){
+LLEXPORT ЛЛЦель ЛЛДайЦельИзИмени(ткст0 Name){
 return LLVMGetTargetFromName(Name);
 }
 
@@ -27,12 +27,12 @@ return LLVMGetTargetFromTriple(Triple,T, ErrorMessage);
 }
 
 /** Returns the name of a target. See llvm::Target::getName */
-LLEXPORT const char *ЛЛДайИмяЦели(ЛЛЦель T){
+LLEXPORT ткст0 ЛЛДайИмяЦели(ЛЛЦель T){
 return LLVMGetTargetName(T);
 }
 
 /** Returns the description  of a target. See llvm::Target::getDescription */
-LLEXPORT const char *ЛЛДайОписаниеЦели(ЛЛЦель T){
+LLEXPORT ткст0 ЛЛДайОписаниеЦели(ЛЛЦель T){
 return LLVMGetTargetDescription(T);
 }
 
@@ -54,7 +54,7 @@ return LLVMTargetHasAsmBackend(T);
 /*===-- Target Machine ----------------------------------------------------===*/
 /** Creates a new llvm::TargetMachine. See llvm::Target::createTargetMachine */
 LLEXPORT ЛЛЦелеваяМашина ЛЛСоздайЦелМаш(ЛЛЦель T,
-  const char *Triple, const char *CPU, const char *Features,
+  ткст0 Triple, ткст0 CPU, ткст0 Features,
   LLVMCodeGenOptLevel Level, LLVMRelocMode Reloc, LLVMCodeModel CodeModel){
 return LLVMCreateTargetMachine( T,Triple,CPU, Features, Level, Reloc, CodeModel);
 }

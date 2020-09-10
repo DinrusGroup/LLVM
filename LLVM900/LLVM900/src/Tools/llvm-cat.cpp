@@ -31,6 +31,26 @@
 #include <vector>
 
 using namespace llvm;
+typedef void проц;
+typedef void* ук;
+
+typedef bool бул;
+
+typedef  signed char байт;   ///int8_t
+typedef  unsigned char ббайт;  ///uint8_t
+
+typedef  short крат;  ///int16_t
+typedef  unsigned short бкрат; ///uint16_t
+
+typedef  int цел;  ///int32_t
+typedef  unsigned int бцел; ///uint32_t
+
+typedef  long long дол;   ///int64_t
+typedef  unsigned long long бдол;  ///uint64_t
+
+typedef  size_t т_мера;
+
+typedef const char* ткст0;
 
 cl::OptionCategory CatCategory("Опции llvm-cat");
 
@@ -47,8 +67,8 @@ static cl::list<std::string> InputFilenames(cl::Positional, cl::ZeroOrMore,
                                             cl::desc("<входные файлы>"),
                                             cl::cat(CatCategory));
 
-extern "C" __declspec(dllexport) int ЛЛВхоФункцЛЛКат(char **args) {
-  auto argn = (int)strlen((const char*)args);
+extern "C" __declspec(dllexport) цел ЛЛВхоФункцЛЛКат(char **args) {
+  auto argn = (цел)strlen((const char*)args);
   cl::HideUnrelatedOptions(CatCategory);
   cl::ParseCommandLineOptions(argn, args, "Конкатенация модулей");
 

@@ -224,7 +224,7 @@ static void usage() {
 }
 
 /// Compute the path to the main executable.
-std::string GetExecutablePath(const char *Argv0) {
+std::string GetExecutablePath(ткст0 Argv0) {
   // This just needs to be some symbol in the binary; C++ doesn't
   // allow taking the address of ::main however.
   void *P = (void *)(intptr_t)GetExecutablePath;
@@ -256,7 +256,7 @@ std::vector<std::string> GetAllDyLibComponents(const bool IsInDevelopmentTree,
                                   GetComponentNames, nullptr, nullptr, DirSep);
 }
 
-extern "C" __declspec(dllexport) int ЛЛВхоФункцЛЛКонфиг(int argc, char **argv) {
+extern "C" __declspec(dllexport) цел ЛЛВхоФункцЛЛКонфиг(цел argc, char **argv) {
   std::vector<StringRef> Components;
   bool PrintLibs = false, PrintLibNames = false, PrintLibFiles = false;
   bool PrintSystemLibs = false, PrintSharedMode = false;
@@ -468,7 +468,7 @@ extern "C" __declspec(dllexport) int ЛЛВхоФункцЛЛКонфиг(int ar
   };
 
   raw_ostream &OS = outs();
-  for (int i = 1; i != argc; ++i) {
+  for (цел i = 1; i != argc; ++i) {
     StringRef Arg = argv[i];
 
     if (Arg.startswith("-")) {

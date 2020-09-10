@@ -6,18 +6,39 @@
 //
 //===----------------------------------------------------------------------===//
 
+typedef void проц;
+typedef void* ук;
+
+typedef bool бул;
+
+typedef  signed char байт;   ///int8_t
+typedef  unsigned char ббайт;  ///uint8_t
+
+typedef  short крат;  ///int16_t
+typedef  unsigned short бкрат; ///uint16_t
+
+typedef  int цел;  ///int32_t
+typedef  unsigned int бцел; ///uint32_t
+
+typedef  long long дол;   ///int64_t
+typedef  unsigned long long бдол;  ///uint64_t
+
+typedef  size_t т_мера;
+
+typedef const char* ткст0;
+
 struct AvailableComponent {
   /// The name of the component.
-  const char *Name;
+  ткст0 Name;
 
   /// The name of the library for this component (or NULL).
-  const char *Library;
+  ткст0 Library;
 
   /// Whether the component is installed.
   bool IsInstalled;
 
   /// The list of libraries required when linking this component.
-  const char *RequiredLibraries[23];
+  ткст0 RequiredLibraries[23];
 } AvailableComponents[164] = {
   { "aarch64", nullptr, true, { "aarch64info", "aarch64utils", "aarch64desc", "aarch64asmparser", "aarch64codegen", "aarch64disassembler" } },
   { "aarch64asmparser", "LLVMAArch64AsmParser", true, { "aarch64desc", "aarch64info", "aarch64utils", "mc", "mcparser", "support" } },

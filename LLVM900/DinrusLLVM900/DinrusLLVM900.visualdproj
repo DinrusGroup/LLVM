@@ -712,6 +712,7 @@
      <File path="src\ll\c\Transforms\Utils.d" />
      <File path="src\ll\c\Transforms\Vectorize.d" />
     </Folder>
+    <File path="src\ll\c\AllTransforms.d" />
     <File path="src\ll\c\Analysis.d" />
     <File path="src\ll\c\BitReader.d" />
     <File path="src\ll\c\BitWriter.d" />
@@ -737,8 +738,30 @@
     <File path="src\ll\c\Support.d" />
     <File path="src\ll\c\Target.d" />
     <File path="src\ll\c\TargetMachine.d" />
-    <File path="src\ll\c\AllTransforms.d" />
     <File path="src\ll\c\Types.d" />
+   </Folder>
+   <Folder name="clang">
+    <Folder name="c">
+     <File path="src\ll\clang\c\BuildSystem.d" />
+     <File path="src\ll\clang\c\CXCompilationDatabase.d" />
+     <File path="src\ll\clang\c\CXErrorCode.d" />
+     <File path="src\ll\clang\c\CXString.d" />
+     <File path="src\ll\clang\c\Documentation.d" />
+     <File path="src\ll\clang\c\Index.d" />
+     <File path="src\ll\clang\c\Platform.d" />
+    </Folder>
+    <File path="src\ll\clang\Compiler.d" />
+    <File path="src\ll\clang\Cursor.d" />
+    <File path="src\ll\clang\Diagnostic.d" />
+    <File path="src\ll\clang\File.d" />
+    <File path="src\ll\clang\Index.d" />
+    <File path="src\ll\clang\SourceLocation.d" />
+    <File path="src\ll\clang\SourceRange.d" />
+    <File path="src\ll\clang\Token.d" />
+    <File path="src\ll\clang\TranslationUnit.d" />
+    <File path="src\ll\clang\Type.d" />
+    <File path="src\ll\clang\Util.d" />
+    <File path="src\ll\clang\Visitor.d" />
    </Folder>
    <File path="common.d" />
   </Folder>

@@ -404,7 +404,7 @@ typedef enum {
 
 enum {
     LLVMAttributeReturnIndex = 0U,
-    // ISO C restricts enumerator values to range of 'int'
+    // ISO C restricts enumerator values to range of 'цел'
     // (4294967295 is too large)
     // LLVMAttributeFunctionIndex = ~0U,
     LLVMAttributeFunctionIndex = -1,
@@ -467,7 +467,7 @@ typedef struct LLVMOpaqueObjectFile *ЛЛФайлОбъекта;
 typedef struct LLVMOrcOpaqueJITStack *LLVMOrcJITStackRef;
 typedef uint64_t LLVMOrcModuleHandle;
 typedef uint64_t LLVMOrcTargetAddress;
-typedef uint64_t (*LLVMOrcSymbolResolverFn)(const char *Name, void *LookupCtx);
+typedef uint64_t (*LLVMOrcSymbolResolverFn)(ткст0 Name, void *LookupCtx);
 typedef uint64_t (*LLVMOrcLazyCompileCallbackFn)(LLVMOrcJITStackRef JITStack,
                                                  void *CallbackCtx);
 
@@ -483,7 +483,7 @@ typedef uint64_t (*LLVMOrcLazyCompileCallbackFn)(LLVMOrcJITStackRef JITStack,
 
 
 typedef struct {
-  const char *Str;
+  ткст0 Str;
   uint32_t Len;
 } LLVMOptRemarkStringRef;
 
@@ -539,7 +539,7 @@ typedef struct LLVMRemarkOpaqueString *ЛЛТкстРемарки;
 
     typedef void (*ЛЛОбрвызовЖни)(ЛЛКонтекст, ук);
 
-    typedef int (*ЛЛОбрвызОпИнфо)(ук инфОДиз, бдол ПК,
+    typedef цел (*ЛЛОбрвызОпИнфо)(ук инфОДиз, бдол ПК,
         бдол смещ, бдол разм, цел типТэга, ук буфТэгов);
 
     typedef ткст0 (*ЛЛОбрвызПоискСимвола)(ук инфОДиз, бдол значСсыл, 

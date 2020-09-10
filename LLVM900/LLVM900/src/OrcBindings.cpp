@@ -21,7 +21,7 @@ return LLVMOrcCreateInstance(TM);
  * This message is owned by the ORC JIT Stack and will be freed when the stack
  * is disposed of by LLVMOrcDisposeInstance.
  */
-LLEXPORT const char *ЛЛОрк_ДайОшСооб(LLVMOrcJITStackRef JITStack){
+LLEXPORT ткст0 ЛЛОрк_ДайОшСооб(LLVMOrcJITStackRef JITStack){
 return LLVMOrcGetErrorMsg(JITStack);
 }
 
@@ -30,7 +30,7 @@ return LLVMOrcGetErrorMsg(JITStack);
  * Memory will be allocated for MangledSymbol to hold the результат. The client
  */
 LLEXPORT void ЛЛОрк_ДайДекорирСимвол(LLVMOrcJITStackRef JITStack, char **MangledSymbol,
-                             const char *Symbol){
+                             ткст0 Symbol){
 return LLVMOrcGetMangledSymbol(JITStack, MangledSymbol, Symbol);
 }
 
@@ -54,7 +54,7 @@ return LLVMOrcCreateLazyCompileCallback(
  * Create a named indirect call stub.
  */
 LLEXPORT LLVMErrorRef ЛЛОрк_СоздайНепрямСтаб(LLVMOrcJITStackRef JITStack,
-                                       const char *StubName,
+                                       ткст0 StubName,
                                        LLVMOrcTargetAddress InitAddr){
 return LLVMOrcCreateIndirectStub( JITStack,StubName, InitAddr);
 }
@@ -62,7 +62,7 @@ return LLVMOrcCreateIndirectStub( JITStack,StubName, InitAddr);
  * Set the pointer for the given indirect stub.
  */
 LLEXPORT LLVMErrorRef ЛЛОрк_УстУкзНаНепрямСтаб(LLVMOrcJITStackRef JITStack,
-                                           const char *StubName,
+                                           ткст0 StubName,
                                            LLVMOrcTargetAddress NewAddr){
 return LLVMOrcSetIndirectStubPointer(JITStack, StubName, NewAddr);
 }
@@ -121,7 +121,7 @@ return LLVMOrcRemoveModule( JITStack, H);
  */
 LLEXPORT LLVMErrorRef ЛЛОрк_ДайАдресСимвола(LLVMOrcJITStackRef JITStack,
                                      LLVMOrcTargetAddress *RetAddr,
-                                     const char *SymbolName){
+                                     ткст0 SymbolName){
 return LLVMOrcGetSymbolAddress(JITStack, RetAddr, SymbolName);
 }
 /**
@@ -131,7 +131,7 @@ return LLVMOrcGetSymbolAddress(JITStack, RetAddr, SymbolName);
 LLEXPORT LLVMErrorRef ЛЛОрк_ДайАдресСимволаЭкз(LLVMOrcJITStackRef JITStack,
                                        LLVMOrcTargetAddress *RetAddr,
                                        LLVMOrcModuleHandle H,
-                                       const char *SymbolName){
+                                       ткст0 SymbolName){
 return LLVMOrcGetSymbolAddressIn( JITStack, RetAddr, H, SymbolName);
 }
 

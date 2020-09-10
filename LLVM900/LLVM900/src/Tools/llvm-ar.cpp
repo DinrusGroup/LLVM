@@ -43,7 +43,31 @@
 #include <io.h>
 #endif
 
+
 using namespace llvm;
+
+namespace llvm_ar{
+
+typedef void проц;
+typedef void* ук;
+
+typedef bool бул;
+
+typedef  signed char байт;   ///int8_t
+typedef  unsigned char ббайт;  ///uint8_t
+
+typedef  short крат;  ///int16_t
+typedef  unsigned short бкрат; ///uint16_t
+
+typedef  int цел;  ///int32_t
+typedef  unsigned int бцел; ///uint32_t
+
+typedef  long long дол;   ///int64_t
+typedef  unsigned long long бдол;  ///uint64_t
+
+typedef  size_t т_мера;
+
+typedef const char* ткст0;
 
 // The name this program was invoked as.
 static StringRef ToolName;
@@ -71,7 +95,7 @@ const char ArHelp[] = R"(
 
 ОПЦИИ:
   --format              - Формат создаваемого архива
-    =default            -   дежолт
+    =default            -   дефолт
     =gnu                -   gnu
     =darwin             -   darwin
     =bsd                -   bsd
@@ -145,7 +169,7 @@ static void failIfError(Error E, Twine Context = "") {
   });
 }
 
-static SmallVector<const char *, 256> PositionalArgs;
+static SmallVector<ткст0 , 256> PositionalArgs;
 
 static bool MRI;
 
@@ -192,7 +216,7 @@ static std::string RelPos;
 // Count parameter for 'N' modifier. This variable specifies which file should
 // match for extract/delete operations when there are multiple matches. This is
 // 1-indexed. A value of 0 is invalid, and implies 'N' is not used.
-static int CountParam = 0;
+static цел CountParam = 0;
 
 // This variable holds the name of the archive file as given on the
 // command line.
@@ -486,7 +510,7 @@ static void doExtract(StringRef Name, const object::Archive::Child &C) {
   failIfError(ModeOrErr.takeError());
   sys::fs::perms Mode = ModeOrErr.get();
 
-  int FD;
+  цел FD;
   failIfError(sys::fs::openFileForWrite(sys::path::filename(Name), FD,
                                         sys::fs::CD_CreateAlways,
                                         sys::fs::F_None, Mode),
@@ -541,7 +565,7 @@ static void performReadOperation(ArchiveOperation Operation,
     fail("извлечение из тонкого архива не поддерживается");
 
   bool Filter = !Members.empty();
-  StringMap<int> MemberCount;
+  StringMap<цел> MemberCount;
   {
     Error Err = Error::success();
     for (auto &C : OldArchive->children(Err)) {
@@ -677,7 +701,7 @@ static InsertAction computeInsertAction(ArchiveOperation Operation,
                                         const object::Archive::Child &Member,
                                         StringRef Name,
                                         std::vector<StringRef>::iterator &Pos,
-                                        StringMap<int> &MemberCount) {
+                                        StringMap<цел> &MemberCount) {
   if (Operation == QuickAppend || Members.empty())
     return IA_AddOldMember;
   auto MI = find_if(
@@ -731,13 +755,13 @@ computeNewArchiveMembers(ArchiveOperation Operation,
                          object::Archive *OldArchive) {
   std::vector<NewArchiveMember> Ret;
   std::vector<NewArchiveMember> Moved;
-  int InsertPos = -1;
+  цел InsertPos = -1;
   StringRef PosName = normalizePath(RelPos);
   if (OldArchive) {
     Error Err = Error::success();
-    StringMap<int> MemberCount;
+    StringMap<цел> MemberCount;
     for (auto &Child : OldArchive->children(Err)) {
-      int Pos = Ret.size();
+      цел Pos = Ret.size();
       Expected<StringRef> NameOrErr = Child.getName();
       failIfError(NameOrErr.takeError());
       StringRef Name = NameOrErr.get();
@@ -789,7 +813,7 @@ computeNewArchiveMembers(ArchiveOperation Operation,
     InsertPos = Ret.size();
 
   assert(unsigned(InsertPos) <= Ret.size());
-  int Pos = InsertPos;
+  цел Pos = InsertPos;
   for (auto &M : Moved) {
     Ret.insert(Ret.begin() + Pos, std::move(M));
     ++Pos;
@@ -915,7 +939,7 @@ static void performOperation(ArchiveOperation Operation,
   llvm_unreachable("Неизвестная операция.");
 }
 
-static int performOperation(ArchiveOperation Operation,
+static цел performOperation(ArchiveOperation Operation,
                             std::vector<NewArchiveMember> *NewMembers) {
   // Create or open the archive object.
   ErrorOr<std::unique_ptr<MemoryBuffer>> Buf =
@@ -1042,17 +1066,17 @@ static bool handleGenericOption(StringRef arg) {
   return false;
 }
 
-extern "C" __declspec(dllexport) int ЛЛВхоФункцЛЛАр(char** args) {
-    auto argn = (int)strlen((const char*)args);
+extern "C" __declspec(dllexport) цел ЛЛВхоФункцЛЛАр(char** args) {
+    auto argn = (цел)strlen((const char*)args);
     InitLLVM X(argn, args);
 
-  SmallVector<const char *, 0> Argv(args, args + argn);
+  SmallVector<ткст0 , 0> Argv(args, args + argn);
   StringSaver Saver(Alloc);
   cl::ExpandResponseFiles(Saver, cl::TokenizeGNUCommandLine, Argv);
   for (size_t i = 1; i < Argv.size(); ++i) {
     StringRef Arg = Argv[i];
-    const char *match;
-    auto MatchFlagWithArg = [&](const char *expected) {
+    ткст0 match;
+    auto MatchFlagWithArg = [&](ткст0 expected) {
       size_t len = strlen(expected);
       if (Arg == expected) {
         if (++i >= Argv.size())
@@ -1104,12 +1128,12 @@ extern "C" __declspec(dllexport) int ЛЛВхоФункцЛЛАр(char** args) {
   return performOperation(Operation, nullptr);
 }
 
-extern "C" __declspec(dllexport) int ЛЛВхоФункцЛЛРанлиб(char** args) {
-    auto argn = (int)strlen((const char*)args);
+extern "C" __declspec(dllexport) цел ЛЛВхоФункцЛЛРанлиб(char** args) {
+    auto argn = (цел)strlen((const char*)args);
     InitLLVM X(argn, args);
 
   bool ArchiveSpecified = false;
-  for (int i = 1; i < argn; ++i) {
+  for (цел i = 1; i < argn; ++i) {
     if (handleGenericOption(args[i])) {
       return 0;
     } else {
@@ -1122,8 +1146,8 @@ extern "C" __declspec(dllexport) int ЛЛВхоФункцЛЛРанлиб(char**
   return performOperation(CreateSymTab, nullptr);
 }
 
-extern "C" __declspec(dllexport) int ЛЛОбщВхоФункцЛЛАр( char **args) {
-  auto argn =(int) strlen((const char*)args);
+extern "C" __declspec(dllexport) цел ЛЛОбщВхоФункцЛЛАр( char **args) {
+  auto argn =(цел) strlen((const char*)args);
   InitLLVM X(argn, args);
   ToolName = args[0];
 
@@ -1145,4 +1169,5 @@ extern "C" __declspec(dllexport) int ЛЛОбщВхоФункцЛЛАр( char **
     return ЛЛВхоФункцЛЛАр(args);
 
   fail("Не ranlib, ar, lib или dlltool!");
+}
 }

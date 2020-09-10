@@ -59,45 +59,67 @@
 #include <tuple>
 #include <utility>
 #include <vector>
-
 using namespace llvm;
 
+namespace llvmlto
+{
+typedef void проц;
+typedef void* ук;
+
+typedef bool бул;
+
+typedef  signed char байт;   ///int8_t
+typedef  unsigned char ббайт;  ///uint8_t
+
+typedef  short крат;  ///int16_t
+typedef  unsigned short бкрат; ///uint16_t
+
+typedef  int цел;  ///int32_t
+typedef  unsigned int бцел; ///uint32_t
+
+typedef  long long дол;   ///int64_t
+typedef  unsigned long long бдол;  ///uint64_t
+
+typedef  size_t т_мера;
+
+typedef const char* ткст0;
+
 static cl::opt<char>
-    OptLevel("O", cl::desc("Optimization level. [-O0, -O1, -O2, or -O3] "
-                           "(default = '-O2')"),
+    OptLevel("O", cl::desc("Уровень оптимизации. [-O0, -O1, -O2 или -O3] "
+                           "(дефолт = '-O2')"),
              cl::Prefix, cl::ZeroOrMore, cl::init('2'));
 
 static cl::opt<bool>
     IndexStats("thinlto-index-stats",
-               cl::desc("Print statistic for the index in every input files"),
+               cl::desc("Вывести статистику для индекса во всех входных файлах"),
                cl::init(false));
 
 static cl::opt<bool> DisableVerify(
     "disable-verify", cl::init(false),
-    cl::desc("Do not run the verifier during the optimization pipeline"));
+    cl::desc("Не запускать проверщик при пайплайне оптимизации"));
 
 static cl::opt<bool> DisableInline("disable-inlining", cl::init(false),
-                                   cl::desc("Do not run the inliner pass"));
+                                   cl::desc("Не выполнять проходку инлайнера"));
 
 static cl::opt<bool>
     DisableGVNLoadPRE("disable-gvn-loadpre", cl::init(false),
-                      cl::desc("Do not run the GVN load PRE pass"));
+                      cl::desc("Не выполнять проходку GVN load PRE"));
 
 static cl::opt<bool> DisableLTOVectorization(
     "disable-lto-vectorization", cl::init(false),
-    cl::desc("Do not run loop or slp vectorization during LTO"));
+    cl::desc("Не выполнять векторизацию цикла или slp во время LTO"));
 
 static cl::opt<bool> EnableFreestanding(
     "lto-freestanding", cl::init(false),
-    cl::desc("Enable Freestanding (disable builtins / TLI) during LTO"));
+    cl::desc("Активировать Freestanding (отключить builtins/TLI) во время LTO"));
 
 static cl::opt<bool> UseDiagnosticHandler(
     "use-diagnostic-handler", cl::init(false),
-    cl::desc("Use a diagnostic handler to test the handler interface"));
+    cl::desc("Использовать обработчик диагностики для тестирования интерфейса обработчика"));
 
 static cl::opt<bool>
     ThinLTO("thinlto", cl::init(false),
-            cl::desc("Only write combined global index for ThinLTO backends"));
+            cl::desc("Писать только комбинированный глобальный индекс для бэкэндов ThinLTO"));
 
 enum ThinLTOModes {
   THINLINK,
@@ -112,38 +134,38 @@ enum ThinLTOModes {
 };
 
 cl::opt<ThinLTOModes> ThinLTOMode(
-    "thinlto-action", cl::desc("Perform a single ThinLTO stage:"),
+    "thinlto-action", cl::desc("Выполнить единичный этап ThinLTO:"),
     cl::values(
         clEnumValN(
             THINLINK, "thinlink",
-            "ThinLink: produces the index by linking only the summaries."),
+            "ThinLink: произвести индекс, компонуя только суммарии."),
         clEnumValN(THINDISTRIBUTE, "distributedindexes",
-                   "Produces individual indexes for distributed backends."),
+                   "Произвести индивидуальные индексы для поставляемых бэкэндов."),
         clEnumValN(THINEMITIMPORTS, "emitimports",
-                   "Emit imports files for distributed backends."),
+                   "Вывести файлы импортов для поставляемых бэкэндов."),
         clEnumValN(THINPROMOTE, "promote",
-                   "Perform pre-import promotion (requires -thinlto-index)."),
-        clEnumValN(THINIMPORT, "import", "Perform both promotion and "
-                                         "cross-module importing (requires "
+                   "Выполнить предимпортное продвижение (требуется -thinlto-index)."),
+        clEnumValN(THINIMPORT, "import", "Выполнить и продвижение, и "
+                                         "кросс-модульное импортирование (требуется "
                                          "-thinlto-index)."),
         clEnumValN(THININTERNALIZE, "internalize",
-                   "Perform internalization driven by -exported-symbol "
-                   "(requires -thinlto-index)."),
-        clEnumValN(THINOPT, "optimize", "Perform ThinLTO optimizations."),
-        clEnumValN(THINCODEGEN, "codegen", "CodeGen (expected to match llc)"),
-        clEnumValN(THINALL, "run", "Perform ThinLTO end-to-end")));
+                   "Выполнить интернализацию,ведомую -exported-symbol "
+                   "(требуется -thinlto-index)."),
+        clEnumValN(THINOPT, "optimize", "Выполнить оптимизации ThinLTO."),
+        clEnumValN(THINCODEGEN, "codegen", "КодГен (ожидается совпадение с llc)"),
+        clEnumValN(THINALL, "run", "Выполнить ThinLTO от края до края")));
 
 static cl::opt<std::string>
     ThinLTOIndex("thinlto-index",
-                 cl::desc("Provide the index produced by a ThinLink, required "
-                          "to perform the promotion and/or importing."));
+                 cl::desc("Предоставить произведённый ThinLink индекс, необходимый "
+                          "для выполнения продвижения и/или импортирования."));
 
 static cl::opt<std::string> ThinLTOPrefixReplace(
     "thinlto-prefix-replace",
-    cl::desc("Control where files for distributed backends are "
-             "created. Expects 'oldprefix;newprefix' and if path "
-             "prefix of output file is oldprefix it will be "
-             "replaced with newprefix."));
+    cl::desc("Контролирует, где создаются файлы для поставляемых бэкэндов. "
+             "Ожидается 'старый_префикс;новый_префикс'; если префикс "
+             "пути выводного файла = старый_префикс, то "
+             "он будет заменён на новый_префикс."));
 
 static cl::opt<std::string> ThinLTOModuleId(
     "thinlto-module-id",
@@ -151,44 +173,44 @@ static cl::opt<std::string> ThinLTOModuleId(
              "match what is in the index."));
 
 static cl::opt<std::string>
-    ThinLTOCacheDir("thinlto-cache-dir", cl::desc("Enable ThinLTO caching."));
+    ThinLTOCacheDir("thinlto-cache-dir", cl::desc("Активировать кэширование ThinLTO."));
 
-static cl::opt<int>
+static cl::opt<цел>
     ThinLTOCachePruningInterval("thinlto-cache-pruning-interval",
-    cl::init(1200), cl::desc("Set ThinLTO cache pruning interval."));
+    cl::init(1200), cl::desc("Установить интервал кэш-прюнинга ThinLTO."));
 
 static cl::opt<uint64_t> ThinLTOCacheMaxSizeBytes(
     "thinlto-cache-max-size-bytes",
-    cl::desc("Set ThinLTO cache pruning directory maximum size in bytes."));
+    cl::desc("Установить максимальный размер в байтах папки кэш-прюнинга ThinLTO."));
 
-static cl::opt<int>
+static cl::opt<цел>
     ThinLTOCacheMaxSizeFiles("thinlto-cache-max-size-files", cl::init(1000000),
-    cl::desc("Set ThinLTO cache pruning directory maximum number of files."));
+    cl::desc("Установить максимальное число файлов папки кэш-прюнига ThinLTO."));
 
 static cl::opt<unsigned>
     ThinLTOCacheEntryExpiration("thinlto-cache-entry-expiration", cl::init(604800) /* 1w */,
-    cl::desc("Set ThinLTO cache entry expiration time."));
+    cl::desc("Установить время экспирации записи кэша ThinLTO."));
 
 static cl::opt<std::string> ThinLTOSaveTempsPrefix(
     "thinlto-save-temps",
-    cl::desc("Save ThinLTO temp files using filenames created by adding "
-             "suffixes to the given file path prefix."));
+    cl::desc("Сохранить временные файлы ThinLTO, используя имена файлов, получаемые "
+             "добавлением суффиксов к заданному префиксу файлового пути."));
 
 static cl::opt<std::string> ThinLTOGeneratedObjectsDir(
     "thinlto-save-objects",
-    cl::desc("Save ThinLTO generated object files using filenames created in "
-             "the given directory."));
+    cl::desc("Сохранить сгенерированные файлы объектов ThinLTO, используя имена файлов, созданных в "
+             "заданной папке."));
 
 static cl::opt<bool>
     SaveModuleFile("save-merged-module", cl::init(false),
-                   cl::desc("Write merged LTO module to file before CodeGen"));
+                   cl::desc("Записать merged модуль LTO в файл перед КодГеном"));
 
 static cl::list<std::string> InputFilenames(cl::Positional, cl::OneOrMore,
-                                            cl::desc("<input bitcode files>"));
+                                            cl::desc("<вводные файлы биткода>"));
 
-static cl::opt<std::string> OutputFilename("o", cl::init(""),
-                                           cl::desc("Override output filename"),
-                                           cl::value_desc("filename"));
+static cl::opt<std::string> ВыхФайлИмя("o", cl::init(""),
+                                           cl::desc("Переписать имя выходного файла"),
+                                           cl::value_desc("имя_файла"));
 
 static cl::list<std::string> ExportedSymbols(
     "exported-symbol",
@@ -232,20 +254,20 @@ struct ModuleInfo {
 } // end anonymous namespace
 
 static void handleDiagnostics(lto_codegen_diagnostic_severity_t Severity,
-                              const char *Msg, void *) {
+                              ткст0 Msg, void *) {
   errs() << "llvm-lto: ";
   switch (Severity) {
   case LTO_DS_NOTE:
-    errs() << "note: ";
+    errs() << "заметка: ";
     break;
   case LTO_DS_REMARK:
-    errs() << "remark: ";
+    errs() << "ремарка: ";
     break;
   case LTO_DS_ERROR:
-    errs() << "error: ";
+    errs() << "ошибка: ";
     break;
   case LTO_DS_WARNING:
-    errs() << "warning: ";
+    errs() << "предупреждение: ";
     break;
   }
   errs() << Msg << "\n";
@@ -260,16 +282,16 @@ namespace {
       OS << "llvm-lto: ";
       switch (DI.getSeverity()) {
       case DS_Error:
-        OS << "error";
+        OS << "ошибка";
         break;
       case DS_Warning:
-        OS << "warning";
+        OS << "предупреждение";
         break;
       case DS_Remark:
-        OS << "remark";
+        OS << "ремарка";
         break;
       case DS_Note:
-        OS << "note";
+        OS << "заметка";
         break;
       }
       if (!CurrentActivity.empty())
@@ -304,7 +326,7 @@ static void error(const ErrorOr<T> &V, const Twine &Prefix) {
 
 static void maybeVerifyModule(const Module &Mod) {
   if (!DisableVerify && verifyModule(Mod, &errs()))
-    error("Broken Module");
+    error("Сломанный Модуль");
 }
 
 static std::unique_ptr<LTOModule>
@@ -312,9 +334,9 @@ getLocalLTOModule(StringRef Path, std::unique_ptr<MemoryBuffer> &Buffer,
                   const TargetOptions &Options) {
   ErrorOr<std::unique_ptr<MemoryBuffer>> BufferOrErr =
       MemoryBuffer::getFile(Path);
-  error(BufferOrErr, "error loading file '" + Path + "'");
+  error(BufferOrErr, "ошибка при загрузке файла '" + Path + "'");
   Buffer = std::move(BufferOrErr.get());
-  CurrentActivity = ("loading file '" + Path + "'").str();
+  CurrentActivity = ("загружается файл '" + Path + "'").str();
   std::unique_ptr<LLVMContext> Context = llvm::make_unique<LLVMContext>();
   Context->setDiagnosticHandler(llvm::make_unique<LLVMLTODiagnosticHandler>(),
                                 true);
@@ -329,12 +351,12 @@ getLocalLTOModule(StringRef Path, std::unique_ptr<MemoryBuffer> &Buffer,
 /// Print some statistics on the index for each input files.
 void printIndexStats() {
   for (auto &Filename : InputFilenames) {
-    ExitOnError ExitOnErr("llvm-lto: error loading file '" + Filename + "': ");
+    ExitOnError ExitOnErr("llvm-lto: ошибка при загрузке файла '" + Filename + "': ");
     std::unique_ptr<ModuleSummaryIndex> Index =
         ExitOnErr(getModuleSummaryIndexForFile(Filename));
     // Skip files without a module summary.
     if (!Index)
-      report_fatal_error(Filename + " does not contain an index");
+      report_fatal_error(Filename + " не содержит ни какого индекса");
 
     unsigned Calls = 0, Refs = 0, Functions = 0, Alias = 0, Globals = 0;
     for (auto &Summaries : *Index) {
@@ -349,11 +371,11 @@ void printIndexStats() {
           Globals++;
       }
     }
-    outs() << "Index " << Filename << " contains "
-           << (Alias + Globals + Functions) << " nodes (" << Functions
-           << " functions, " << Alias << " alias, " << Globals
-           << " globals) and " << (Calls + Refs) << " edges (" << Refs
-           << " refs and " << Calls << " calls)\n";
+    outs() << "Индекс " << Filename << " содержит "
+           << (Alias + Globals + Functions) << " узлы (" << Functions
+           << " функции, " << Alias << " алиас, " << Globals
+           << " глобальные переменные) и " << (Calls + Refs) << " края (" << Refs
+           << " ссылки и " << Calls << " вызовы)\n";
   }
 }
 
@@ -371,13 +393,13 @@ static void listSymbols(const TargetOptions &Options) {
 
     // List the symbols.
     outs() << Filename << ":\n";
-    for (int I = 0, E = Module->getSymbolCount(); I != E; ++I)
+    for (цел I = 0, E = Module->getSymbolCount(); I != E; ++I)
       outs() << Module->getSymbolName(I) << "\n";
   }
 }
 
 static std::unique_ptr<MemoryBuffer> loadFile(StringRef Filename) {
-    ExitOnError ExitOnErr("llvm-lto: error loading file '" + Filename.str() +
+    ExitOnError ExitOnErr("llvm-lto: ршибка при загрузке файла '" + Filename.str() +
         "': ");
     return ExitOnErr(errorOrToExpected(MemoryBuffer::getFileOrSTDIN(Filename)));
 }
@@ -397,7 +419,7 @@ static void listDependentLibraries() {
     for (size_t I = 0, C = LTOModule::getDependentLibraryCount(Input.get());
          I != C; ++I) {
       size_t L = 0;
-      const char *S = LTOModule::getDependentLibrary(Input.get(), I, &L);
+      ткст0 S = LTOModule::getDependentLibrary(Input.get(), I, &L);
       assert(S);
       outs() << StringRef(S, L) << "\n";
     }
@@ -418,10 +440,10 @@ static void createCombinedModuleSummaryIndex() {
     ExitOnErr(readModuleSummaryIndex(*MB, CombinedIndex, NextModuleId++));
   }
   std::error_code EC;
-  assert(!OutputFilename.empty());
-  raw_fd_ostream OS(OutputFilename + ".thinlto.bc", EC,
+  assert(!ВыхФайлИмя.empty());
+  raw_fd_ostream OS(ВыхФайлИмя + ".thinlto.bc", EC,
                     sys::fs::OpenFlags::F_None);
-  error(EC, "error opening the file '" + OutputFilename + ".thinlto.bc'");
+  error(EC, "error opening the file '" + ВыхФайлИмя + ".thinlto.bc'");
   WriteIndexToFile(CombinedIndex, OS);
   OS.close();
 }
@@ -562,9 +584,9 @@ private:
   /// Load the input files, create the combined index, and write it out.
   void thinLink() {
     // Perform "ThinLink": just produce the index
-    if (OutputFilename.empty())
+    if (ВыхФайлИмя.empty())
       report_fatal_error(
-          "OutputFilename is necessary to store the combined index.\n");
+          "ВыхФайлИмя is necessary to store the combined index.\n");
 
     LLVMContext Ctx;
     std::vector<std::unique_ptr<MemoryBuffer>> InputBuffers;
@@ -581,8 +603,8 @@ private:
     if (!CombinedIndex)
       report_fatal_error("ThinLink didn't create an index");
     std::error_code EC;
-    raw_fd_ostream OS(OutputFilename, EC, sys::fs::OpenFlags::F_None);
-    error(EC, "error opening the file '" + OutputFilename + "'");
+    raw_fd_ostream OS(ВыхФайлИмя, EC, sys::fs::OpenFlags::F_None);
+    error(EC, "error opening the file '" + ВыхФайлИмя + "'");
     WriteIndexToFile(*CombinedIndex, OS);
   }
 
@@ -591,7 +613,7 @@ private:
   /// on the files mentioned on the command line (these must match the index
   /// content).
   void distributedIndexes() {
-    if (InputFilenames.size() != 1 && !OutputFilename.empty())
+    if (InputFilenames.size() != 1 && !ВыхФайлИмя.empty())
       report_fatal_error("Can't handle a single output filename and multiple "
                          "input files, do not provide an output filename and "
                          "the output files will be suffixed from the input "
@@ -613,7 +635,7 @@ private:
       ThinGenerator.gatherImportedSummariesForModule(
           *TheModule, *Index, ModuleToSummariesForIndex, *Input);
 
-      std::string OutputName = OutputFilename;
+      std::string OutputName = ВыхФайлИмя;
       if (OutputName.empty()) {
         OutputName = Filename + ".thinlto.bc";
       }
@@ -628,7 +650,7 @@ private:
   /// Load the combined index from disk, compute the imports, and emit
   /// the import file lists for each module to disk.
   void emitImports() {
-    if (InputFilenames.size() != 1 && !OutputFilename.empty())
+    if (InputFilenames.size() != 1 && !ВыхФайлИмя.empty())
       report_fatal_error("Can't handle a single output filename and multiple "
                          "input files, do not provide an output filename and "
                          "the output files will be suffixed from the input "
@@ -643,7 +665,7 @@ private:
       auto Buffer = loadFile(Filename);
       auto Input = loadInputFile(Buffer->getMemBufferRef());
       auto TheModule = loadModuleFromInput(*Input, Ctx);
-      std::string OutputName = OutputFilename;
+      std::string OutputName = ВыхФайлИмя;
       if (OutputName.empty()) {
         OutputName = Filename + ".imports";
       }
@@ -658,7 +680,7 @@ private:
   /// on the files mentioned on the command line (these must match the index
   /// content).
   void promote() {
-    if (InputFilenames.size() != 1 && !OutputFilename.empty())
+    if (InputFilenames.size() != 1 && !ВыхФайлИмя.empty())
       report_fatal_error("Can't handle a single output filename and multiple "
                          "input files, do not provide an output filename and "
                          "the output files will be suffixed from the input "
@@ -673,7 +695,7 @@ private:
 
       ThinGenerator.promote(*TheModule, *Index, *Input);
 
-      std::string OutputName = OutputFilename;
+      std::string OutputName = ВыхФайлИмя;
       if (OutputName.empty()) {
         OutputName = Filename + ".thinlto.promoted.bc";
       }
@@ -686,7 +708,7 @@ private:
   /// cross module importing on the files mentioned on the command line
   /// (these must match the index content).
   void import() {
-    if (InputFilenames.size() != 1 && !OutputFilename.empty())
+    if (InputFilenames.size() != 1 && !ВыхФайлИмя.empty())
       report_fatal_error("Can't handle a single output filename and multiple "
                          "input files, do not provide an output filename and "
                          "the output files will be suffixed from the input "
@@ -706,7 +728,7 @@ private:
 
       ThinGenerator.crossModuleImport(*TheModule, *Index, *Input);
 
-      std::string OutputName = OutputFilename;
+      std::string OutputName = ВыхФайлИмя;
       if (OutputName.empty()) {
         OutputName = Filename + ".thinlto.imported.bc";
       }
@@ -715,7 +737,7 @@ private:
   }
 
   void internalize() {
-    if (InputFilenames.size() != 1 && !OutputFilename.empty())
+    if (InputFilenames.size() != 1 && !ВыхФайлИмя.empty())
       report_fatal_error("Can't handle a single output filename and multiple "
                          "input files, do not provide an output filename and "
                          "the output files will be suffixed from the input "
@@ -739,7 +761,7 @@ private:
 
       ThinGenerator.internalize(*TheModule, *Index, *Input);
 
-      std::string OutputName = OutputFilename;
+      std::string OutputName = ВыхФайлИмя;
       if (OutputName.empty()) {
         OutputName = Filename + ".thinlto.internalized.bc";
       }
@@ -748,13 +770,13 @@ private:
   }
 
   void optimize() {
-    if (InputFilenames.size() != 1 && !OutputFilename.empty())
+    if (InputFilenames.size() != 1 && !ВыхФайлИмя.empty())
       report_fatal_error("Can't handle a single output filename and multiple "
                          "input files, do not provide an output filename and "
                          "the output files will be suffixed from the input "
                          "ones.");
     if (!ThinLTOIndex.empty())
-      errs() << "Warning: -thinlto-index ignored for optimize stage";
+      errs() << "Предупреждение: -thinlto-index игнорируется для этапа оптимизации";
 
     for (auto &Filename : InputFilenames) {
       LLVMContext Ctx;
@@ -764,7 +786,7 @@ private:
 
       ThinGenerator.optimize(*TheModule);
 
-      std::string OutputName = OutputFilename;
+      std::string OutputName = ВыхФайлИмя;
       if (OutputName.empty()) {
         OutputName = Filename + ".thinlto.imported.bc";
       }
@@ -773,19 +795,19 @@ private:
   }
 
   void codegen() {
-    if (InputFilenames.size() != 1 && !OutputFilename.empty())
+    if (InputFilenames.size() != 1 && !ВыхФайлИмя.empty())
       report_fatal_error("Can't handle a single output filename and multiple "
                          "input files, do not provide an output filename and "
                          "the output files will be suffixed from the input "
                          "ones.");
     if (!ThinLTOIndex.empty())
-      errs() << "Warning: -thinlto-index ignored for codegen stage";
+      errs() << "Предупреждение: -thinlto-index игнорируется для этапа кодгена";
 
     std::vector<std::unique_ptr<MemoryBuffer>> InputBuffers;
     for (auto &Filename : InputFilenames) {
       LLVMContext Ctx;
       auto InputOrErr = MemoryBuffer::getFile(Filename);
-      error(InputOrErr, "error " + CurrentActivity);
+      error(InputOrErr, "ошибка " + CurrentActivity);
       InputBuffers.push_back(std::move(*InputOrErr));
       ThinGenerator.addModule(Filename, InputBuffers.back()->getBuffer());
     }
@@ -793,7 +815,7 @@ private:
     ThinGenerator.run();
     for (auto BinName :
          zip(ThinGenerator.getProducedBinaries(), InputFilenames)) {
-      std::string OutputName = OutputFilename;
+      std::string OutputName = ВыхФайлИмя;
       if (OutputName.empty())
         OutputName = std::get<1>(BinName) + ".thinlto.o";
       else if (OutputName == "-") {
@@ -803,28 +825,28 @@ private:
 
       std::error_code EC;
       raw_fd_ostream OS(OutputName, EC, sys::fs::OpenFlags::F_None);
-      error(EC, "error opening the file '" + OutputName + "'");
+      error(EC, "ошибка при открытии файла '" + OutputName + "'");
       OS << std::get<0>(BinName)->getBuffer();
     }
   }
 
   /// Full ThinLTO process
   void runAll() {
-    if (!OutputFilename.empty())
-      report_fatal_error("Do not provide an output filename for ThinLTO "
-                         " processing, the output files will be suffixed from "
-                         "the input ones.");
+    if (!ВыхФайлИмя.empty())
+      report_fatal_error("Для обработки ThinLTO выходное имя файла не требуется, "
+                         " выходные файлы суффиксируются по "
+                         "входным.");
 
     if (!ThinLTOIndex.empty())
-      errs() << "Warning: -thinlto-index ignored for full ThinLTO process";
+      errs() << "Предупреждение: -thinlto-index игнорирован для полного процесса ThinLTO";
 
     LLVMContext Ctx;
     std::vector<std::unique_ptr<MemoryBuffer>> InputBuffers;
     for (unsigned i = 0; i < InputFilenames.size(); ++i) {
       auto &Filename = InputFilenames[i];
-      std::string CurrentActivity = "loading file '" + Filename + "'";
+      std::string CurrentActivity = "загружается файл '" + Filename + "'";
       auto InputOrErr = MemoryBuffer::getFile(Filename);
-      error(InputOrErr, "error " + CurrentActivity);
+      error(InputOrErr, "ошибка " + CurrentActivity);
       InputBuffers.push_back(std::move(*InputOrErr));
       ThinGenerator.addModule(Filename, InputBuffers.back()->getBuffer());
     }
@@ -842,14 +864,14 @@ private:
 
     auto &Binaries = ThinGenerator.getProducedBinaries();
     if (Binaries.size() != InputFilenames.size())
-      report_fatal_error("Number of output objects does not match the number "
-                         "of inputs");
+      report_fatal_error("Число выходных объектов не совпадает с числом "
+                         "входных");
 
     for (unsigned BufID = 0; BufID < Binaries.size(); ++BufID) {
       auto OutputName = InputFilenames[BufID] + ".thinlto.o";
       std::error_code EC;
       raw_fd_ostream OS(OutputName, EC, sys::fs::OpenFlags::F_None);
-      error(EC, "error opening the file '" + OutputName + "'");
+      error(EC, "ошибка при открытии файла '" + OutputName + "'");
       OS << Binaries[BufID]->getBuffer();
     }
   }
@@ -859,12 +881,12 @@ private:
 
 } // end namespace thinlto
 
-extern "C" __declspec(dllexport) int ЛЛВхоФункцЛЛЛТО(int argc, char **argv) {
+extern "C" __declspec(dllexport) цел ЛЛВхоФункцЛЛЛТО(цел argc, char **argv) {
   InitLLVM X(argc, argv);
-  cl::ParseCommandLineOptions(argc, argv, "llvm LTO linker\n");
+  cl::ParseCommandLineOptions(argc, argv, "Линкер llvm LTO\n");
 
   if (OptLevel < '0' || OptLevel > '3')
-    error("optimization level must be between 0 and 3");
+    error("уровень оптимизации должен быть между 0 и 3");
 
   // Initialize the configured targets.
   InitializeAllTargets();
@@ -892,22 +914,22 @@ extern "C" __declspec(dllexport) int ЛЛВхоФункцЛЛЛТО(int argc, ch
 
   if (CheckHasObjC) {
     for (auto &Filename : InputFilenames) {
-      ExitOnError ExitOnErr(std::string(*argv) + ": error loading file '" +
+      ExitOnError ExitOnErr(std::string(*argv) + ": ошибка при загрузке файла '" +
                             Filename + "': ");
       std::unique_ptr<MemoryBuffer> BufferOrErr =
           ExitOnErr(errorOrToExpected(MemoryBuffer::getFile(Filename)));
       auto Buffer = std::move(BufferOrErr.get());
       if (ExitOnErr(isBitcodeContainingObjCCategory(*Buffer)))
-        outs() << "Bitcode " << Filename << " contains ObjC\n";
+        outs() << "Биткод " << Filename << " содержит ObjC\n";
       else
-        outs() << "Bitcode " << Filename << " does not contain ObjC\n";
+        outs() << "Биткод " << Filename << " не содержит ObjC\n";
     }
     return 0;
   }
 
   if (ThinLTOMode.getNumOccurrences()) {
     if (ThinLTOMode.getNumOccurrences() > 1)
-      report_fatal_error("You can't specify more than one -thinlto-action");
+      report_fatal_error("Нельзя задавать более одной -thinlto-action");
     thinlto::ThinLTOProcessing ThinLTOProcessor(Options);
     ThinLTOProcessor.run();
     return 0;
@@ -943,7 +965,7 @@ extern "C" __declspec(dllexport) int ЛЛВхоФункцЛЛЛТО(int argc, ch
   std::vector<std::string> KeptDSOSyms;
 
   for (unsigned i = BaseArg; i < InputFilenames.size(); ++i) {
-    CurrentActivity = "loading file '" + InputFilenames[i] + "'";
+    CurrentActivity = "загружается файл '" + InputFilenames[i] + "'";
     ErrorOr<std::unique_ptr<LTOModule>> ModuleOrErr =
         LTOModule::createFromFile(Context, InputFilenames[i], Options);
     std::unique_ptr<LTOModule> &Module = *ModuleOrErr;
@@ -967,7 +989,7 @@ extern "C" __declspec(dllexport) int ЛЛВхоФункцЛЛЛТО(int argc, ch
       CodeGen.setModule(std::move(Module));
     } else if (!CodeGen.addModule(Module.get())) {
       // Print a message here so that we know addModule() did not abort.
-      error("error adding file '" + InputFilenames[i] + "'");
+      error("ошибка при добавлении файла '" + InputFilenames[i] + "'");
     }
   }
 
@@ -997,56 +1019,57 @@ extern "C" __declspec(dllexport) int ЛЛВхоФункцЛЛЛТО(int argc, ch
   if (FileType.getNumOccurrences())
     CodeGen.setFileType(FileType);
 
-  if (!OutputFilename.empty()) {
+  if (!ВыхФайлИмя.empty()) {
     if (!CodeGen.optimize(DisableVerify, DisableInline, DisableGVNLoadPRE,
                           DisableLTOVectorization)) {
       // Diagnostic messages should have been printed by the handler.
-      error("error optimizing the code");
+      error("ошибка при оптимизации кода");
     }
 
     if (SaveModuleFile) {
-      std::string ModuleFilename = OutputFilename;
+      std::string ModuleFilename = ВыхФайлИмя;
       ModuleFilename += ".merged.bc";
       std::string ErrMsg;
 
       if (!CodeGen.writeMergedModules(ModuleFilename))
-        error("writing merged module failed.");
+        error("неудачная запись merged модуля.");
     }
 
     std::list<ToolOutputFile> OSs;
     std::vector<raw_pwrite_stream *> OSPtrs;
     for (unsigned I = 0; I != Parallelism; ++I) {
-      std::string PartFilename = OutputFilename;
+      std::string PartFilename = ВыхФайлИмя;
       if (Parallelism != 1)
         PartFilename += "." + utostr(I);
       std::error_code EC;
       OSs.emplace_back(PartFilename, EC, sys::fs::F_None);
       if (EC)
-        error("error opening the file '" + PartFilename + "': " + EC.message());
+        error("ошибка при открытии файла '" + PartFilename + "': " + EC.message());
       OSPtrs.push_back(&OSs.back().os());
     }
 
     if (!CodeGen.compileOptimized(OSPtrs))
       // Diagnostic messages should have been printed by the handler.
-      error("error compiling the code");
+      error("ошибка при компилировании кода");
 
     for (ToolOutputFile &OS : OSs)
       OS.keep();
   } else {
     if (Parallelism != 1)
-      error("-j must be specified together with -o");
+      error("-j должно задаваться вместе с -o");
 
     if (SaveModuleFile)
-      error(": -save-merged-module must be specified with -o");
+      error(": -save-merged-module должно задаваться с -o");
 
-    const char *OutputName = nullptr;
+    ткст0 OutputName = nullptr;
     if (!CodeGen.compile_to_file(&OutputName, DisableVerify, DisableInline,
                                  DisableGVNLoadPRE, DisableLTOVectorization))
-      error("error compiling the code");
+      error("ошибка при компилировании кода");
       // Diagnostic messages should have been printed by the handler.
 
-    outs() << "Wrote native object file '" << OutputName << "'\n";
+    outs() << "Записан нативный объектный файл '" << OutputName << "'\n";
   }
 
   return 0;
 }
+}//end of llvmlto namespace

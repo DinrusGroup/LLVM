@@ -19,6 +19,9 @@
     <Filter Include="Исходные файлы\Transforms">
       <UniqueIdentifier>{f9b309a5-ae4c-4b85-ba19-66eaa9cdf7ca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Исходные файлы\clang">
+      <UniqueIdentifier>{04fa9664-fa8e-4f2f-95d6-48f3341d5b62}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Analysis.cpp">
@@ -132,9 +135,129 @@
     <ClCompile Include="src\Transforms\Vectorize.cpp">
       <Filter>Исходные файлы\Transforms</Filter>
     </ClCompile>
+    <ClCompile Include="src\clang\expBuildSystem.cpp">
+      <Filter>Исходные файлы\clang</Filter>
+    </ClCompile>
+    <ClCompile Include="src\clang\expCXCompilationDatabase.cpp">
+      <Filter>Исходные файлы\clang</Filter>
+    </ClCompile>
+    <ClCompile Include="src\clang\expCXErrorCode.cpp">
+      <Filter>Исходные файлы\clang</Filter>
+    </ClCompile>
+    <ClCompile Include="src\clang\expCXString.cpp">
+      <Filter>Исходные файлы\clang</Filter>
+    </ClCompile>
+    <ClCompile Include="src\clang\expIndex.cpp">
+      <Filter>Исходные файлы\clang</Filter>
+    </ClCompile>
+    <ClCompile Include="src\clang\expDocumentation.cpp">
+      <Filter>Исходные файлы\clang</Filter>
+    </ClCompile>
+    <ClCompile Include="src\clang\ARCMigrate.cpp">
+      <Filter>Исходные файлы\clang</Filter>
+    </ClCompile>
+    <ClCompile Include="src\clang\BuildSystem.cpp">
+      <Filter>Исходные файлы\clang</Filter>
+    </ClCompile>
+    <ClCompile Include="src\clang\CIndex.cpp">
+      <Filter>Исходные файлы\clang</Filter>
+    </ClCompile>
+    <ClCompile Include="src\clang\CIndexCodeCompletion.cpp">
+      <Filter>Исходные файлы\clang</Filter>
+    </ClCompile>
+    <ClCompile Include="src\clang\CIndexCXX.cpp">
+      <Filter>Исходные файлы\clang</Filter>
+    </ClCompile>
+    <ClCompile Include="src\clang\CIndexDiagnostic.cpp">
+      <Filter>Исходные файлы\clang</Filter>
+    </ClCompile>
+    <ClCompile Include="src\clang\CIndexer.cpp">
+      <Filter>Исходные файлы\clang</Filter>
+    </ClCompile>
+    <ClCompile Include="src\clang\CIndexHigh.cpp">
+      <Filter>Исходные файлы\clang</Filter>
+    </ClCompile>
+    <ClCompile Include="src\clang\CIndexInclusionStack.cpp">
+      <Filter>Исходные файлы\clang</Filter>
+    </ClCompile>
+    <ClCompile Include="src\clang\CIndexUSRs.cpp">
+      <Filter>Исходные файлы\clang</Filter>
+    </ClCompile>
+    <ClCompile Include="src\clang\CXComment.cpp">
+      <Filter>Исходные файлы\clang</Filter>
+    </ClCompile>
+    <ClCompile Include="src\clang\CXCompilationDatabase.cpp">
+      <Filter>Исходные файлы\clang</Filter>
+    </ClCompile>
+    <ClCompile Include="src\clang\CXCursor.cpp">
+      <Filter>Исходные файлы\clang</Filter>
+    </ClCompile>
+    <ClCompile Include="src\clang\CXIndexDataConsumer.cpp">
+      <Filter>Исходные файлы\clang</Filter>
+    </ClCompile>
+    <ClCompile Include="src\clang\CXLoadedDiagnostic.cpp">
+      <Filter>Исходные файлы\clang</Filter>
+    </ClCompile>
+    <ClCompile Include="src\clang\CXSourceLocation.cpp">
+      <Filter>Исходные файлы\clang</Filter>
+    </ClCompile>
+    <ClCompile Include="src\clang\CXStoredDiagnostic.cpp">
+      <Filter>Исходные файлы\clang</Filter>
+    </ClCompile>
+    <ClCompile Include="src\clang\CXString.cpp">
+      <Filter>Исходные файлы\clang</Filter>
+    </ClCompile>
+    <ClCompile Include="src\clang\CXType.cpp">
+      <Filter>Исходные файлы\clang</Filter>
+    </ClCompile>
+    <ClCompile Include="src\clang\Indexing.cpp">
+      <Filter>Исходные файлы\clang</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Header.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\clang\DinrusClang.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\clang\CIndexDiagnostic.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\clang\CIndexer.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\clang\CLog.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\clang\CursorVisitor.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\clang\CXComment.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\clang\CXCursor.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\clang\CXIndexDataConsumer.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\clang\CXLoadedDiagnostic.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\clang\CXSourceLocation.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\clang\CXString.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\clang\CXTranslationUnit.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\clang\CXType.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\clang\Index_Internal.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

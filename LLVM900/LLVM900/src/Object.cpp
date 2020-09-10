@@ -75,7 +75,7 @@ LLEXPORT LLVMBinaryType ЛЛБинДайТип(ЛЛБинарник BR){
  * calling \c LLVMDisposeBinary.
  */
 LLEXPORT ЛЛБинарник ЛЛМакхО_УнивБин_КопируйОбъДляАрх(ЛЛБинарник BR,
-                                                        const char *Arch,
+                                                        ткст0 Arch,
                                                         size_t ArchLen,
                                                         char **ErrorMessage){
   return LLVMMachOUniversalBinaryCopyObjectForArch( BR, Arch, ArchLen, ErrorMessage);
@@ -152,13 +152,13 @@ LLEXPORT void ЛЛПереместисьКСледщСимволу(ЛЛСимв�
 }
 
 // SectionRef accessors
-LLEXPORT const char *ЛЛДайИмяСекции(ЛЛИтераторСекций SI){
+LLEXPORT ткст0 ЛЛДайИмяСекции(ЛЛИтераторСекций SI){
   return  LLVMGetSectionName(SI);
 }
 LLEXPORT uint64_t ЛЛДАйРазмСекции(ЛЛИтераторСекций SI){
   return  LLVMGetSectionSize(SI);
 }
-LLEXPORT const char *ЛЛДайСодержимоеСекции(ЛЛИтераторСекций SI){
+LLEXPORT ткст0 ЛЛДайСодержимоеСекции(ЛЛИтераторСекций SI){
   return  LLVMGetSectionContents(SI);
 }
 LLEXPORT uint64_t ЛЛДайАдресСекции(ЛЛИтераторСекций SI){
@@ -188,7 +188,7 @@ LLEXPORT void ЛЛПереместисьКСледщРелокации(ЛЛИт�
 
 
 // SymbolRef accessors
-LLEXPORT const char *ЛЛДайИмяСимвола(ЛЛСимвИтератор SI){
+LLEXPORT ткст0 ЛЛДайИмяСимвола(ЛЛСимвИтератор SI){
   return  LLVMGetSymbolName(SI);
 }
 LLEXPORT uint64_t ЛЛДайАдресСимвола(ЛЛСимвИтератор SI){
@@ -210,10 +210,10 @@ LLEXPORT uint64_t ЛЛДайТипРелокации(ЛЛИтераторРел�
 }
 // NOTE: Caller takes ownership of returned string of the two
 // following functions.
-LLEXPORT const char *ЛЛДайИмяТипаРелокации(ЛЛИтераторРелокаций RI){
+LLEXPORT ткст0 ЛЛДайИмяТипаРелокации(ЛЛИтераторРелокаций RI){
   return  LLVMGetRelocationTypeName(RI);
 }
-LLEXPORT const char *ЛЛДайТкстЗначенияРелокации(ЛЛИтераторРелокаций RI){
+LLEXPORT ткст0 ЛЛДайТкстЗначенияРелокации(ЛЛИтераторРелокаций RI){
   return  LLVMGetRelocationValueString(RI);
 }
 

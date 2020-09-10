@@ -492,8 +492,8 @@ LLEXPORT uint64_t ЛЛДайЗначениеАтрибутаПеречня(ЛЛ�
 }
 
 LLEXPORT ЛЛАтрибут ЛЛСоздайТкстАтрибут(ЛЛКонтекст C,
-                                           const char *K, unsigned KLength,
-                                           const char *V, unsigned VLength){
+                                           ткст0 K, unsigned KLength,
+                                           ткст0 V, unsigned VLength){
 return LLVMCreateStringAttribute(C, K, KLength, V, VLength);
  }											   
 
@@ -519,7 +519,7 @@ LLEXPORT LLVMDiagnosticSeverity ЛЛДайСтрогостьДиагИнфо(Л�
 
 // Операции над модулями 
 
-LLEXPORT ЛЛМодуль ЛЛМодуль_СоздайСИменем(const char *ModuleID) {
+LLEXPORT ЛЛМодуль ЛЛМодуль_СоздайСИменем(ткст0 ModuleID) {
 return LLVMModuleCreateWithName(ModuleID);
 }
 
@@ -532,30 +532,30 @@ LLEXPORT void ЛЛВыместиМодуль(ЛЛМодуль M) {
     LLVMDisposeModule(M);
 }
 
-LLEXPORT const char *ЛЛДайИдентификаторМодуля(ЛЛМодуль M, size_t *Len){
+LLEXPORT ткст0 ЛЛДайИдентификаторМодуля(ЛЛМодуль M, size_t *Len){
     return LLVMGetModuleIdentifier(M, Len);
 }
 LLEXPORT void ЛЛУстИдентификаторМодуля(ЛЛМодуль M, const char* Ident, size_t Len) {
     LLVMSetModuleIdentifier(M, Ident, Len);
 }
-LLEXPORT const char *ЛЛДайИмяИсходника(ЛЛМодуль M, size_t *Len) {
+LLEXPORT ткст0 ЛЛДайИмяИсходника(ЛЛМодуль M, size_t *Len) {
     return LLVMGetSourceFileName(M, Len);
 }
 LLEXPORT void ЛЛУстИмяИсходника(ЛЛМодуль M, const char* Name, size_t Len) {
     LLVMSetSourceFileName(M, Name, Len);
 }
 // Раскладка данных 
-LLEXPORT const char *ЛЛДайСтрРаскладкиДанных(ЛЛМодуль M){
+LLEXPORT ткст0 ЛЛДайСтрРаскладкиДанных(ЛЛМодуль M){
     return LLVMGetDataLayoutStr(M);
 }
-LLEXPORT const char *ЛЛДайРаскладкуДанных(ЛЛМодуль M) {
+LLEXPORT ткст0 ЛЛДайРаскладкуДанных(ЛЛМодуль M) {
     return LLVMGetDataLayout(M);
 }
 LLEXPORT void ЛЛУстРаскладкуДанных(ЛЛМодуль M, const char* DataLayoutStr) {
     LLVMSetDataLayout(M, DataLayoutStr);
 }
 //--.. Target триада
-LLEXPORT const char * ЛЛДайЦель(ЛЛМодуль M){
+LLEXPORT ткст0  ЛЛДайЦель(ЛЛМодуль M){
     return LLVMGetTarget(M);
 }
 LLEXPORT void ЛЛУстЦель(ЛЛМодуль M, const char* Triple) {
@@ -585,7 +585,7 @@ LLEXPORT ЛЛМетаданные ЛЛЗаписиФлаговМодуля_Да�
     return LLVMModuleFlagEntriesGetMetadata(Entries, Index);
 }
 LLEXPORT ЛЛМетаданные ЛЛДайФлагМодуля(ЛЛМодуль M,
-                                  const char *Key, size_t KeyLen){
+                                  ткст0 Key, size_t KeyLen){
     return LLVMGetModuleFlag(M, Key, KeyLen);
 }
 LLEXPORT void ЛЛДобавьФлагМодуля(ЛЛМодуль M, LLVMModuleFlagBehavior Behavior,
@@ -600,7 +600,7 @@ LLEXPORT void ЛЛДобавьФлагМодуля(ЛЛМодуль M, LLVMModul
         LLVMDumpModule(M);
     }
 
-LLEXPORT LLVMBool ЛЛВыведиМодульВФайл(ЛЛМодуль M, const char *Filename,
+LLEXPORT LLVMBool ЛЛВыведиМодульВФайл(ЛЛМодуль M, ткст0 Filename,
                                char **ErrorMessage) {
     return LLVMPrintModuleToFile(M, Filename, ErrorMessage);
 }
@@ -619,7 +619,7 @@ LLEXPORT void ЛЛУстИнлайнАсмМодуля2(ЛЛМодуль M, cons
     LLEXPORT void ЛЛПриставьИнлайнАсмМодуля(ЛЛМодуль M, const char* Asm, size_t Len) {
         LLVMAppendModuleInlineAsm(M, Asm, Len);
     }
-LLEXPORT const char *ЛЛДайИнлайнАсмМодуля(ЛЛМодуль M, size_t *Len) {
+LLEXPORT ткст0 ЛЛДайИнлайнАсмМодуля(ЛЛМодуль M, size_t *Len) {
     return LLVMGetModuleInlineAsm(M, Len);
 }
 LLEXPORT ЛЛЗначение ЛЛДайИнлайнАсм(ЛЛТип Ty,
@@ -786,11 +786,11 @@ LLEXPORT ЛЛТип ЛЛТипСтрукт(ЛЛТип *ElementTypes,
 	return LLVMStructType(ElementTypes,ElementCount, Packed);
 }
 
-LLEXPORT ЛЛТип ЛЛСтруктСоздайСИменем(ЛЛКонтекст C, const char *Name){
+LLEXPORT ЛЛТип ЛЛСтруктСоздайСИменем(ЛЛКонтекст C, ткст0 Name){
 		return LLVMStructCreateNamed(C,Name);
 }
 
-LLEXPORT const char *ЛЛДайИмяСтрукт(ЛЛТип Ty){
+LLEXPORT ткст0 ЛЛДайИмяСтрукт(ЛЛТип Ty){
 		return LLVMGetStructName(Ty);
 }
 
@@ -823,7 +823,7 @@ LLEXPORT LLVMBool ЛЛЛитералСтрукт_ли(ЛЛТип StructTy) {
 		return LLVMIsLiteralStruct(StructTy);
 }
 
-LLEXPORT ЛЛТип ЛЛДайТипПоИмени(ЛЛМодуль M, const char *Name){
+LLEXPORT ЛЛТип ЛЛДайТипПоИмени(ЛЛМодуль M, ткст0 Name){
 		return LLVMGetTypeByName(M, Name);
 }
 
@@ -892,17 +892,17 @@ LLEXPORT LLVMValueKind ЛЛДайРодЗначения(ЛЛЗначение Val
 		return LLVMGetValueKind(Val) ;
 }
 
-LLEXPORT const char *ЛЛДайИмяЗначения2(ЛЛЗначение Val, size_t *Length) {
+LLEXPORT ткст0 ЛЛДайИмяЗначения2(ЛЛЗначение Val, size_t *Length) {
 		return LLVMGetValueName2(Val, Length) ;
 }
 
-LLEXPORT void ЛЛУстИмяЗначения2(ЛЛЗначение Val, const char *Name, size_t NameLen) {
+LLEXPORT void ЛЛУстИмяЗначения2(ЛЛЗначение Val, ткст0 Name, size_t NameLen) {
 	LLVMSetValueName2(Val, Name, NameLen) ;
 }
-LLEXPORT const char *ЛЛДайИмяЗначения(ЛЛЗначение Val) {
+LLEXPORT ткст0 ЛЛДайИмяЗначения(ЛЛЗначение Val) {
 	return LLVMGetValueName(Val) ;
 }
-LLEXPORT void ЛЛУстИмяЗначения(ЛЛЗначение Val, const char *Name) {
+LLEXPORT void ЛЛУстИмяЗначения(ЛЛЗначение Val, ткст0 Name) {
 	
 	LLVMSetValueName(Val, Name)  ;
 }
@@ -916,7 +916,7 @@ LLEXPORT char* ЛЛВыведиЗначениеВСтроку(ЛЛЗначени
 LLEXPORT void ЛЛЗамениВсеИспользованияНа(ЛЛЗначение OldVal, ЛЛЗначение NewVal){
 	LLVMReplaceAllUsesWith(OldVal, NewVal) ;
 }
-LLEXPORT int ЛЛЕстьМетаданные_ли(ЛЛЗначение Inst){
+LLEXPORT цел ЛЛЕстьМетаданные_ли(ЛЛЗначение Inst){
 	return LLVMHasMetadata(Inst) ;
 }
 LLEXPORT ЛЛЗначение ЛЛДайМетаданные(ЛЛЗначение Inst, unsigned KindID){
@@ -972,7 +972,7 @@ LLEXPORT void ЛЛУстОперанд(ЛЛЗначение Val, unsigned Index,
 LLEXPORT unsigned ЛЛДайЧлоОперандовМДУзла(ЛЛЗначение V) {
     return LLVMGetMDNodeNumOperands(V);
 }
-LLEXPORT int ЛЛДайЧлоОперандов(ЛЛЗначение Val) {
+LLEXPORT цел ЛЛДайЧлоОперандов(ЛЛЗначение Val) {
     return LLVMGetNumOperands(Val);
 }
 
@@ -1001,7 +1001,7 @@ return LLVMConstPointerNull(Ty);
 }
 // Операции над узлами метаданных
 
-LLEXPORT ЛЛМетаданные ЛЛМДТкстВКонтексте2(ЛЛКонтекст C, const char *Str,
+LLEXPORT ЛЛМетаданные ЛЛМДТкстВКонтексте2(ЛЛКонтекст C, ткст0 Str,
                                        size_t SLen){
 return LLVMMDStringInContext2(C, Str, SLen);
 }
@@ -1009,11 +1009,11 @@ LLEXPORT ЛЛМетаданные ЛЛМДУзелВКонтексте2(ЛЛКо
                                      size_t Count){
 return LLVMMDNodeInContext2(C, MDs, Count);
 }
-LLEXPORT ЛЛЗначение ЛЛМДТкстВКонтексте(ЛЛКонтекст C, const char *Str,
+LLEXPORT ЛЛЗначение ЛЛМДТкстВКонтексте(ЛЛКонтекст C, ткст0 Str,
                                    unsigned SLen) {
     return LLVMMDStringInContext(C,  Str, SLen);
 }
-LLEXPORT ЛЛЗначение ЛЛМДТкст(const char *Str, unsigned SLen){
+LLEXPORT ЛЛЗначение ЛЛМДТкст(ткст0 Str, unsigned SLen){
 return LLVMMDString(Str, SLen);
 }
 LLEXPORT ЛЛЗначение ЛЛМДУзелВКонтексте(ЛЛКонтекст C, ЛЛЗначение *Vals,
@@ -1029,7 +1029,7 @@ return LLVMMetadataAsValue(C,  MD);
 LLEXPORT ЛЛМетаданные ЛЛЗначениеКакМетаданные(ЛЛЗначение Val) {
 return LLVMValueAsMetadata(Val);
 }
-LLEXPORT const char *ЛЛДайМДТкст(ЛЛЗначение V, unsigned *Length){
+LLEXPORT ткст0 ЛЛДайМДТкст(ЛЛЗначение V, unsigned *Length){
 return LLVMGetMDString(V, Length);
 }
 LLEXPORT ЛЛИменованыйУзелМД ЛЛДайПервыеИменованныеМетаданные(ЛЛМодуль M){
@@ -1045,35 +1045,35 @@ LLEXPORT ЛЛИменованыйУзелМД ЛЛДайПредшИменова
 return LLVMGetPreviousNamedMetadata(NMD);
 }
 LLEXPORT ЛЛИменованыйУзелМД ЛЛДайИменованныеМетаданные(ЛЛМодуль M,
-                                        const char *Name, size_t NameLen) {
+                                        ткст0 Name, size_t NameLen) {
 return LLVMGetNamedMetadata(M, Name, NameLen);
 }
 LLEXPORT ЛЛИменованыйУзелМД ЛЛДайИлиВставьИменованныеМетаданные(ЛЛМодуль M,
-                                                const char *Name, size_t NameLen){
+                                                ткст0 Name, size_t NameLen){
 return LLVMGetOrInsertNamedMetadata(M, Name, NameLen);
 }
-LLEXPORT const char *ЛЛДайИмяИменованныхМетаданных(ЛЛИменованыйУзелМД NMD, size_t *NameLen){
+LLEXPORT ткст0 ЛЛДайИмяИменованныхМетаданных(ЛЛИменованыйУзелМД NMD, size_t *NameLen){
 return LLVMGetNamedMetadataName(NMD, NameLen);
 }
 LLEXPORT void ЛЛДайОперандыМДУзла(ЛЛЗначение V, ЛЛЗначение *Dest) {
 return LLVMGetMDNodeOperands(V, Dest);
 }
-LLEXPORT unsigned ЛЛДайЧлоОперандовИменованныхМетаданных(ЛЛМодуль M, const char *Name){
+LLEXPORT unsigned ЛЛДайЧлоОперандовИменованныхМетаданных(ЛЛМодуль M, ткст0 Name){
 return LLVMGetNamedMetadataNumOperands(M, Name);
 }
-LLEXPORT void ЛЛДайОперандыИменованныхМетаданных(ЛЛМодуль M, const char *Name,
+LLEXPORT void ЛЛДайОперандыИменованныхМетаданных(ЛЛМодуль M, ткст0 Name,
                                   ЛЛЗначение *Dest) {
 return LLVMGetNamedMetadataOperands(M,  Name, Dest);
 }
-LLEXPORT void ЛЛДобавьОперандИменованныхМетаданных(ЛЛМодуль M, const char *Name,
+LLEXPORT void ЛЛДобавьОперандИменованныхМетаданных(ЛЛМодуль M, ткст0 Name,
                                  ЛЛЗначение Val) {
 return LLVMAddNamedMetadataOperand(M,  Name, Val);
 }
 
-LLEXPORT const char *ЛЛДайОтладЛокПапку(ЛЛЗначение Val, unsigned *Length){
+LLEXPORT ткст0 ЛЛДайОтладЛокПапку(ЛЛЗначение Val, unsigned *Length){
 return LLVMGetDebugLocDirectory(Val, Length);
 }
-LLEXPORT const char *ЛЛДайОтладЛокИмяф(ЛЛЗначение Val, unsigned *Length){
+LLEXPORT ткст0 ЛЛДайОтладЛокИмяф(ЛЛЗначение Val, unsigned *Length){
 return LLVMGetDebugLocFilename(Val, Length);
 }
 LLEXPORT unsigned ЛЛДайОтладЛокСтроку(ЛЛЗначение Val) {
@@ -1106,7 +1106,7 @@ return LLVMConstIntOfStringAndSize(IntTy, Str, SLen, Radix);
 LLEXPORT ЛЛЗначение ЛЛКонстРеал(ЛЛТип RealTy, double N) {
 return LLVMConstReal(RealTy, N);
 }
-LLEXPORT ЛЛЗначение ЛЛКонстРеалИзТкста(ЛЛТип RealTy, const char *Text){
+LLEXPORT ЛЛЗначение ЛЛКонстРеалИзТкста(ЛЛТип RealTy, ткст0 Text){
 return LLVMConstRealOfString(RealTy, Text);
 }
 LLEXPORT ЛЛЗначение ЛЛКонстРеалИзТкстаСРазмером(ЛЛТип RealTy, const char Str[],
@@ -1125,12 +1125,12 @@ return LLVMConstRealGetDouble(ConstantVal, LosesInfo);
 
 // Операции над составными константами 
 
-LLEXPORT ЛЛЗначение ЛЛКонстТкстВКонтексте(ЛЛКонтекст C, const char *Str,
+LLEXPORT ЛЛЗначение ЛЛКонстТкстВКонтексте(ЛЛКонтекст C, ткст0 Str,
                                       unsigned Length,
                                       LLVMBool DontNullTerminate) {
 return LLVMConstStringInContext(C, Str, Length, DontNullTerminate);
                         }
-LLEXPORT ЛЛЗначение ЛЛКонстТкст(const char *Str, unsigned Length,
+LLEXPORT ЛЛЗначение ЛЛКонстТкст(ткст0 Str, unsigned Length,
                              LLVMBool DontNullTerminate) {
 return LLVMConstString(Str, Length, DontNullTerminate);
 }
@@ -1140,7 +1140,7 @@ return LLVMGetElementAsConstant(C, idx);
 LLEXPORT LLVMBool ЛЛКонстТкст_ли(ЛЛЗначение C){
 return LLVMIsConstantString(C);
 }
-LLEXPORT const char *ЛЛДайКакТкст(ЛЛЗначение C, size_t *Length){
+LLEXPORT ткст0 ЛЛДайКакТкст(ЛЛЗначение C, size_t *Length){
 return LLVMGetAsString(C, Length);
 }
 LLEXPORT ЛЛЗначение ЛЛКонстМассив(ЛЛТип ElementTy,
@@ -1365,8 +1365,8 @@ LLEXPORT ЛЛЗначение ЛЛКонстВставьЗначение(ЛЛЗ�
                                   unsigned *IdxList, unsigned NumIdx){
 return LLVMConstInsertValue(AggConstant, ElementValueConstant, IdxList, NumIdx) ;
 }
-LLEXPORT ЛЛЗначение ЛЛКонстИнлайнАсм(ЛЛТип Ty, const char *AsmString,
-                                const char *Constraints,
+LLEXPORT ЛЛЗначение ЛЛКонстИнлайнАсм(ЛЛТип Ty, ткст0 AsmString,
+                                ткст0 Constraints,
                                 LLVMBool HasSideEffects,
                                 LLVMBool IsAlignStack){
 return LLVMConstInlineAsm(Ty, AsmString, Constraints, HasSideEffects, IsAlignStack) ;
@@ -1389,10 +1389,10 @@ return LLVMGetLinkage (Global);
 LLEXPORT void ЛЛУстКомпоновку(ЛЛЗначение Global, LLVMLinkage ЛЛКомпоновка){
  LLVMSetLinkage(Global, ЛЛКомпоновка) ;
 }
-LLEXPORT const char *ЛЛДайСекцию(ЛЛЗначение Global) {
+LLEXPORT ткст0 ЛЛДайСекцию(ЛЛЗначение Global) {
 return LLVMGetSection (Global);
 }
-LLEXPORT void ЛЛУстСекцию(ЛЛЗначение Global, const char *Section){
+LLEXPORT void ЛЛУстСекцию(ЛЛЗначение Global, ткст0 Section){
  LLVMSetSection(Global, Section) ;
 }
 LLEXPORT LLVMVisibility ЛЛДайВидимость(ЛЛЗначение Global) {
@@ -1460,15 +1460,15 @@ LLEXPORT void ЛЛГлоб_СбросьМетаданные(ЛЛЗначение
 
 // Операции над глобальными переменными 
 
-LLEXPORT ЛЛЗначение ЛЛДобавьГлоб(ЛЛМодуль M, ЛЛТип Ty, const char *Name){
+LLEXPORT ЛЛЗначение ЛЛДобавьГлоб(ЛЛМодуль M, ЛЛТип Ty, ткст0 Name){
 return LLVMAddGlobal(M, Ty, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛДобавьГлобВАдрПрострво(ЛЛМодуль M, ЛЛТип Ty,
-                                         const char *Name,
+                                         ткст0 Name,
                                          unsigned AddressSpace) {
 return LLVMAddGlobalInAddressSpace(M, Ty, Name, AddressSpace) ;
 }
-LLEXPORT ЛЛЗначение ЛЛДайИменованныйГлоб(ЛЛМодуль M, const char *Name){
+LLEXPORT ЛЛЗначение ЛЛДайИменованныйГлоб(ЛЛМодуль M, ткст0 Name){
 return LLVMGetNamedGlobal( M, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛДайПервыйГлоб(ЛЛМодуль M) {
@@ -1520,11 +1520,11 @@ LLEXPORT void ЛЛУстИзвнеИнициализуем(ЛЛЗначение 
 // Операции над псевдонимами 
 
 LLEXPORT ЛЛЗначение ЛЛДобавьНик(ЛЛМодуль M, ЛЛТип Ty, ЛЛЗначение Aliasee,
-                          const char *Name){
+                          ткст0 Name){
 return LLVMAddAlias(M, Ty, Aliasee, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛДайИменованГлобНик(ЛЛМодуль M,
-                                     const char *Name, size_t NameLen) {
+                                     ткст0 Name, size_t NameLen) {
 return LLVMGetNamedGlobalAlias(M, Name, NameLen) ;
 }
 LLEXPORT ЛЛЗначение ЛЛДайПервыйГлобНик(ЛЛМодуль M) {
@@ -1548,11 +1548,11 @@ LLEXPORT void ЛЛАлиас_УстНики(ЛЛЗначение Alias, ЛЛЗн
 
 // Операции над функциями
 
-LLEXPORT ЛЛЗначение ЛЛДобавьФункц(ЛЛМодуль M, const char *Name,
+LLEXPORT ЛЛЗначение ЛЛДобавьФункц(ЛЛМодуль M, ткст0 Name,
                              ЛЛТип FunctionTy){
 return LLVMAddFunction(M, Name, FunctionTy) ;
 }
-LLEXPORT ЛЛЗначение ЛЛДайИменованФункц(ЛЛМодуль M, const char *Name) {
+LLEXPORT ЛЛЗначение ЛЛДайИменованФункц(ЛЛМодуль M, ткст0 Name) {
 return LLVMGetNamedFunction(M, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛДайПервФункц(ЛЛМодуль M){
@@ -1589,20 +1589,20 @@ LLEXPORT ЛЛЗначение ЛЛДайИнтринсикДекл(ЛЛМоду�
                                          size_t ParamCount){
 return LLVMGetIntrinsicDeclaration(Mod, ID, ParamTypes,ParamCount) ;
 }
-LLEXPORT const char *ЛЛИнтринсик_ДайИмя(unsigned ID, size_t *NameLength){
+LLEXPORT ткст0 ЛЛИнтринсик_ДайИмя(unsigned ID, size_t *NameLength){
 return LLVMIntrinsicGetName(ID, NameLength) ;
 }
 LLEXPORT ЛЛТип ЛЛИнтринсик_ДайТип(ЛЛКонтекст Ctx, unsigned ID,
                                  ЛЛТип *ParamTypes, size_t ParamCount) {
 return LLVMIntrinsicGetType(Ctx, ID, ParamTypes, ParamCount) ;
 }
-LLEXPORT const char *ЛЛИнтринсик_КопируйПерегруженИмя(unsigned ID,
+LLEXPORT ткст0 ЛЛИнтринсик_КопируйПерегруженИмя(unsigned ID,
                                             ЛЛТип *ParamTypes,
                                             size_t ParamCount,
                                             size_t *NameLength){
 return LLVMIntrinsicCopyOverloadedName(ID,ParamTypes, ParamCount, NameLength) ;
 }
-LLEXPORT unsigned ЛЛИщиИнтринсикИД(const char *Name, size_t NameLen){
+LLEXPORT unsigned ЛЛИщиИнтринсикИД(ткст0 Name, size_t NameLen){
 return LLVMLookupIntrinsicID(Name, NameLen) ;
 }
 LLEXPORT LLVMBool ЛЛИнтринсик_Перегружен_ли(unsigned ID){
@@ -1614,10 +1614,10 @@ return LLVMGetFunctionCallConv(Fn) ;
 LLEXPORT void ЛЛУстКонвВызФунции(ЛЛЗначение Fn, unsigned CC) {
  LLVMSetFunctionCallConv(Fn,  CC)  ;
 }
-LLEXPORT const char *ЛЛДайСМ(ЛЛЗначение Fn){
+LLEXPORT ткст0 ЛЛДайСМ(ЛЛЗначение Fn){
 return LLVMGetGC(Fn) ;
 }
-LLEXPORT void ЛЛУстСМ(ЛЛЗначение Fn, const char *GC){
+LLEXPORT void ЛЛУстСМ(ЛЛЗначение Fn, ткст0 GC){
 LLVMSetGC( Fn, GC) ;
 }
 LLEXPORT void ЛЛДобавьАтрПоИндексу(ЛЛЗначение F, LLVMAttributeIndex Idx,
@@ -1638,18 +1638,18 @@ return LLVMGetEnumAttributeAtIndex(F, Idx,KindID) ;
 }
 LLEXPORT ЛЛАтрибут ЛЛДайТкстАтрПоИндексу(ЛЛЗначение F,
                                                LLVMAttributeIndex Idx,
-                                               const char *K, unsigned KLen){
+                                               ткст0 K, unsigned KLen){
 return LLVMGetStringAttributeAtIndex(F, Idx, K, KLen) ;
 }
 LLEXPORT void ЛЛУдалиАтрПеречняПоИндексу(ЛЛЗначение F, LLVMAttributeIndex Idx, unsigned KindID) {
 LLVMRemoveEnumAttributeAtIndex(F, Idx, KindID) ;
 }
 LLEXPORT void ЛЛУдалиТкстАтрПоИндексу(ЛЛЗначение F, LLVMAttributeIndex Idx,
-                                      const char *K, unsigned KLen){
+                                      ткст0 K, unsigned KLen){
 	 LLVMRemoveStringAttributeAtIndex(F, Idx,K, KLen) ;
 }								  
-LLEXPORT void ЛЛДобавьЦелеЗависимАтрФции(ЛЛЗначение Fn, const char *A,
-                                        const char *V){
+LLEXPORT void ЛЛДобавьЦелеЗависимАтрФции(ЛЛЗначение Fn, ткст0 A,
+                                        ткст0 V){
  LLVMAddTargetDependentFunctionAttr(Fn, A, V) ;
 }
 
@@ -1686,13 +1686,13 @@ LLEXPORT void ЛЛУстРаскладПарама(ЛЛЗначение Arg, uns
 // Операции над ifuncs
 
 LLEXPORT ЛЛЗначение ЛЛДобавьГлобИФункц(ЛЛМодуль M,
-                                const char *Name, size_t NameLen,
+                                ткст0 Name, size_t NameLen,
                                 ЛЛТип Ty, unsigned AddrSpace,
                                 ЛЛЗначение Resolver){
 return LLVMAddGlobalIFunc(M,Name, NameLen, Ty, AddrSpace, Resolver) ;
 }
 LLEXPORT ЛЛЗначение ЛЛДайИменованГлобИФункц(ЛЛМодуль M,
-                                     const char *Name, size_t NameLen) {
+                                     ткст0 Name, size_t NameLen) {
 return LLVMGetNamedGlobalIFunc(M,Name, NameLen) ;
 }
 LLEXPORT ЛЛЗначение ЛЛДайПервГлобИФункц(ЛЛМодуль M) {
@@ -1731,7 +1731,7 @@ return LLVMValueIsBasicBlock(Val) ;
 LLEXPORT ЛЛБазовыйБлок ЛЛЗначениеКакБазБлок(ЛЛЗначение Val){
 return LLVMValueAsBasicBlock(Val) ;
 }
-LLEXPORT const char *ЛЛДайИмяБазБлока(ЛЛБазовыйБлок BB) {
+LLEXPORT ткст0 ЛЛДайИмяБазБлока(ЛЛБазовыйБлок BB) {
 return LLVMGetBasicBlockName(BB) ;
 }
 LLEXPORT ЛЛЗначение ЛЛДайРодителяБазБлока(ЛЛБазовыйБлок BB){
@@ -1761,7 +1761,7 @@ return LLVMGetNextBasicBlock(BB) ;
 LLEXPORT ЛЛБазовыйБлок ЛЛДайПредшБазБлок(ЛЛБазовыйБлок BB){
 return LLVMGetPreviousBasicBlock(BB) ;
 }
-LLEXPORT ЛЛБазовыйБлок ЛЛСоздайБазБлокВКонтексте(ЛЛКонтекст C, const char *Name){
+LLEXPORT ЛЛБазовыйБлок ЛЛСоздайБазБлокВКонтексте(ЛЛКонтекст C, ткст0 Name){
 return LLVMCreateBasicBlockInContext(C, Name) ;
 }
 LLEXPORT void ЛЛВставьСущБазБлокПослеБлокаВставки(ЛЛПостроитель Builder, ЛЛБазовыйБлок BB){
@@ -1771,19 +1771,19 @@ LLEXPORT void ЛЛПриставьСущБазБлок(ЛЛЗначение Fn,
                                   ЛЛБазовыйБлок BB){
 return LLVMAppendExistingBasicBlock(Fn, BB) ;
 }
-LLEXPORT ЛЛБазовыйБлок ЛЛПриставьБазБлокВКонтексте(ЛЛКонтекст C, ЛЛЗначение FnRef, const char *Name){
+LLEXPORT ЛЛБазовыйБлок ЛЛПриставьБазБлокВКонтексте(ЛЛКонтекст C, ЛЛЗначение FnRef, ткст0 Name){
 return LLVMAppendBasicBlockInContext(C, FnRef, Name) ;
 }
-LLEXPORT ЛЛБазовыйБлок ЛЛПриставьБазБлок(ЛЛЗначение FnRef, const char *Name){
+LLEXPORT ЛЛБазовыйБлок ЛЛПриставьБазБлок(ЛЛЗначение FnRef, ткст0 Name){
 return LLVMAppendBasicBlock(FnRef, Name) ;
 }
 LLEXPORT ЛЛБазовыйБлок ЛЛВставьБазБлокВКонтекст(ЛЛКонтекст C,
                                                 ЛЛБазовыйБлок BBRef,
-                                                const char *Name){
+                                                ткст0 Name){
 return LLVMInsertBasicBlockInContext(C, BBRef, Name) ;
 }
 LLEXPORT ЛЛБазовыйБлок ЛЛВставьБазБлок(ЛЛБазовыйБлок BBRef,
-                                       const char *Name){
+                                       ткст0 Name){
 return LLVMInsertBasicBlock(BBRef, Name) ;
 }
 LLEXPORT void ЛЛУдалиБазБлок(ЛЛБазовыйБлок BBRef) {
@@ -1870,13 +1870,13 @@ LLEXPORT ЛЛАтрибут ЛЛДайАтрыПеречняМестаВызов
 return LLVMGetCallSiteEnumAttribute(C, Idx, KindID) ;
 }
 LLEXPORT ЛЛАтрибут ЛЛДайТкстАтрыМестаВызова(ЛЛЗначение C, LLVMAttributeIndex Idx,
-   const char *K, unsigned KLen) {
+   ткст0 K, unsigned KLen) {
 return LLVMGetCallSiteStringAttribute(C, Idx, K, KLen) ;
 }
 LLEXPORT void ЛЛУдалиАтрПеречняМестаВызова(ЛЛЗначение C, LLVMAttributeIndex Idx, unsigned KindID) {
  LLVMRemoveCallSiteEnumAttribute(C,  Idx,  KindID) ;
 }
-LLEXPORT void ЛЛУдалиТкстАтрМестаВызова(ЛЛЗначение C, LLVMAttributeIndex Idx, const char *K, unsigned KLen){
+LLEXPORT void ЛЛУдалиТкстАтрМестаВызова(ЛЛЗначение C, LLVMAttributeIndex Idx, ткст0 K, unsigned KLen){
  LLVMRemoveCallSiteStringAttribute(C, Idx,K, KLen) ;
 }
 LLEXPORT ЛЛЗначение ЛЛДайВызванноеЗнач(ЛЛЗначение Instr) {
@@ -2007,7 +2007,7 @@ LLEXPORT void ЛЛОчистиПозициюВставки(ЛЛПостроит�
 LLEXPORT void ЛЛВставьВПостроитель(ЛЛПостроитель Builder, ЛЛЗначение Instr) {
  LLVMInsertIntoBuilder(Builder, Instr) ;
 }
-LLEXPORT void ЛЛВставьВПостроительСИменем(ЛЛПостроитель Builder, ЛЛЗначение Instr,   const char *Name) {
+LLEXPORT void ЛЛВставьВПостроительСИменем(ЛЛПостроитель Builder, ЛЛЗначение Instr,   ткст0 Name) {
  LLVMInsertIntoBuilderWithName(Builder, Instr, Name) ;
 }
 LLEXPORT void ЛЛВыместиПостроитель(ЛЛПостроитель Builder) {
@@ -2068,34 +2068,34 @@ return LLVMBuildIndirectBr(B, Addr, NumDests) ;
 LLEXPORT ЛЛЗначение ЛЛСтройИнвок(ЛЛПостроитель B, ЛЛЗначение Fn,
                              ЛЛЗначение *Args, unsigned NumArgs,
                              ЛЛБазовыйБлок Then, ЛЛБазовыйБлок Catch,
-                             const char *Name){
+                             ткст0 Name){
 return LLVMBuildInvoke(B, Fn, Args, NumArgs, Then, Catch, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройИнвок2(ЛЛПостроитель B, ЛЛТип Ty, ЛЛЗначение Fn,
                               ЛЛЗначение *Args, unsigned NumArgs,
                               ЛЛБазовыйБлок Then, ЛЛБазовыйБлок Catch,
-                              const char *Name){
+                              ткст0 Name){
 return LLVMBuildInvoke2(B, Ty, Fn, Args, NumArgs, Then, Catch, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтойЛэндингПад(ЛЛПостроитель B, ЛЛТип Ty,
                                  ЛЛЗначение PersFn, unsigned NumClauses,
-                                 const char *Name){
+                                 ткст0 Name){
 return LLVMBuildLandingPad(B, Ty, PersFn,  NumClauses, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройКэчПад(ЛЛПостроитель B, ЛЛЗначение ParentPad,
                                ЛЛЗначение *Args, unsigned NumArgs,
-                               const char *Name){
+                               ткст0 Name){
 return LLVMBuildCatchPad(B, ParentPad, Args,  NumArgs, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройОчистиПад(ЛЛПостроитель B, ЛЛЗначение ParentPad,
                                  ЛЛЗначение *Args, unsigned NumArgs,
-                                 const char *Name){
+                                 ткст0 Name){
 return LLVMBuildCleanupPad(B, ParentPad, Args,  NumArgs, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройВозобнови(ЛЛПостроитель B, ЛЛЗначение Exn){
 return LLVMBuildResume(B, Exn) ;
 }
-LLEXPORT ЛЛЗначение ЛЛСтройКэчЩит(ЛЛПостроитель B, ЛЛЗначение ParentPad, ЛЛБазовыйБлок UnwindBB, unsigned NumHandlers, const char *Name){
+LLEXPORT ЛЛЗначение ЛЛСтройКэчЩит(ЛЛПостроитель B, ЛЛЗначение ParentPad, ЛЛБазовыйБлок UnwindBB, unsigned NumHandlers, ткст0 Name){
 return LLVMBuildCatchSwitch(B, ParentPad, UnwindBB, NumHandlers, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройКэчВозвр(ЛЛПостроитель B, ЛЛЗначение CatchPad,
@@ -2158,117 +2158,117 @@ LLEXPORT void ЛЛУстАргОперанд(ЛЛЗначение Funclet, unsig
 
 // Арифметика 
 
-LLEXPORT ЛЛЗначение ЛЛСтройСложи(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS,  const char *Name) {
+LLEXPORT ЛЛЗначение ЛЛСтройСложи(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS,  ткст0 Name) {
 return LLVMBuildAdd(B, LHS, RHS, Name) ;
 }
-LLEXPORT ЛЛЗначение LLBuildNSWAdd(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS,  const char *Name){
+LLEXPORT ЛЛЗначение LLBuildNSWAdd(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS,  ткст0 Name){
 return LLVMBuildNSWAdd(B, LHS, RHS, Name) ;
 }
-LLEXPORT ЛЛЗначение LLBuildNUWAdd(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS, const char *Name){
+LLEXPORT ЛЛЗначение LLBuildNUWAdd(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS, ткст0 Name){
 return LLVMBuildNUWAdd(B, LHS, RHS, Name);
 }
-LLEXPORT ЛЛЗначение ЛЛСтройПСложи(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS, const char *Name) {
+LLEXPORT ЛЛЗначение ЛЛСтройПСложи(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS, ткст0 Name) {
 return LLVMBuildFAdd(B, LHS, RHS, Name) ;
 }
-LLEXPORT ЛЛЗначение ЛЛСтройОтними(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS, const char *Name) {
+LLEXPORT ЛЛЗначение ЛЛСтройОтними(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS, ткст0 Name) {
 return LLVMBuildSub(B, LHS, RHS, Name) ;
 }
-LLEXPORT ЛЛЗначение LLBuildNSWSub(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS,  const char *Name){
+LLEXPORT ЛЛЗначение LLBuildNSWSub(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS,  ткст0 Name){
 return LLVMBuildNSWSub(B, LHS, RHS, Name) ;
 }
-LLEXPORT ЛЛЗначение LLBuildNUWSub(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS,  const char *Name) {
+LLEXPORT ЛЛЗначение LLBuildNUWSub(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS,  ткст0 Name) {
 return LLVMBuildNUWSub(B, LHS, RHS, Name) ;
 }
-LLEXPORT ЛЛЗначение ЛЛСтройПОтними(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS,  const char *Name) {
+LLEXPORT ЛЛЗначение ЛЛСтройПОтними(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS,  ткст0 Name) {
 return LLVMBuildFSub(B, LHS, RHS, Name) ;
 }
-LLEXPORT ЛЛЗначение ЛЛСтройУмножь(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS,  const char *Name) {
+LLEXPORT ЛЛЗначение ЛЛСтройУмножь(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS,  ткст0 Name) {
 return LLVMBuildMul(B, LHS, RHS, Name);
 }
-LLEXPORT ЛЛЗначение LLBuildNSWMul(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS,   const char *Name){
+LLEXPORT ЛЛЗначение LLBuildNSWMul(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS,   ткст0 Name){
 		return LLVMBuildNSWMul(B, LHS, RHS, Name) ;
 }				  
-LLEXPORT ЛЛЗначение LLBuildNUWMul(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS,  const char *Name){
+LLEXPORT ЛЛЗначение LLBuildNUWMul(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS,  ткст0 Name){
 return LLVMBuildNUWMul(B, LHS, RHS, Name) ;
 }
-LLEXPORT ЛЛЗначение ЛЛСтройПУмножь(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS,   const char *Name){
+LLEXPORT ЛЛЗначение ЛЛСтройПУмножь(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS,   ткст0 Name){
 return LLVMBuildFMul(B, LHS, RHS, Name) ;
 }
-LLEXPORT ЛЛЗначение ЛЛСтройБДели(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS,  const char *Name) {
+LLEXPORT ЛЛЗначение ЛЛСтройБДели(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS,  ткст0 Name) {
 return LLVMBuildUDiv(B, LHS, RHS, Name)  ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройТочноБДели(ЛЛПостроитель B, ЛЛЗначение LHS,
-                                ЛЛЗначение RHS, const char *Name) {
+                                ЛЛЗначение RHS, ткст0 Name) {
 return LLVMBuildExactUDiv(B, LHS, RHS, Name) ;
 }
-LLEXPORT ЛЛЗначение ЛЛСтройЗДели(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS, const char *Name) {
+LLEXPORT ЛЛЗначение ЛЛСтройЗДели(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS, ткст0 Name) {
 return LLVMBuildSDiv(B, LHS, RHS, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройТочноЗДели(ЛЛПостроитель B, ЛЛЗначение LHS,
-                                ЛЛЗначение RHS, const char *Name){
+                                ЛЛЗначение RHS, ткст0 Name){
 return LLVMBuildExactSDiv(B, LHS, RHS, Name) ;
 }
-LLEXPORT ЛЛЗначение ЛЛСтройПДели(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS, const char *Name) {
+LLEXPORT ЛЛЗначение ЛЛСтройПДели(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS, ткст0 Name) {
 return LLVMBuildFDiv(B, LHS, RHS,Name)  ;
 }
-LLEXPORT ЛЛЗначение LLBuildURem(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS,  const char *Name) {
+LLEXPORT ЛЛЗначение LLBuildURem(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS,  ткст0 Name) {
 return LLVMBuildURem(B, LHS, RHS, Name) ;
 }
-LLEXPORT ЛЛЗначение LLBuildSRem(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS, const char *Name){
+LLEXPORT ЛЛЗначение LLBuildSRem(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS, ткст0 Name){
 return LLVMBuildSRem(B, LHS, RHS, Name) ;
 }
-LLEXPORT ЛЛЗначение LLBuildFRem(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS, const char *Name) {
+LLEXPORT ЛЛЗначение LLBuildFRem(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS, ткст0 Name) {
 return LLVMBuildFRem(B, LHS, RHS, Name) ;
 }
-LLEXPORT ЛЛЗначение LLBuildShl(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS, const char *Name) {
+LLEXPORT ЛЛЗначение LLBuildShl(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS, ткст0 Name) {
 return LLVMBuildShl(B, LHS, RHS, Name) ;
 }
-LLEXPORT ЛЛЗначение LLBuildLShr(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS, const char *Name) {
+LLEXPORT ЛЛЗначение LLBuildLShr(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS, ткст0 Name) {
 return LLVMBuildLShr(B, LHS, RHS, Name) ;
 }
-LLEXPORT ЛЛЗначение LLBuildAShr(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS, const char *Name) {
+LLEXPORT ЛЛЗначение LLBuildAShr(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS, ткст0 Name) {
 return LLVMBuildAShr(B, LHS, RHS, Name) ;
 }
-LLEXPORT ЛЛЗначение ЛЛСтройИ(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS,  const char *Name){
+LLEXPORT ЛЛЗначение ЛЛСтройИ(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS,  ткст0 Name){
 return LLVMBuildAnd(B, LHS, RHS, Name) ;
 }
-LLEXPORT ЛЛЗначение ЛЛСтройИли(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS, const char *Name){
+LLEXPORT ЛЛЗначение ЛЛСтройИли(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS, ткст0 Name){
 return LLVMBuildOr(B, LHS, RHS, Name) ;
 }
-LLEXPORT ЛЛЗначение ЛЛСтройИИли(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS, const char *Name) {
+LLEXPORT ЛЛЗначение ЛЛСтройИИли(ЛЛПостроитель B, ЛЛЗначение LHS, ЛЛЗначение RHS, ткст0 Name) {
 return LLVMBuildXor(B, LHS, RHS, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройБинОп(ЛЛПостроитель B, LLVMOpcode Op,
                             ЛЛЗначение LHS, ЛЛЗначение RHS,
-                            const char *Name){
+                            ткст0 Name){
 return LLVMBuildBinOp(B, Op, LHS, RHS, Name) ;
 }
-LLEXPORT ЛЛЗначение ЛЛСтройОтриц(ЛЛПостроитель B, ЛЛЗначение V, const char *Name){
+LLEXPORT ЛЛЗначение ЛЛСтройОтриц(ЛЛПостроитель B, ЛЛЗначение V, ткст0 Name){
 return LLVMBuildNeg(B, V, Name) ;
 }
 LLEXPORT ЛЛЗначение LLBuildNSWNeg(ЛЛПостроитель B, ЛЛЗначение V,
-                             const char *Name) {
+                             ткст0 Name) {
 return LLVMBuildNSWNeg(B, V, Name) ;
 }
 LLEXPORT ЛЛЗначение LLBuildNUWNeg(ЛЛПостроитель B, ЛЛЗначение V,
-                             const char *Name){
+                             ткст0 Name){
 return LLVMBuildNUWNeg(B, V, Name) ;
 }
-LLEXPORT ЛЛЗначение ЛЛСтройПОтриц(ЛЛПостроитель B, ЛЛЗначение V, const char *Name){
+LLEXPORT ЛЛЗначение ЛЛСтройПОтриц(ЛЛПостроитель B, ЛЛЗначение V, ткст0 Name){
 return LLVMBuildFNeg(B, V, Name) ;
 }
-LLEXPORT ЛЛЗначение ЛЛСтройНе(ЛЛПостроитель B, ЛЛЗначение V, const char *Name){
+LLEXPORT ЛЛЗначение ЛЛСтройНе(ЛЛПостроитель B, ЛЛЗначение V, ткст0 Name){
 return LLVMBuildNot(B, V, Name) ;
 }
 
 // Память 
 
 LLEXPORT ЛЛЗначение ЛЛСтройРазместПам(ЛЛПостроитель B, ЛЛТип Ty,
-                             const char *Name){
+                             ткст0 Name){
 return LLVMBuildMalloc(B, Ty, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройРазместПамМасс(ЛЛПостроитель B, ЛЛТип Ty,
-                                  ЛЛЗначение Val, const char *Name) {
+                                  ЛЛЗначение Val, ткст0 Name) {
 return LLVMBuildArrayMalloc(B, Ty, Val, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройУстПам(ЛЛПостроитель B, ЛЛЗначение Ptr, 
@@ -2289,22 +2289,22 @@ LLEXPORT ЛЛЗначение ЛЛСтройПреместПам(ЛЛПостр�
 return LLVMBuildMemMove(B, Dst, DstAlign, Src, SrcAlign, Size) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройАллока(ЛЛПостроитель B, ЛЛТип Ty,
-                             const char *Name){
+                             ткст0 Name){
 return LLVMBuildAlloca(B, Ty, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройАллокаМасс(ЛЛПостроитель B, ЛЛТип Ty,
-                                  ЛЛЗначение Val, const char *Name){
+                                  ЛЛЗначение Val, ткст0 Name){
 return LLVMBuildArrayAlloca(B, Ty,Val, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройОсвободи(ЛЛПостроитель B, ЛЛЗначение PointerVal){
 return LLVMBuildFree(B, PointerVal) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройЗагрузи(ЛЛПостроитель B, ЛЛЗначение PointerVal,
-                           const char *Name){
+                           ткст0 Name){
 return LLVMBuildLoad(B, PointerVal, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройЗагрузи2(ЛЛПостроитель B, ЛЛТип Ty,
-                            ЛЛЗначение PointerVal, const char *Name){
+                            ЛЛЗначение PointerVal, ткст0 Name){
 return LLVMBuildLoad2(B, Ty, PointerVal, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройСохрани(ЛЛПостроитель B, ЛЛЗначение Val,
@@ -2312,44 +2312,44 @@ LLEXPORT ЛЛЗначение ЛЛСтройСохрани(ЛЛПостроит�
 return LLVMBuildStore(B, Val, PointerVal) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройЗабор(ЛЛПостроитель B, LLVMAtomicOrdering Ordering,
-                            LLVMBool isSingleThread, const char *Name){
+                            LLVMBool isSingleThread, ткст0 Name){
 return LLVMBuildFence(B, Ordering, isSingleThread, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройУкНаЭлт(ЛЛПостроитель B, ЛЛЗначение Pointer,
                           ЛЛЗначение *Indices, unsigned NumIndices,
-                          const char *Name) {
+                          ткст0 Name) {
 	return LLVMBuildGEP(B, Pointer, Indices, NumIndices, Name) ;
 }					  
 LLEXPORT ЛЛЗначение ЛЛСтройУкНаЭлт2(ЛЛПостроитель B, ЛЛТип Ty,
                            ЛЛЗначение Pointer, ЛЛЗначение *Indices,
-                           unsigned NumIndices, const char *Name){
+                           unsigned NumIndices, ткст0 Name){
 return LLVMBuildGEP2(B, Ty, Pointer, Indices, NumIndices, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройУкНаЭлтВПределах(ЛЛПостроитель B, ЛЛЗначение Pointer,
                                   ЛЛЗначение *Indices, unsigned NumIndices,
-                                  const char *Name){
+                                  ткст0 Name){
 return LLVMBuildInBoundsGEP(B, Pointer, Indices, NumIndices, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройУкНаЭлтВПределах2(ЛЛПостроитель B, ЛЛТип Ty,
                                    ЛЛЗначение Pointer, ЛЛЗначение *Indices,
-                                   unsigned NumIndices, const char *Name) {
+                                   unsigned NumIndices, ткст0 Name) {
 return LLVMBuildInBoundsGEP2(B, Ty, Pointer, Indices, NumIndices, Name)  ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройУкНаЭлтСтрукт(ЛЛПостроитель B, ЛЛЗначение Pointer,
-                                unsigned Idx, const char *Name) {
+                                unsigned Idx, ткст0 Name) {
 return LLVMBuildStructGEP(B, Pointer, Idx, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройУкНаЭлтСтрукт2(ЛЛПостроитель B, ЛЛТип Ty,
                                  ЛЛЗначение Pointer, unsigned Idx,
-                                 const char *Name) {
+                                 ткст0 Name) {
 return LLVMBuildStructGEP2(B, Ty, Pointer, Idx, Name) ;
 }
-LLEXPORT ЛЛЗначение ЛЛСтройГлобТкст(ЛЛПостроитель B, const char *Str,
-                                   const char *Name){
+LLEXPORT ЛЛЗначение ЛЛСтройГлобТкст(ЛЛПостроитель B, ткст0 Str,
+                                   ткст0 Name){
 return LLVMBuildGlobalString(B, Str, Name) ;
 }
-LLEXPORT ЛЛЗначение ЛЛСтройГлобТкстУкз(ЛЛПостроитель B, const char *Str,
-                                      const char *Name){
+LLEXPORT ЛЛЗначение ЛЛСтройГлобТкстУкз(ЛЛПостроитель B, ткст0 Str,
+                                      ткст0 Name){
 return LLVMBuildGlobalStringPtr(B, Str, Name) ;
 }
 LLEXPORT LLVMBool ЛЛДайВолатил(ЛЛЗначение MemAccessInst){
@@ -2368,87 +2368,87 @@ return LLVMSetOrdering(MemAccessInst, Ordering) ;
 // Приведение к типу (касты)
 
 LLEXPORT ЛЛЗначение ЛЛСтройОбрежь(ЛЛПостроитель B, ЛЛЗначение Val,
-                            ЛЛТип DestTy, const char *Name) {
+                            ЛЛТип DestTy, ткст0 Name) {
 return LLVMBuildTrunc(B, Val, DestTy, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройНРасш(ЛЛПостроитель B, ЛЛЗначение Val,
-                           ЛЛТип DestTy, const char *Name) {
+                           ЛЛТип DestTy, ткст0 Name) {
 return LLVMBuildZExt(B, Val, DestTy, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройЗРасш(ЛЛПостроитель B, ЛЛЗначение Val,
-                           ЛЛТип DestTy, const char *Name) {
+                           ЛЛТип DestTy, ткст0 Name) {
 return LLVMBuildSExt(B, Val, DestTy, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройПЗвБЦ(ЛЛПостроитель B, ЛЛЗначение Val,
-                             ЛЛТип DestTy, const char *Name) {
+                             ЛЛТип DestTy, ткст0 Name) {
 return LLVMBuildFPToUI(B, Val, DestTy, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройПЗвЗЦ(ЛЛПостроитель B, ЛЛЗначение Val,
-                             ЛЛТип DestTy, const char *Name) {
+                             ЛЛТип DestTy, ткст0 Name) {
 return LLVMBuildFPToSI(B, Val, DestTy, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройБЦвПЗ(ЛЛПостроитель B, ЛЛЗначение Val,
-                             ЛЛТип DestTy, const char *Name){
+                             ЛЛТип DestTy, ткст0 Name){
 return LLVMBuildUIToFP(B, Val,DestTy, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройЗЦвПЗ(ЛЛПостроитель B, ЛЛЗначение Val,
-                             ЛЛТип DestTy, const char *Name){
+                             ЛЛТип DestTy, ткст0 Name){
 return LLVMBuildSIToFP(B, Val, DestTy, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройПЗОбрежь(ЛЛПостроитель B, ЛЛЗначение Val,
-                              ЛЛТип DestTy, const char *Name){
+                              ЛЛТип DestTy, ткст0 Name){
 return LLVMBuildFPTrunc(B, Val, DestTy, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройПЗРасш(ЛЛПостроитель B, ЛЛЗначение Val,
-                            ЛЛТип DestTy, const char *Name){
+                            ЛЛТип DestTy, ткст0 Name){
 return LLVMBuildFPExt(B, Val, DestTy, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройУкзВЦел(ЛЛПостроитель B, ЛЛЗначение Val,
-                               ЛЛТип DestTy, const char *Name) {
+                               ЛЛТип DestTy, ткст0 Name) {
 return LLVMBuildPtrToInt(B, Val, DestTy, Name)  ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройЦелВУкз(ЛЛПостроитель B, ЛЛЗначение Val,
-                               ЛЛТип DestTy, const char *Name){
+                               ЛЛТип DestTy, ткст0 Name){
 return LLVMBuildIntToPtr(B, Val, DestTy, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройБитКаст(ЛЛПостроитель B, ЛЛЗначение Val,
-                              ЛЛТип DestTy, const char *Name){
+                              ЛЛТип DestTy, ткст0 Name){
 return LLVMBuildBitCast(B, Val, DestTy, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройАдрПрострКаст(ЛЛПостроитель B, ЛЛЗначение Val,
-                                    ЛЛТип DestTy, const char *Name){
+                                    ЛЛТип DestTy, ткст0 Name){
 return LLVMBuildAddrSpaceCast(B, Val, DestTy, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройНРасшИлиБитКаст(ЛЛПостроитель B, ЛЛЗначение Val,
-                                    ЛЛТип DestTy, const char *Name) {
+                                    ЛЛТип DestTy, ткст0 Name) {
 return LLVMBuildZExtOrBitCast(B, Val, DestTy, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройЗРасшИлиБитКаст(ЛЛПостроитель B, ЛЛЗначение Val,
-                                    ЛЛТип DestTy, const char *Name){
+                                    ЛЛТип DestTy, ткст0 Name){
 return LLVMBuildSExtOrBitCast(B, Val, DestTy, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройОбрежьИлиБитКаст(ЛЛПостроитель B, ЛЛЗначение Val,
-                                     ЛЛТип DestTy, const char *Name) {
+                                     ЛЛТип DestTy, ткст0 Name) {
 return LLVMBuildTruncOrBitCast(B, Val,DestTy, Name) ;
 }
-LLEXPORT ЛЛЗначение ЛЛСтройКаст(ЛЛПостроитель B, LLVMOpcode Op, ЛЛЗначение Val, ЛЛТип DestTy, const char *Name) {
+LLEXPORT ЛЛЗначение ЛЛСтройКаст(ЛЛПостроитель B, LLVMOpcode Op, ЛЛЗначение Val, ЛЛТип DestTy, ткст0 Name) {
 return LLVMBuildCast(B, Op, Val, DestTy, Name)  ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройУказательКаст(ЛЛПостроитель B, ЛЛЗначение Val,
-                                  ЛЛТип DestTy, const char *Name){
+                                  ЛЛТип DestTy, ткст0 Name){
 return LLVMBuildPointerCast(B, Val, DestTy, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройЦелКаст2(ЛЛПостроитель B, ЛЛЗначение Val,
                                ЛЛТип DestTy, LLVMBool IsSigned,
-                               const char *Name){
+                               ткст0 Name){
 return LLVMBuildIntCast2(B, Val, DestTy, IsSigned, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройЦелКаст(ЛЛПостроитель B, ЛЛЗначение Val,
-                              ЛЛТип DestTy, const char *Name) {
+                              ЛЛТип DestTy, ткст0 Name) {
 return LLVMBuildIntCast(B, Val, DestTy, Name)  ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройПЗКаст(ЛЛПостроитель B, ЛЛЗначение Val,
-                             ЛЛТип DestTy, const char *Name) {
+                             ЛЛТип DestTy, ткст0 Name) {
 return LLVMBuildFPCast(B, Val, DestTy, Name)  ;
 }
 
@@ -2456,70 +2456,70 @@ return LLVMBuildFPCast(B, Val, DestTy, Name)  ;
 
 LLEXPORT ЛЛЗначение ЛЛСтройЦСравн(ЛЛПостроитель B, LLVMIntPredicate Op,
                            ЛЛЗначение LHS, ЛЛЗначение RHS,
-                           const char *Name) {
+                           ткст0 Name) {
 return LLVMBuildICmp(B, Op, LHS, RHS, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройПСравн(ЛЛПостроитель B, LLVMRealPredicate Op,
                            ЛЛЗначение LHS, ЛЛЗначение RHS,
-                           const char *Name){
+                           ткст0 Name){
 return LLVMBuildFCmp(B, Op, LHS, RHS, Name) ;
 }
 
 // Различные инструкции 
 
-LLEXPORT ЛЛЗначение LLBuildPhi(ЛЛПостроитель B, ЛЛТип Ty, const char *Name){
+LLEXPORT ЛЛЗначение LLBuildPhi(ЛЛПостроитель B, ЛЛТип Ty, ткст0 Name){
 return LLVMBuildPhi(B, Ty, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройВызов(ЛЛПостроитель B, ЛЛЗначение Fn,
                            ЛЛЗначение *Args, unsigned NumArgs,
-                           const char *Name){
+                           ткст0 Name){
 return LLVMBuildCall(B, Fn, Args, NumArgs, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройВызов2(ЛЛПостроитель B, ЛЛТип Ty, ЛЛЗначение Fn, ЛЛЗначение *Args, unsigned NumArgs,
-                            const char *Name){
+                            ткст0 Name){
 return LLVMBuildCall2(B, Ty, Fn, Args, NumArgs, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройВыбери(ЛЛПостроитель B, ЛЛЗначение If,
                              ЛЛЗначение Then, ЛЛЗначение Else,
-                             const char *Name) {
+                             ткст0 Name) {
 return LLVMBuildSelect(B, If, Then, Else, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройВААрг(ЛЛПостроитель B, ЛЛЗначение List,
-                            ЛЛТип Ty, const char *Name){
+                            ЛЛТип Ty, ткст0 Name){
 return LLVMBuildVAArg(B, List, Ty, Name);
 }
-LLEXPORT ЛЛЗначение ЛЛСтройИзвлекиЭлт(ЛЛПостроитель B, ЛЛЗначение VecVal, ЛЛЗначение Index, const char *Name) {
+LLEXPORT ЛЛЗначение ЛЛСтройИзвлекиЭлт(ЛЛПостроитель B, ЛЛЗначение VecVal, ЛЛЗначение Index, ткст0 Name) {
 return LLVMBuildExtractElement(B, VecVal, Index, Name);
 }
 LLEXPORT ЛЛЗначение ЛЛСтройВставьЭлт(ЛЛПостроитель B, ЛЛЗначение VecVal,
                                     ЛЛЗначение EltVal, ЛЛЗначение Index,
-                                    const char *Name) {
+                                    ткст0 Name) {
 return LLVMBuildInsertElement(B, VecVal, EltVal, Index, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройШафлВектор(ЛЛПостроитель B, ЛЛЗначение V1,
                                     ЛЛЗначение V2, ЛЛЗначение Mask,
-                                    const char *Name) {
+                                    ткст0 Name) {
 return LLVMBuildShuffleVector(B, V1, V2, Mask, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройИзвлекиЗначение(ЛЛПостроитель B, ЛЛЗначение AggVal,
-                                   unsigned Index, const char *Name){
+                                   unsigned Index, ткст0 Name){
 return LLVMBuildExtractValue(B, AggVal, Index, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройВставьЗначение(ЛЛПостроитель B, ЛЛЗначение AggVal,
                                   ЛЛЗначение EltVal, unsigned Index,
-                                  const char *Name) {
+                                  ткст0 Name) {
 return LLVMBuildInsertValue(B, AggVal, EltVal, Index, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройПусто(ЛЛПостроитель B, ЛЛЗначение Val,
-                             const char *Name){
+                             ткст0 Name){
 return LLVMBuildIsNull(B, Val, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛЛСтройНеПусто(ЛЛПостроитель B, ЛЛЗначение Val,
-                                const char *Name){
+                                ткст0 Name){
 return LLVMBuildIsNotNull(B, Val, Name) ;
 }
 LLEXPORT ЛЛЗначение ЛСтройУкзДифф(ЛЛПостроитель B, ЛЛЗначение LHS,
-                              ЛЛЗначение RHS, const char *Name){
+                              ЛЛЗначение RHS, ткст0 Name){
 return LLVMBuildPtrDiff(B, LHS, RHS, Name) ;
 }
 LLEXPORT ЛЛЗначение LLBuildAtomicRMW(ЛЛПостроитель B, LLVMAtomicRMWBinOp op,
@@ -2570,7 +2570,7 @@ LLEXPORT void ЛЛВыместиМодульПровайдер(ЛЛМодуль�
 // Буферы памяти 
 
 LLEXPORT LLVMBool ЛЛСоздайБуфПамССодержимымФайла(
-    const char *Path, ЛЛБуферПамяти *OutMemBuf, char **OutMessage) {
+    ткст0 Path, ЛЛБуферПамяти *OutMemBuf, char **OutMessage) {
 return LLVMCreateMemoryBufferWithContentsOfFile(Path, OutMemBuf, OutMessage) ;
 }
 LLEXPORT LLVMBool ЛЛСоздайБуфПамСоСТДВХО(ЛЛБуферПамяти *OutMemBuf,
@@ -2578,15 +2578,15 @@ LLEXPORT LLVMBool ЛЛСоздайБуфПамСоСТДВХО(ЛЛБуферП�
 return LLVMCreateMemoryBufferWithSTDIN(OutMemBuf, OutMessage) ;
 }
 LLEXPORT ЛЛБуферПамяти ЛЛСоздайБуфПамСДиапазономПам(
-    const char *InputData,  size_t InputDataLength,  const char *BufferName,
+    ткст0 InputData,  size_t InputDataLength,  ткст0 BufferName,
     LLVMBool RequiresNullTerminator){
 return LLVMCreateMemoryBufferWithMemoryRange(InputData, InputDataLength, BufferName, RequiresNullTerminator) ;
 }
 LLEXPORT ЛЛБуферПамяти ЛЛСоздайБуфПамСКопиейДиапазонаПам(
-    const char *InputData,  size_t InputDataLength, const char *BufferName){
+    ткст0 InputData,  size_t InputDataLength, ткст0 BufferName){
 return LLVMCreateMemoryBufferWithMemoryRangeCopy(InputData,  InputDataLength, BufferName) ;
 }
-LLEXPORT const char *ЛЛДайНачалоБуфера(ЛЛБуферПамяти MemBuf){
+LLEXPORT ткст0 ЛЛДайНачалоБуфера(ЛЛБуферПамяти MemBuf){
 return LLVMGetBufferStart(MemBuf) ;
 }
 LLEXPORT size_t ЛЛДайРазмерБуфера(ЛЛБуферПамяти MemBuf) {

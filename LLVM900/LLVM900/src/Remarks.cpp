@@ -8,7 +8,7 @@ extern "C" {
  *
  * \since REMARKS_API_VERSION=0
  */
-LLEXPORT const char *ЛЛТкстРемарки_ДайДанные(ЛЛТкстРемарки String){
+LLEXPORT ткст0 ЛЛТкстРемарки_ДайДанные(ЛЛТкстРемарки String){
 return LLVMRemarkStringGetData(String);
 }
 
@@ -269,7 +269,7 @@ return LLVMRemarkParserHasError(Parser);
  *
  * \since REMARKS_API_VERSION=0
  */
-LLEXPORT const char *ЛЛПарсерРемарок_ДайОшСооб(ЛЛПарсерРемарок Parser){
+LLEXPORT ткст0 ЛЛПарсерРемарок_ДайОшСооб(ЛЛПарсерРемарок Parser){
 return LLVMRemarkParserGetErrorMessage(Parser);
 }
 

@@ -29,7 +29,28 @@
 #include "llvm/Support/ToolOutputFile.h"
 #include <memory>
 using namespace llvm;
+typedef void проц;
+typedef void* ук;
 
+typedef bool бул;
+
+typedef  signed char байт;   ///int8_t
+typedef  unsigned char ббайт;  ///uint8_t
+
+typedef  short крат;  ///int16_t
+typedef  unsigned short бкрат; ///uint16_t
+
+typedef  int цел;  ///int32_t
+typedef  unsigned int бцел; ///uint32_t
+
+typedef  long long дол;   ///int64_t
+typedef  unsigned long long бдол;  ///uint64_t
+
+typedef  size_t т_мера;
+
+typedef const char* ткст0;
+
+namespace llvmas{
 cl::OptionCategory АсКат("Опции llvm-as");
 
 static cl::opt<std::string> ВхоИмяФ(cl::Positional,
@@ -111,9 +132,9 @@ static void WriteOutputFile(const Module *M, const ModuleSummaryIndex *Index) {
   Out->keep();
 }
 
-extern "C" __declspec(dllexport) int ЛЛВхоФункцЛЛАс(char **args) {
+extern "C" __declspec(dllexport) цел ЛЛВхоФункцЛЛАс(char **args) {
 
-  auto argn = (int)strlen((const char*)args);
+  auto argn = (цел)strlen((const char*)args);
   InitLLVM X(argn, args);
   LLVMContext Context;
   cl::HideUnrelatedOptions(АсКат);
@@ -152,4 +173,5 @@ extern "C" __declspec(dllexport) int ЛЛВхоФункцЛЛАс(char **args) {
     WriteOutputFile(M.get(), Index.get());
 
   return 0;
+}
 }
