@@ -2,8 +2,9 @@ module ll.api.PassManagerBuilder;
 
 import ll.c.Core, ll.c.Types, ll.c.PassManagerBuilder;
 import ll.api.PassManager;
-
-//Построитель менеджеров проходок
+/**
+* Построитель менеджеров проходок
+*/
     public class ПМП 
     {
         public this()
